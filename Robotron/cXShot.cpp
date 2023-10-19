@@ -1,0 +1,1 @@
+// Initializes with random accel in some direction on top of regular velocity towards shooting location

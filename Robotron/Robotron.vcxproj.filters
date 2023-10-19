@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Arena">
+      <UniqueIdentifier>{3093c8d3-c6b9-4c21-9c99-983b70f81cfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapon">
+      <UniqueIdentifier>{c2c44f04-b677-4cfb-b537-d0f099034d84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Robotrons">
+      <UniqueIdentifier>{212744ca-2b6b-48a1-9eba-be48336c6563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapon\Weapons">
+      <UniqueIdentifier>{67377b28-ec4e-46d6-ba76-769334a21d18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapon\Projectiles">
+      <UniqueIdentifier>{41751a4f-34ca-4e8f-acf3-48baa42ffc2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{ad408faa-57d7-4c23-b06d-79db3433af77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Shader Manager">
+      <UniqueIdentifier>{752c796f-188b-466e-8208-0438cda99493}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\VAOManager">
+      <UniqueIdentifier>{6bdc25c1-6306-4365-b6b3-fd3ab131cd07}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cElectrode.cpp">
+      <Filter>Robotrons</Filter>
+    </ClCompile>
+    <ClCompile Include="cHuman.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cGrunt.cpp">
+      <Filter>Robotrons</Filter>
+    </ClCompile>
+    <ClCompile Include="cHulk.cpp">
+      <Filter>Robotrons</Filter>
+    </ClCompile>
+    <ClCompile Include="cSpheroid.cpp">
+      <Filter>Robotrons</Filter>
+    </ClCompile>
+    <ClCompile Include="cEnforcer.cpp">
+      <Filter>Robotrons</Filter>
+    </ClCompile>
+    <ClCompile Include="cBrain.cpp">
+      <Filter>Robotrons</Filter>
+    </ClCompile>
+    <ClCompile Include="cProg.cpp">
+      <Filter>Robotrons</Filter>
+    </ClCompile>
+    <ClCompile Include="cQuark.cpp">
+      <Filter>Robotrons</Filter>
+    </ClCompile>
+    <ClCompile Include="cTank.cpp">
+      <Filter>Robotrons</Filter>
+    </ClCompile>
+    <ClCompile Include="cArena.cpp">
+      <Filter>Arena</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cXShot.cpp">
+      <Filter>Weapon\Projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="cEnforcerWeapon.cpp">
+      <Filter>Weapon\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayerWeapon.cpp">
+      <Filter>Weapon\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="cGraphicsMain.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Basic Shader Manager\cShader.cpp">
+      <Filter>Graphics\Shader Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Basic Shader Manager\cShaderManager.cpp">
+      <Filter>Graphics\Shader Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="cVAOManager\cVAOManager.cpp">
+      <Filter>Graphics\VAOManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Other Graphics Stuff\cLightManager.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Other Graphics Stuff\cMesh.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Other Graphics Stuff\glad.c">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Other Graphics Stuff\LoadModels.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Other Graphics Stuff\ScenePersistence.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cArena_Implementation.cpp">
+      <Filter>Arena</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="iRobotron.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cElectrode.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cHuman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cGrunt.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cHulk.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cSpheroid.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cEnforcer.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cBrain.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cProg.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cQuark.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cTank.h">
+      <Filter>Robotrons</Filter>
+    </ClInclude>
+    <ClInclude Include="cArena.h">
+      <Filter>Arena</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iProjectile.h">
+      <Filter>Weapon\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="iWeapon.h">
+      <Filter>Weapon\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="cXShot.h">
+      <Filter>Weapon\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="cEnforcerWeapon.h">
+      <Filter>Weapon\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayerWeapon.h">
+      <Filter>Weapon\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="cGraphicsMain.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Basic Shader Manager\cShaderManager.h">
+      <Filter>Graphics\Shader Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="cVAOManager\cVAOManager.h">
+      <Filter>Graphics\VAOManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Other Graphics Stuff\cLightManager.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Other Graphics Stuff\cMesh.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Other Graphics Stuff\GLWF_CallBacks.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Other Graphics Stuff\OpenGLCommon.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="cArena_Implementation.h">
+      <Filter>Arena</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
