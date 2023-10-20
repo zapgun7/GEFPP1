@@ -24,14 +24,32 @@ cArena* cArena::getArena(void)
 
 glm::vec2 cArena::getClosestHuman(glm::vec2 whereIAm)
 {
-	this->m_pTheAcualArena->getClosestHuman(whereIAm);
+	return this->m_pTheAcualArena->getClosestHuman(whereIAm);
 }
 
 glm::vec2 cArena::getPlayer(glm::vec2 whereIam)
 {
-	this->m_pTheAcualArena->getPlayer(whereIam);
+	return this->m_pTheAcualArena->getPlayer(whereIam);
 }
 
+
+void cArena::Initialize()
+{
+	this->m_pTheAcualArena->Initialize();
+	return;
+}
+
+void cArena::storeKeys(std::vector<bool> keys)
+{
+	this->m_pTheAcualArena->storeKeys(keys);
+	return;
+}
+
+void cArena::Update()
+{
+	this->m_pTheAcualArena->Update();
+	return;
+}
 
 cArena::cArena()
 {

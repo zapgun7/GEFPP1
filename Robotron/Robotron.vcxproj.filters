@@ -37,6 +37,12 @@
     <Filter Include="Graphics\VAOManager">
       <UniqueIdentifier>{6bdc25c1-6306-4365-b6b3-fd3ab131cd07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Mesh Factory">
+      <UniqueIdentifier>{a93a74bc-0e8e-4d48-8b8d-17503f03fada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input Handling">
+      <UniqueIdentifier>{4ba36d8b-33fd-46de-b46d-6b561ca96e7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -117,6 +123,12 @@
     <ClCompile Include="cArena_Implementation.cpp">
       <Filter>Arena</Filter>
     </ClCompile>
+    <ClCompile Include="cMeshFactory.cpp">
+      <Filter>Graphics\Mesh Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="cInputHandler.cpp">
+      <Filter>Input Handling</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="iRobotron.h">
@@ -196,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="cArena_Implementation.h">
       <Filter>Arena</Filter>
+    </ClInclude>
+    <ClInclude Include="cMeshFactory.h">
+      <Filter>Graphics\Mesh Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="cInputHandler.h">
+      <Filter>Input Handling</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,6 +14,8 @@
 #include "GLWF_CallBacks.h"
 
 
+cGraphicsMain* cGraphicsMain::m_pTheOnlyGraphicsMain = NULL;
+
 
 
 static void error_callback(int error, const char* description)
@@ -22,8 +24,31 @@ static void error_callback(int error, const char* description)
 }
 
 
+cGraphicsMain* cGraphicsMain::getGraphicsMain(void) // Making graphics main a singleton
+{
+	if (cGraphicsMain::m_pTheOnlyGraphicsMain == NULL)
+	{
+		cGraphicsMain::m_pTheOnlyGraphicsMain = new cGraphicsMain();
+		if (!cGraphicsMain::m_pTheOnlyGraphicsMain->Initialize())
+		{
+			cGraphicsMain::m_pTheOnlyGraphicsMain->Destroy();
+		}
+	}
+	return cGraphicsMain::m_pTheOnlyGraphicsMain;
+}
+
+cGraphicsMain::cGraphicsMain()
+{
+	m_cameraEye = glm::vec3(0.0, 0.0, 200.0f);
+	m_cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_upVector = glm::vec3(0.0f, 1.0f, 0.0f);
+}
+
 bool cGraphicsMain::Initialize()
 {
+	m_InputHandler = new cInputHandler();
+
+
 	glfwSetErrorCallback(error_callback);
 
 	if (!glfwInit())
@@ -72,18 +97,62 @@ bool cGraphicsMain::Initialize()
 
 
 	// Do this for all models   TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-	sModelDrawInfo terrainDrawingInfo;
-	m_pMeshManager->LoadModelIntoVAO("Terrain_xyz_n_rgba.ply",
-		terrainDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << terrainDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	sModelDrawInfo playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player1.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player2.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player3.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player4.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player5.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player6.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player7.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player8.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player9.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player10.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player11.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	playerDrawingInfo;
+	m_pMeshManager->LoadModelIntoVAO("player12.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
 
-	LoadModels();
+	//LoadModels();
 
 
 	// Initialize lights here if ya want em
 	m_lastTime = glfwGetTime();
 
-	return 0;
+	return 1;
 }
 
 
@@ -93,6 +162,11 @@ bool cGraphicsMain::Initialize()
 
 bool cGraphicsMain::Update() // Main "loop" of the window. Not really a loop, just gets called every tick
 {
+	// Start by checking input
+	m_InputHandler->queryKeys(m_window);
+
+
+
 	float ratio;
 	int width, height;
 
@@ -142,7 +216,7 @@ bool cGraphicsMain::Update() // Main "loop" of the window. Not really a loop, ju
 
 	// *********************************************************************
 	// Draw all the objects
-	for (unsigned int index = 0; index != m_vec_pMeshesToDraw.size(); index++)
+	for (unsigned int index = 0; index != m_vec_pMeshesToDraw.size(); index++) // Prob black or smthn
 	{
 		cMesh* pCurrentMesh = m_vec_pMeshesToDraw[index];
 
@@ -180,6 +254,15 @@ void cGraphicsMain::Destroy()
 	glfwDestroyWindow(m_window);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
+}
+
+// Creates a new mesh to bind to an object; returns a pointer which the arena can associate to specific objects to animate them
+
+
+void cGraphicsMain::addToDrawMesh(cMesh* newMesh)
+{
+	m_vec_pMeshesToDraw.push_back(newMesh);
+	return;
 }
 
 cMesh* cGraphicsMain::m_pFindMeshByFriendlyName(std::string friendlyNameToFind)
@@ -377,24 +460,25 @@ bool cGraphicsMain::LoadModels(void)
 //    pGridGroundMesh->friendlyName = "Ground";
 //    ::g_vec_pMeshesToDraw.push_back(pGridGroundMesh);
 
-	cMesh* pFlat_1x1_planeMesh = new cMesh();
-	pFlat_1x1_planeMesh->meshName = "Flat_1x1_plane.ply";
+	cMesh* player = new cMesh();
+	player->meshName = "player7.ply";
 	//pFlat_1x1_planeMesh->bIsWireframe = true;
 	//pFlat_1x1_planeMesh->bDoNotLight = true;
 	// note this does NOT have a physProps, so is ignored by the physics update loop
-	pFlat_1x1_planeMesh->drawPosition.y = -15.0f;   //  0,-10,0
-	pFlat_1x1_planeMesh->friendlyName = "Ground";
-	m_vec_pMeshesToDraw.push_back(pFlat_1x1_planeMesh);
+	player->drawPosition.y = -0.0f;   //  0,-10,0
+	player->scale = 100;
+	player->friendlyName = "player";
+	m_vec_pMeshesToDraw.push_back(player);
 
-	cMesh* pFlat_1x1_planeMesh_DEBUG = new cMesh();
-	pFlat_1x1_planeMesh_DEBUG->meshName = "Flat_1x1_plane.ply";
-	pFlat_1x1_planeMesh->bIsWireframe = true;
-	pFlat_1x1_planeMesh->bDoNotLight = true;
-	pFlat_1x1_planeMesh->bUseDebugColours = true;
-	pFlat_1x1_planeMesh->wholeObjectDebugColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	// note this does NOT have a physProps, so is ignored by the physics update loop
-	pFlat_1x1_planeMesh_DEBUG->drawPosition.y = pFlat_1x1_planeMesh->drawPosition.y - 0.01f;   //  0,-10,0
-	m_vec_pMeshesToDraw.push_back(pFlat_1x1_planeMesh_DEBUG);
+// 	cMesh* pFlat_1x1_planeMesh_DEBUG = new cMesh();
+// 	pFlat_1x1_planeMesh_DEBUG->meshName = "Flat_1x1_plane.ply";
+// 	pFlat_1x1_planeMesh->bIsWireframe = true;
+// 	pFlat_1x1_planeMesh->bDoNotLight = true;
+// 	pFlat_1x1_planeMesh->bUseDebugColours = true;
+// 	pFlat_1x1_planeMesh->wholeObjectDebugColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+// 	// note this does NOT have a physProps, so is ignored by the physics update loop
+// 	pFlat_1x1_planeMesh_DEBUG->drawPosition.y = pFlat_1x1_planeMesh->drawPosition.y - 0.01f;   //  0,-10,0
+// 	m_vec_pMeshesToDraw.push_back(pFlat_1x1_planeMesh_DEBUG);
 
 
 	return true;

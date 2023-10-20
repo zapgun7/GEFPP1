@@ -145,6 +145,8 @@
     <ClCompile Include="cElectrode.cpp" />
     <ClCompile Include="cHulk.cpp" />
     <ClCompile Include="cHuman.cpp" />
+    <ClCompile Include="cInputHandler.cpp" />
+    <ClCompile Include="cMeshFactory.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cPlayerWeapon.cpp" />
     <ClCompile Include="cProg.cpp" />
@@ -172,6 +174,8 @@
     <ClInclude Include="cGrunt.h" />
     <ClInclude Include="cHulk.h" />
     <ClInclude Include="cHuman.h" />
+    <ClInclude Include="cInputHandler.h" />
+    <ClInclude Include="cMeshFactory.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cPlayerWeapon.h" />
     <ClInclude Include="cProg.h" />

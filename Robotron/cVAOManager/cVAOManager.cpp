@@ -303,6 +303,8 @@ bool cVAOManager::m_LoadTheFile_Ply_XYZ_N_RGBA(std::string theFileName, sModelDr
         theBunnyFile >> tempVertex.b;       tempVertex.b /= 255.0f;
         theBunnyFile >> tempVertex.a;       tempVertex.a /= 255.0f;
 
+        theBunnyFile >> temp;
+        theBunnyFile >> temp; // Texture coords
 
         pTheVerticesFile[index] = tempVertex;
     }
