@@ -2,6 +2,7 @@
 
 #include <glm/vec2.hpp>
 #include <vector>
+#include "iWeapon.h"
 
 class cPlayer
 {
@@ -12,12 +13,13 @@ public:
 	glm::vec2 pos;
 	glm::vec2 dir;
 
-	void Update(std::vector<bool> keysPressed);
+	void Update(std::vector<bool> keysPressed, double deltaTime);
 	void setID(int ID);
 
 	int getID();
 	glm::vec2 getPos();
 	glm::vec2 getDir();
+	iWeapon* playerWeapon;
 	//void Animate();
 	//void Attack();
 

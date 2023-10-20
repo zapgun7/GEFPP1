@@ -7,7 +7,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 	entityMesh->mesh = new cMesh();
 	entityMesh->mesh->bDoNotLight = true;
 
-	if (entity == "Player")
+	if (entity == "player")
 	{
 		entityMesh->left.push_back("player1.ply");
 		entityMesh->left.push_back("player2.ply");
@@ -30,5 +30,22 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
 		return entityMesh;
 	}
+	if (entity == "pbullet") // player bullet
+	{
+		entityMesh->left.push_back("playerbullet1.ply");
+		entityMesh->right.push_back("playerbullet4.ply");
+		entityMesh->up.push_back("playerbullet2.ply");
+		entityMesh->down.push_back("playerbullet3.ply");
+
+		entityMesh->mesh->meshName = "playerbullet1.ply";
+		entityMesh->mesh->drawPosition.y = -40.0f;
+		entityMesh->mesh->scale = .05f;
+		//entityMesh->animationSpeed = 0.05f;                              //
+		//entityMesh->animationFrame = 0;								   // These 3 shouldn't matter, player bullet doesn't animate
+		//entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;      //
+		return entityMesh;
+	}
+
+	return NULL;
 
 }

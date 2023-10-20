@@ -140,6 +140,7 @@
     <ClCompile Include="cBrain.cpp" />
     <ClCompile Include="cEnforcer.cpp" />
     <ClCompile Include="cEnforcerWeapon.cpp" />
+    <ClCompile Include="cCharacterBuilder.cpp" />
     <ClCompile Include="cGraphicsMain.cpp" />
     <ClCompile Include="cGrunt.cpp" />
     <ClCompile Include="cElectrode.cpp" />
@@ -148,12 +149,15 @@
     <ClCompile Include="cInputHandler.cpp" />
     <ClCompile Include="cMeshFactory.cpp" />
     <ClCompile Include="cPlayer.cpp" />
+    <ClCompile Include="cPlayerBullet.cpp" />
     <ClCompile Include="cPlayerWeapon.cpp" />
     <ClCompile Include="cProg.cpp" />
+    <ClCompile Include="cProjectileFactory.cpp" />
     <ClCompile Include="cQuark.cpp" />
     <ClCompile Include="cSpheroid.cpp" />
     <ClCompile Include="cTank.cpp" />
     <ClCompile Include="cVAOManager\cVAOManager.cpp" />
+    <ClCompile Include="cWeaponFactory.cpp" />
     <ClCompile Include="cXShot.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Other Graphics Stuff\cLightManager.cpp" />
@@ -170,6 +174,7 @@
     <ClInclude Include="cElectrode.h" />
     <ClInclude Include="cEnforcer.h" />
     <ClInclude Include="cEnforcerWeapon.h" />
+    <ClInclude Include="cCharacterBuilder.h" />
     <ClInclude Include="cGraphicsMain.h" />
     <ClInclude Include="cGrunt.h" />
     <ClInclude Include="cHulk.h" />
@@ -177,12 +182,15 @@
     <ClInclude Include="cInputHandler.h" />
     <ClInclude Include="cMeshFactory.h" />
     <ClInclude Include="cPlayer.h" />
+    <ClInclude Include="cPlayerBullet.h" />
     <ClInclude Include="cPlayerWeapon.h" />
     <ClInclude Include="cProg.h" />
+    <ClInclude Include="cProjectileFactory.h" />
     <ClInclude Include="cQuark.h" />
     <ClInclude Include="cSpheroid.h" />
     <ClInclude Include="cTank.h" />
     <ClInclude Include="cVAOManager\cVAOManager.h" />
+    <ClInclude Include="cWeaponFactory.h" />
     <ClInclude Include="cXShot.h" />
     <ClInclude Include="iProjectile.h" />
     <ClInclude Include="iRobotron.h" />

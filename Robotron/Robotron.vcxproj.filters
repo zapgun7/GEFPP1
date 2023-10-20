@@ -37,11 +37,23 @@
     <Filter Include="Graphics\VAOManager">
       <UniqueIdentifier>{6bdc25c1-6306-4365-b6b3-fd3ab131cd07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\Mesh Factory">
-      <UniqueIdentifier>{a93a74bc-0e8e-4d48-8b8d-17503f03fada}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Input Handling">
       <UniqueIdentifier>{4ba36d8b-33fd-46de-b46d-6b561ca96e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Builders/Factories">
+      <UniqueIdentifier>{3fa6115c-06ba-475e-855f-4e6c6b516c66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Builders/Factories\Mesh Factory">
+      <UniqueIdentifier>{a93a74bc-0e8e-4d48-8b8d-17503f03fada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Builders/Factories\Entity Builder">
+      <UniqueIdentifier>{d954d558-56d2-4bec-a837-b35700a80ffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Builders/Factories\Weapon Factory">
+      <UniqueIdentifier>{2e61def0-0df5-4f11-8204-27e518e52e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Builders/Factories\Projectile Factory">
+      <UniqueIdentifier>{293ff764-e92d-4744-9e81-740172484d19}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -124,10 +136,22 @@
       <Filter>Arena</Filter>
     </ClCompile>
     <ClCompile Include="cMeshFactory.cpp">
-      <Filter>Graphics\Mesh Factory</Filter>
+      <Filter>Builders/Factories\Mesh Factory</Filter>
     </ClCompile>
     <ClCompile Include="cInputHandler.cpp">
       <Filter>Input Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayerBullet.cpp">
+      <Filter>Weapon\Projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="cCharacterBuilder.cpp">
+      <Filter>Builders/Factories\Entity Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="cWeaponFactory.cpp">
+      <Filter>Builders/Factories\Weapon Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="cProjectileFactory.cpp">
+      <Filter>Builders/Factories\Projectile Factory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,10 +234,22 @@
       <Filter>Arena</Filter>
     </ClInclude>
     <ClInclude Include="cMeshFactory.h">
-      <Filter>Graphics\Mesh Factory</Filter>
+      <Filter>Builders/Factories\Mesh Factory</Filter>
     </ClInclude>
     <ClInclude Include="cInputHandler.h">
       <Filter>Input Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayerBullet.h">
+      <Filter>Weapon\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="cCharacterBuilder.h">
+      <Filter>Builders/Factories\Entity Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="cWeaponFactory.h">
+      <Filter>Builders/Factories\Weapon Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="cProjectileFactory.h">
+      <Filter>Builders/Factories\Projectile Factory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

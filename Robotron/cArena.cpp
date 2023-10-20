@@ -33,6 +33,21 @@ glm::vec2 cArena::getPlayer(glm::vec2 whereIam)
 }
 
 
+void cArena::setPlayer(cPlayer* player, AnimationInfo* newInfo)
+{
+	m_pTheAcualArena->setPlayer(player, newInfo);
+}
+
+void cArena::addRobotron(iRobotron* newRobo, AnimationInfo* newInfo)
+{
+	m_pTheAcualArena->addRobotron(newRobo, newInfo);
+}
+
+void cArena::addProjectile(iProjectile* newProjectile, AnimationInfo* newInfo)
+{
+	m_pTheAcualArena->addProjectile(newProjectile, newInfo);
+}
+
 void cArena::Initialize()
 {
 	this->m_pTheAcualArena->Initialize();

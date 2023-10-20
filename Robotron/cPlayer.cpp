@@ -1,5 +1,5 @@
 #include "cPlayer.h"
-#include <glm/detail/func_geometric.inl>
+#include <OpenGLCommon.h>
 
 cPlayer::cPlayer()
 {
@@ -8,7 +8,7 @@ cPlayer::cPlayer()
 	this->speed = 0.5f;
 }
 
-void cPlayer::Update(std::vector<bool> keysPressed)
+void cPlayer::Update(std::vector<bool> keysPressed, double deltaTime)
 {
 	glm::vec2 movementToAdd;
 	movementToAdd = glm::vec2(0.0f, 0.0f);
@@ -36,6 +36,7 @@ void cPlayer::Update(std::vector<bool> keysPressed)
 
 	if (keysPressed[4]) // Up button
 	{
+		// Currently shooting
 		return;
 	}
 	dir = movementToAdd;

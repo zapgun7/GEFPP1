@@ -8,9 +8,9 @@
 cArena_Implementation::cArena_Implementation()
 {
 	std::cout << "cArena_Implementation created." << std::endl;
-	m_meshFactory = new cMeshFactory();
+	//m_meshFactory = new cMeshFactory();
 	m_keysPressed.assign(8, false);
-	m_graphMain = cGraphicsMain::getGraphicsMain();
+	m_pGraphMain = cGraphicsMain::getGraphicsMain();
 	//this->pTheWeaponFactory = new cWeaponMaker();
 	//this->m_arenaSizeInMeters = 0.0f;
 }
@@ -38,17 +38,46 @@ glm::vec2 cArena_Implementation::getPlayer(glm::vec2 whereIam)
 	return glm::vec2(0, 0);
 }
 
+void cArena_Implementation::setPlayer(cPlayer* player, AnimationInfo* newInfo)
+{
+	m_thePlayer = player;
+	player->setID(nextID++);
+	m_spriteIDMap[player->getID()] = newInfo;
+	m_pGraphMain->addToDrawMesh(newInfo->mesh);
+}
+
+void cArena_Implementation::addRobotron(iRobotron* newRobo, AnimationInfo* newInfo)
+{
+	m_robotrons.push_back(newRobo);
+	newRobo->setID(nextID++);
+	m_spriteIDMap[newRobo->getID()] = newInfo;
+	m_pGraphMain->addToDrawMesh(newInfo->mesh);
+}
+
+void cArena_Implementation::addProjectile(iProjectile* newProjectile, AnimationInfo* newInfo)
+{
+	m_projectiles.push_back(newProjectile);
+	newProjectile->setID(nextID++);
+	m_spriteIDMap[newProjectile->getID()] = newInfo;
+	m_pGraphMain->addToDrawMesh(newInfo->mesh);
+}
+
 void cArena_Implementation::Initialize()
 {
+	m_pCharacterMaker = new cCharacterBuilder();
 	// Spawns things for the level
 
 	
 
-	m_thePlayer = new cPlayer();
-	m_thePlayer->setID(nextID++);
-	AnimationInfo* animInfo = m_meshFactory->makeMesh("Player");
-	m_spriteIDMap[m_thePlayer->getID()] = animInfo; // Update ID to animationInfo map
-	m_graphMain->addToDrawMesh(animInfo->mesh);
+	//m_thePlayer = new cPlayer();
+	//m_thePlayer->setID(nextID++);
+	//AnimationInfo* animInfo = m_meshFactory->makeMesh("Player");
+	//m_spriteIDMap[m_thePlayer->getID()] = animInfo; // Update ID to animationInfo map
+	//m_graphMain->addToDrawMesh(animInfo->mesh);
+
+	m_pCharacterMaker->makeCharacter("player");
+
+
 	lastTime = glfwGetTime();
 
 }
@@ -70,7 +99,7 @@ void cArena_Implementation::Update()
 
 
 	// Start by updating player
-	m_thePlayer->Update(m_keysPressed);
+	m_thePlayer->Update(m_keysPressed, deltaTime);
 
 
 	// Update animation //////
