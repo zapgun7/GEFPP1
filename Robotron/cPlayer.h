@@ -15,6 +15,7 @@ public:
 
 	void Update(std::vector<bool> keysPressed, double deltaTime);
 	void setID(int ID);
+	void setPos(glm::vec2 newPosition);
 
 	int getID();
 	glm::vec2 getPos();
@@ -24,9 +25,9 @@ public:
 	//void Attack();
 
 private:
-	float speed;
-	float shootCoolDown;
-	float timeSinceLastShot;
-	int entityID; // To associate to a model in a map
+	float m_speed;
+	float const m_shootCoolDown = 0.2f;
+	double m_timeTillNextShot;
+	int m_entityID; // To associate to a model in a map
 };
 

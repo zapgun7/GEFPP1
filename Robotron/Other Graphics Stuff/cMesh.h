@@ -42,6 +42,7 @@ public:
 	std::string meshName;
 
 	std::string friendlyName;		// "Ground"
+	int uniqueID;
 
 	// Draw loop uses this: 
 	glm::vec3 drawPosition;				

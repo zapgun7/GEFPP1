@@ -28,9 +28,10 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->animationSpeed = 0.05f; // every 50ms
 		entityMesh->animationFrame = 0;
 		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->spriteOffsetY = 2.75f;
 		return entityMesh;
 	}
-	if (entity == "pbullet") // player bullet
+	if (entity == "pbullet") // player bullet   
 	{
 		entityMesh->left.push_back("playerbullet1.ply");
 		entityMesh->right.push_back("playerbullet4.ply");
@@ -38,6 +39,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->down.push_back("playerbullet3.ply");
 
 		entityMesh->mesh->meshName = "playerbullet1.ply";
+		entityMesh->mesh->friendlyName = "pbullet";
 		entityMesh->mesh->drawPosition.y = -40.0f;
 		entityMesh->mesh->scale = .05f;
 		//entityMesh->animationSpeed = 0.05f;                              //

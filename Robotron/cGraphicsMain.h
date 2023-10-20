@@ -20,6 +20,7 @@ public:
 	bool Update(); // return false when window is triggered to close
 	void Destroy();
 	void addToDrawMesh(cMesh* newMesh);
+	void removeFromDrawMesh(int ID);
 
 
 private:

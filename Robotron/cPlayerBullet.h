@@ -16,6 +16,6 @@ public:
 private:
 	glm::vec2 pos;
 	glm::vec2 dir; // The step of the projectile per tick
-	float speed;
+	float const speed = 3.0f;
 	int entityID;
 };

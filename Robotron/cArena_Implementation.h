@@ -40,6 +40,8 @@ private:
 	std::vector<iProjectile*> m_projectiles; // Vector of all existing projectiles
 	cPlayer* m_thePlayer;
 
+	int m_XBoundary = 113;
+	int m_YBoundary = 55;
 
 	double lastTime; // Time at last update; used for delta time
 	int nextID = 0; // Unique ID assigned to each entity

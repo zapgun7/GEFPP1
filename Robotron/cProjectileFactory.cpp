@@ -22,6 +22,24 @@ void cProjectileFactory::makeProjectile(std::string proj, glm::vec2 pos, glm::ve
 	{
 		projectileToMake = new cPlayerBullet(pos, dir);
 		newAnimInfo = m_pMeshFactory->makeMesh("pbullet");
+		if (dir.x == 0) // Vertical-oriented bullet
+		{
+			newAnimInfo->mesh->meshName = "playerbullet2.ply";
+		}
+		else if (dir.y == 0) // Horizontal-oriented bullet
+		{
+			newAnimInfo->mesh->meshName = "playerbullet1.ply";
+		}
+		else if (dir.x == dir.y) // Bottom-left to top-right orientation
+		{
+			newAnimInfo->mesh->meshName = "playerbullet3.ply";
+		}
+		else // Top-left to bottom-right orientation
+		{
+			newAnimInfo->mesh->meshName = "playerbullet4.ply";
+		}
+		
+		
 		pTheArena->addProjectile(projectileToMake, newAnimInfo);
 	}
 

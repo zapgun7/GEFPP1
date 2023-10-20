@@ -42,6 +42,7 @@ void cArena_Implementation::setPlayer(cPlayer* player, AnimationInfo* newInfo)
 {
 	m_thePlayer = player;
 	player->setID(nextID++);
+	newInfo->mesh->uniqueID = nextID - 1;
 	m_spriteIDMap[player->getID()] = newInfo;
 	m_pGraphMain->addToDrawMesh(newInfo->mesh);
 }
@@ -50,6 +51,7 @@ void cArena_Implementation::addRobotron(iRobotron* newRobo, AnimationInfo* newIn
 {
 	m_robotrons.push_back(newRobo);
 	newRobo->setID(nextID++);
+	newInfo->mesh->uniqueID = nextID - 1;
 	m_spriteIDMap[newRobo->getID()] = newInfo;
 	m_pGraphMain->addToDrawMesh(newInfo->mesh);
 }
@@ -58,6 +60,7 @@ void cArena_Implementation::addProjectile(iProjectile* newProjectile, AnimationI
 {
 	m_projectiles.push_back(newProjectile);
 	newProjectile->setID(nextID++);
+	newInfo->mesh->uniqueID = nextID - 1;
 	m_spriteIDMap[newProjectile->getID()] = newInfo;
 	m_pGraphMain->addToDrawMesh(newInfo->mesh);
 }
@@ -88,6 +91,7 @@ void cArena_Implementation::storeKeys(std::vector<bool> keys)
 	return;
 }
 
+// This function updates animations, calls update functions for all entities that require it, will scan for hit detection, and keep things in the boundaries
 void cArena_Implementation::Update()
 {
 	// Update animations
@@ -102,9 +106,24 @@ void cArena_Implementation::Update()
 	m_thePlayer->Update(m_keysPressed, deltaTime);
 
 
-	// Update animation //////
+	
 	AnimationInfo* tempInfo = findAnimInfoByID(m_thePlayer->getID()); // Get animation info of player
-	if( glm::vec2(tempInfo->mesh->drawPosition) != m_thePlayer->getPos()) // If the player hasn't moved since last update, don't worry about animation TODO( In this case, reset back to 0th place in animation trio)
+	float playerOffsetY = tempInfo->spriteOffsetY;
+	glm::vec2 playerPos = m_thePlayer->getPos();
+
+	// Keep player within bounds of play area
+	if (abs(playerPos.x) > m_XBoundary) // outside x boundry
+	{
+		playerPos.x = m_XBoundary * (playerPos.x / abs(playerPos.x)); // sets player position to right on the border if over it
+	}
+	if (abs(playerPos.y  + playerOffsetY) > m_YBoundary)
+	{
+		playerPos.y = m_YBoundary * (playerPos.y / abs(playerPos.y)) - playerOffsetY;
+	}
+	m_thePlayer->setPos(playerPos); // Update player position
+
+	// Update player animation //////
+	if (glm::vec2(tempInfo->mesh->drawPosition) != playerPos) // If the player hasn't moved since last update, don't worry about animation TODO( In this case, reset back to 0th place in animation trio)
 		tempInfo->timeSinceLastAnim -= deltaTime;
 	if (tempInfo->timeSinceLastAnim <= 0) // Time to tick animation
 	{
@@ -138,12 +157,50 @@ void cArena_Implementation::Update()
 			}
 		}
 	}
+	tempInfo->mesh->drawPosition = glm::vec3(playerPos, 0);
+
+	// Update projectile animations and perform hit detection
+	for (int i = 0; i < m_projectiles.size(); i++)
+	{
+		// Start by updating its position
+		m_projectiles[i]->Update(); // Update position of projectile first
+		glm::vec2 projPos = m_projectiles[i]->getPosition(); // Then get its position
+		tempInfo = findAnimInfoByID(m_projectiles[i]->getID()); // Get draw info for projectile
+		tempInfo->mesh->drawPosition = glm::vec3(projPos, 0);
+		if (tempInfo->mesh->friendlyName != "pbullet") // Only do this if not a player bullet (might change to if = if there's less projectiles overall to animate)
+		{
+			// TODO some enemy projectiles will animate
+		}
+		else // Player bullet hit detection
+		{
+			if (abs(projPos.x) > m_XBoundary) // outside x boundary
+			{
+				m_pGraphMain->removeFromDrawMesh(tempInfo->mesh->uniqueID);
+				delete tempInfo; // Delete mesh info
+				m_spriteIDMap.erase(m_projectiles[i]->getID()); // Remove from ID_to_Mesh map
+				delete m_projectiles[i]; // Delete projectile object itself
+				m_projectiles.erase(m_projectiles.begin() + i); // Remove from projectile vector
+				i--;
+				continue;
+			}
+			else if (abs(projPos.y) > m_YBoundary) // outside y boundary 
+			{
+				m_pGraphMain->removeFromDrawMesh(tempInfo->mesh->uniqueID);
+				delete tempInfo; // Delete mesh info
+				m_spriteIDMap.erase(m_projectiles[i]->getID()); // Remove from ID_to_Mesh map
+				delete m_projectiles[i]; // Delete projectile object itself
+				m_projectiles.erase(m_projectiles.begin() + i); // Remove from projectile vector
+				i--;
+				continue;
+			}
+		}
+	}
+
 
 	//////////////////////////
 
 	m_keysPressed.assign(8, false); // Clear the "buffer"
 	
-	tempInfo->mesh->drawPosition = glm::vec3(m_thePlayer->getPos(), 0);
 }
 
 AnimationInfo* cArena_Implementation::findAnimInfoByID(int ID)

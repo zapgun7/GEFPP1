@@ -227,7 +227,6 @@ bool cGraphicsMain::Update() // Main "loop" of the window. Not really a loop, ju
 	GLint matView_UL = glGetUniformLocation(m_shaderProgramID, "matView");
 	glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(matView));
 
-
 	// *********************************************************************
 	// Draw all the objects
 	for (unsigned int index = 0; index != m_vec_pMeshesToDraw.size(); index++) // Prob black or smthn
@@ -277,6 +276,18 @@ void cGraphicsMain::addToDrawMesh(cMesh* newMesh)
 {
 	m_vec_pMeshesToDraw.push_back(newMesh);
 	return;
+}
+
+void cGraphicsMain::removeFromDrawMesh(int ID)
+{
+	for (unsigned int i = 0; i < m_vec_pMeshesToDraw.size(); i++)
+	{
+		if (m_vec_pMeshesToDraw[i]->uniqueID == ID)
+		{
+			m_vec_pMeshesToDraw.erase(m_vec_pMeshesToDraw.begin() + i);
+			return;
+		}
+	}
 }
 
 cMesh* cGraphicsMain::m_pFindMeshByFriendlyName(std::string friendlyNameToFind)

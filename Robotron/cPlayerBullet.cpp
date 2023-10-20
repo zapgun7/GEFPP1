@@ -4,7 +4,7 @@ cPlayerBullet::cPlayerBullet(glm::vec2 position, glm::vec2 direction)
 {
 	pos = position;
 	dir = direction;
-	speed = 1.0f;
+	//speed = 1.0f;
 }
 
 cPlayerBullet::~cPlayerBullet()

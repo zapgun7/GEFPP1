@@ -1,15 +1,19 @@
 #include "cPlayer.h"
 #include <OpenGLCommon.h>
+#include <iostream>
+
 
 cPlayer::cPlayer()
 {
 	this->pos = glm::vec2(0, 0);
 	this->dir = glm::vec2(0, -1); // Looking down to start (not sad)
-	this->speed = 0.5f;
+	this->m_speed = 0.5f;
+	m_timeTillNextShot = 0.0f;
 }
 
 void cPlayer::Update(std::vector<bool> keysPressed, double deltaTime)
 {
+	//std::cout << pos.y << std::endl;
 	glm::vec2 movementToAdd;
 	movementToAdd = glm::vec2(0.0f, 0.0f);
 	// MOVEMENT
@@ -31,27 +35,42 @@ void cPlayer::Update(std::vector<bool> keysPressed, double deltaTime)
 	}
 	if(glm::length(movementToAdd) != 0)
 		movementToAdd = glm::normalize(movementToAdd);
-	movementToAdd *= speed;
+	movementToAdd *= m_speed;
 	this->pos += movementToAdd;
 
+	if (m_timeTillNextShot > 0)
+		m_timeTillNextShot -= deltaTime;
 	if (keysPressed[4]) // Up button
 	{
 		// Currently shooting
+		if (m_timeTillNextShot <= 0)
+		{
+			playerWeapon->Shoot(pos, dir);
+			m_timeTillNextShot += m_shootCoolDown;
+		}
 		return;
 	}
-	dir = movementToAdd;
+	if (m_timeTillNextShot < 0)
+		m_timeTillNextShot = 0;
+	if (glm::length(movementToAdd) != 0) // Only update new directions, don't wanna set dir to 0
+		dir = movementToAdd;
 	// SHOOTING
 }
 
 void cPlayer::setID(int ID)
 {
-	entityID = ID;
+	m_entityID = ID;
 	return;
+}
+
+void cPlayer::setPos(glm::vec2 newPosition)
+{
+	pos = newPosition;
 }
 
 int cPlayer::getID()
 {
-	return entityID;
+	return m_entityID;
 }
 
 glm::vec2 cPlayer::getPos()
