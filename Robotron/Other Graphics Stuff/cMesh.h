@@ -48,6 +48,7 @@ public:
 	glm::vec3 drawPosition;				
 	glm::vec3 orientation;
 	float scale;
+	float yOffset;
 
 	bool bIsVisible;
 

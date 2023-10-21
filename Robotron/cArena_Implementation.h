@@ -20,7 +20,7 @@ public:
 	~cArena_Implementation();
 
 	glm::vec2 getClosestHuman(glm::vec2 whereIAm); // For the brains
-	glm::vec2 getPlayer(glm::vec2 whereIam); // For most robotrons; will return a unit vector
+	glm::vec2 getPlayerDirection(glm::vec2 whereIam); // For most robotrons; will return a unit vector
 
 	// Factories/builders call these
 	void setPlayer(cPlayer* player, AnimationInfo* newInfo);
@@ -33,6 +33,8 @@ public:
 
 private:
 	AnimationInfo* findAnimInfoByID(int ID);
+	void deleteProjectile(int projNum, AnimationInfo* anim);
+	void deleteRobotron(int roboNum, AnimationInfo* anim);
 
 	std::vector<bool> m_keysPressed; // Last recorded user input
 	std::vector<iRobotron*> m_robotrons; // Vector of all enemies

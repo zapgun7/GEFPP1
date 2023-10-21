@@ -4,7 +4,8 @@
 
 cGrunt::cGrunt()
 {
-
+	m_dir = glm::vec2(0, -1);
+	m_pTheArena = cArena::getArena();
 }
 
 cGrunt::~cGrunt()
@@ -14,22 +15,62 @@ cGrunt::~cGrunt()
 
 
 
-bool cGrunt::isDead()
+glm::vec2 cGrunt::getPos()
 {
-	return isDestroyed;
+	return m_pos;
 }
 
-glm::vec2 cGrunt::getLocation()
+glm::vec2 cGrunt::getDir()
 {
-	return pos;
+	return m_dir;
 }
 
-void cGrunt::Action()
+int cGrunt::getID()
 {
-
+	return m_EntityID;
 }
 
-void cGrunt::Update() // Should pass it a position to its nearest target, or have a function call in the mediator for different requests
+void cGrunt::Attack()
 {
-
+	// grunts don't really attack..
 }
+
+void cGrunt::Update(double deltaTime) 
+{
+	m_TimeToNextMove -= deltaTime;
+
+	if (m_TimeToNextMove <= 0)
+	{
+		m_TimeToNextMove += m_MoveInterval;
+		glm::vec2 moveDir = m_pTheArena->getPlayerDirection(m_pos);
+
+		// Grunts only move on diagonals, so modify moveDir accordingly
+		if (abs(moveDir.x) > 0) // If some x 
+			moveDir.x = abs(moveDir.x) / moveDir.x;
+		else // If no x movement
+			moveDir.x = 1.0f;
+		if (abs(moveDir.y) > 0) // If some y 
+			moveDir.y = abs(moveDir.y) / moveDir.y;
+		else // If no y movement
+			moveDir.y = 1.0f;
+
+		moveDir = glm::normalize(moveDir);
+
+		m_pos += moveDir * m_speed;
+	}
+}
+
+void cGrunt::setID(int ID)
+{
+	m_EntityID = ID;
+}
+
+void cGrunt::setPos(glm::vec2 newPos)
+{
+	m_pos = newPos;
+}
+
+// void cGrunt::setArena(cArena* arena)
+// {
+// 	m_pTheArena = arena;
+// }

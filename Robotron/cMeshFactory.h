@@ -20,7 +20,6 @@ struct AnimationInfo
 	float animationSpeed; // Every animationSpeed seconds the animation ticks
 	double timeSinceLastAnim;
 	int animationFrame; // Keeps track of current animation frame
-	float spriteOffsetY; // Offset for having the logic origin in the center of the sprite
 };
 class cMeshFactory
 {

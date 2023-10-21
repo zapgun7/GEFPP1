@@ -160,6 +160,16 @@ bool cGraphicsMain::Initialize()
 		playerDrawingInfo, m_shaderProgramID);
 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
 
+	m_pMeshManager->LoadModelIntoVAO("grunt1.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	m_pMeshManager->LoadModelIntoVAO("grunt2.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	m_pMeshManager->LoadModelIntoVAO("grunt3.ply",
+		playerDrawingInfo, m_shaderProgramID);
+	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+
 	//LoadModels();
 
 
@@ -315,7 +325,7 @@ void cGraphicsMain::DrawObject(cMesh* pCurrentMesh, glm::mat4 matModelParent, GL
 	// Translation
 	glm::mat4 matTranslate = glm::translate(glm::mat4(1.0f),
 		glm::vec3(pCurrentMesh->drawPosition.x,
-			pCurrentMesh->drawPosition.y,
+			pCurrentMesh->drawPosition.y - pCurrentMesh->yOffset,         // Y-OFFSET HERE!!!
 			pCurrentMesh->drawPosition.z));
 
 

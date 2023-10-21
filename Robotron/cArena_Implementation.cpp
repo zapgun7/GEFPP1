@@ -33,9 +33,11 @@ glm::vec2 cArena_Implementation::getClosestHuman(glm::vec2 whereIAm)
 	return closestCoord;
 }
 
-glm::vec2 cArena_Implementation::getPlayer(glm::vec2 whereIam)
+glm::vec2 cArena_Implementation::getPlayerDirection(glm::vec2 whereIam) // Returns unit vector to player
 {
-	return glm::vec2(0, 0);
+	glm::vec2 returnDir = m_thePlayer->getPos() - whereIam;
+	returnDir = glm::normalize(returnDir);
+	return returnDir;
 }
 
 void cArena_Implementation::setPlayer(cPlayer* player, AnimationInfo* newInfo)
@@ -70,15 +72,17 @@ void cArena_Implementation::Initialize()
 	m_pCharacterMaker = new cCharacterBuilder();
 	// Spawns things for the level
 
-	
 
-	//m_thePlayer = new cPlayer();
-	//m_thePlayer->setID(nextID++);
-	//AnimationInfo* animInfo = m_meshFactory->makeMesh("Player");
-	//m_spriteIDMap[m_thePlayer->getID()] = animInfo; // Update ID to animationInfo map
-	//m_graphMain->addToDrawMesh(animInfo->mesh);
 
 	m_pCharacterMaker->makeCharacter("player");
+
+
+	m_pCharacterMaker->makeCharacter("grunt");
+	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(20, 40));
+	m_pCharacterMaker->makeCharacter("grunt");
+	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 50));
+	m_pCharacterMaker->makeCharacter("grunt");
+	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 10));
 
 
 	lastTime = glfwGetTime();
@@ -101,6 +105,7 @@ void cArena_Implementation::Update()
 	double deltaTime = currTime - lastTime;
 	lastTime = currTime;
 
+	////////////////////////////////////// PLAYER /////////////////////////////////////////////
 
 	// Start by updating player
 	m_thePlayer->Update(m_keysPressed, deltaTime);
@@ -108,7 +113,6 @@ void cArena_Implementation::Update()
 
 	
 	AnimationInfo* tempInfo = findAnimInfoByID(m_thePlayer->getID()); // Get animation info of player
-	float playerOffsetY = tempInfo->spriteOffsetY;
 	glm::vec2 playerPos = m_thePlayer->getPos();
 
 	// Keep player within bounds of play area
@@ -116,9 +120,9 @@ void cArena_Implementation::Update()
 	{
 		playerPos.x = m_XBoundary * (playerPos.x / abs(playerPos.x)); // sets player position to right on the border if over it
 	}
-	if (abs(playerPos.y  + playerOffsetY) > m_YBoundary)
+	if (abs(playerPos.y) > m_YBoundary)
 	{
-		playerPos.y = m_YBoundary * (playerPos.y / abs(playerPos.y)) - playerOffsetY;
+		playerPos.y = m_YBoundary * (playerPos.y / abs(playerPos.y));
 	}
 	m_thePlayer->setPos(playerPos); // Update player position
 
@@ -128,11 +132,9 @@ void cArena_Implementation::Update()
 	if (tempInfo->timeSinceLastAnim <= 0) // Time to tick animation
 	{
 		tempInfo->timeSinceLastAnim += tempInfo->animationSpeed;
-		tempInfo->animationFrame += 1;
-		if (tempInfo->animationFrame > tempInfo->down.size() - 1)
-		{
-			tempInfo->animationFrame = 0;
-		}
+		tempInfo->animationFrame = (tempInfo->animationFrame + 1) % tempInfo->down.size();
+
+
 		glm::vec2 playerDir = m_thePlayer->getDir();
 		if (playerDir.x != 0) // Any direction left or right
 		{
@@ -159,6 +161,71 @@ void cArena_Implementation::Update()
 	}
 	tempInfo->mesh->drawPosition = glm::vec3(playerPos, 0);
 
+
+	 ////////////////////////////////////////////////// ROBOTRONS ////////////////////////////////////////////////////////////
+
+	// Update robotrons and their animations
+
+	for (int i = 0; i < m_robotrons.size(); i++) // Increment through all robotrons
+	{
+		iRobotron* currRobo = m_robotrons[i];
+		currRobo->Update(deltaTime); // Update robotron first
+
+		tempInfo = findAnimInfoByID(currRobo->getID());
+		//std::cout << tempInfo->mesh->meshName << std::endl;
+		
+
+		// Animation
+		if (glm::vec2(tempInfo->mesh->drawPosition) != currRobo->getPos()) // If last tick position is different then current position
+		{
+			tempInfo->timeSinceLastAnim -= deltaTime;
+		}
+		if (tempInfo->timeSinceLastAnim <= 0) // Increment animation frame
+		{
+			if (tempInfo->mesh->friendlyName == "grunt") // Those who only animate when they move (regardless of time passed)
+			{
+				tempInfo->timeSinceLastAnim = 0.001f;
+			}
+			else // Those based on time
+			{
+				tempInfo->timeSinceLastAnim += tempInfo->animationSpeed;
+			}
+			tempInfo->animationFrame = (tempInfo->animationFrame + 1) % tempInfo->down.size(); // Mod frame number by length of frames available
+
+
+			// Do direction here
+			glm::vec2 roboDir = currRobo->getDir();
+			if (roboDir.x != 0) // Any direction left or right
+			{
+				if (roboDir.x < 0) // Left
+				{
+					tempInfo->mesh->meshName = tempInfo->left[tempInfo->animationFrame];
+				}
+				else // Right
+				{
+					tempInfo->mesh->meshName = tempInfo->right[tempInfo->animationFrame];
+				}
+			}
+			else
+			{
+				if (roboDir.y < 0) // Down
+				{
+					tempInfo->mesh->meshName = tempInfo->down[tempInfo->animationFrame];
+				}
+				else // Right
+				{
+					tempInfo->mesh->meshName = tempInfo->up[tempInfo->animationFrame];
+				}
+			}
+		}
+
+
+		tempInfo->mesh->drawPosition = glm::vec3(currRobo->getPos(), 0); // Update position last
+	}
+
+
+	////////////////////////////////////////// PROJECTILES //////////////////////////////////////////////////////
+
 	// Update projectile animations and perform hit detection
 	for (int i = 0; i < m_projectiles.size(); i++)
 	{
@@ -170,32 +237,37 @@ void cArena_Implementation::Update()
 		if (tempInfo->mesh->friendlyName != "pbullet") // Only do this if not a player bullet (might change to if = if there's less projectiles overall to animate)
 		{
 			// TODO some enemy projectiles will animate
+			// And detect hits on player
 		}
 		else // Player bullet hit detection
 		{
 			if (abs(projPos.x) > m_XBoundary) // outside x boundary
 			{
-				m_pGraphMain->removeFromDrawMesh(tempInfo->mesh->uniqueID);
-				delete tempInfo; // Delete mesh info
-				m_spriteIDMap.erase(m_projectiles[i]->getID()); // Remove from ID_to_Mesh map
-				delete m_projectiles[i]; // Delete projectile object itself
-				m_projectiles.erase(m_projectiles.begin() + i); // Remove from projectile vector
+				deleteProjectile(i, tempInfo);
 				i--;
 				continue;
 			}
 			else if (abs(projPos.y) > m_YBoundary) // outside y boundary 
 			{
-				m_pGraphMain->removeFromDrawMesh(tempInfo->mesh->uniqueID);
-				delete tempInfo; // Delete mesh info
-				m_spriteIDMap.erase(m_projectiles[i]->getID()); // Remove from ID_to_Mesh map
-				delete m_projectiles[i]; // Delete projectile object itself
-				m_projectiles.erase(m_projectiles.begin() + i); // Remove from projectile vector
+				deleteProjectile(i, tempInfo);
 				i--;
 				continue;
 			}
+
+			for (int e = 0; e < m_robotrons.size(); e++) // Check if bullet hits any robotrons
+			{
+				glm::vec2 roboPos = m_robotrons[e]->getPos();
+				if (glm::length(roboPos - projPos) < 5) 
+				{											// ROBOHIT!!!
+					AnimationInfo* roboInfo = findAnimInfoByID(m_robotrons[e]->getID());                                     // TODO: Spawn an explosion here (some object that loops through an animation and terminates after)
+					deleteProjectile(i, tempInfo);
+					i--;
+					deleteRobotron(e, roboInfo);
+					break;
+				}
+			}
 		}
 	}
-
 
 	//////////////////////////
 
@@ -213,4 +285,22 @@ AnimationInfo* cArena_Implementation::findAnimInfoByID(int ID)
 		return NULL;
 	}
 	return itAnim->second;
+}
+
+void cArena_Implementation::deleteProjectile(int projNum, AnimationInfo* anim)
+{
+	m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID);
+	delete anim; // Delete mesh info
+	m_spriteIDMap.erase(m_projectiles[projNum]->getID()); // Remove from ID_to_Mesh map
+	delete m_projectiles[projNum]; // Delete projectile object itself
+	m_projectiles.erase(m_projectiles.begin() + projNum); // Remove from projectile vector
+}
+
+void cArena_Implementation::deleteRobotron(int roboNum, AnimationInfo* anim)
+{
+	m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID); // Remove robo mesh from graphics class
+	delete anim; // Delete mesh info
+	m_spriteIDMap.erase(m_robotrons[roboNum]->getID()); // Remove from ID_to_Mesh map
+	delete m_robotrons[roboNum]; // Delete robotron object itself
+	m_robotrons.erase(m_robotrons.begin() + roboNum); // Remove from projectile vector
 }

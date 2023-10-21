@@ -3,6 +3,7 @@
 
 #include "cPlayer.h"
 #include "iRobotron.h"
+#include "cGrunt.h"
 
 cCharacterBuilder::cCharacterBuilder()
 {
@@ -24,5 +25,13 @@ void cCharacterBuilder::makeCharacter(std::string character)
 		cPlayer* newPlayer = new cPlayer();
 		newPlayer->playerWeapon = newWeapon;
 		m_pTheArena->setPlayer(newPlayer, newAnimInfo);
+		return;
+	}
+	if (character == "grunt")
+	{
+		newAnimInfo = m_pMeshFactory->makeMesh(character);
+		iRobotron* newRobo = new cGrunt();
+		m_pTheArena->addRobotron(newRobo, newAnimInfo);
+		return;
 	}
 }
