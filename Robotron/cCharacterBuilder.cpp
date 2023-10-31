@@ -32,6 +32,7 @@ void cCharacterBuilder::makeCharacter(std::string character)
 	{
 		newAnimInfo = m_pMeshFactory->makeMesh(character);
 		iRobotron* newRobo = new cGrunt();
+		newRobo->setRoboType(Grunt);
 		m_pTheArena->addRobotron(newRobo, newAnimInfo);
 		return;
 	}

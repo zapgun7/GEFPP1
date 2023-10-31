@@ -21,12 +21,19 @@ public:
 	//virtual void setArena(cArena* arena);
 
 private:
+	void findNewDirection(void); // Chooses new direction away from the border(s) it is close to
+
+
 	int m_EntityID;
 	glm::vec2 m_pos;
 	glm::vec2 m_dir;
 
+	// Map boundary
+	int m_XBoundary = 113;
+	int m_YBoundary = 55;
 
-	float const m_Speed = 1.0f;
+
+	float const m_Speed = 0.5f;
 	float const m_MoveInterval = 0.1f; // Time between moving
 	float m_TimeToNextMove = m_MoveInterval;
 

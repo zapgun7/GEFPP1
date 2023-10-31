@@ -30,6 +30,11 @@ int cGrunt::getID()
 	return m_EntityID;
 }
 
+RoboType cGrunt::getRoboType()
+{
+	return m_type;
+}
+
 void cGrunt::Attack()
 {
 	// grunts don't really attack..
@@ -68,6 +73,11 @@ void cGrunt::setID(int ID)
 void cGrunt::setPos(glm::vec2 newPos)
 {
 	m_pos = newPos;
+}
+
+void cGrunt::setRoboType(RoboType type)
+{
+	m_type = type;
 }
 
 // void cGrunt::setArena(cArena* arena)

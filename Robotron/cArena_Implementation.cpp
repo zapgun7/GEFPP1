@@ -93,6 +93,11 @@ void cArena_Implementation::Initialize()
 	m_pCharacterMaker->makeCharacter("grunt");
 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 10));
 
+
+	m_pCharacterMaker->makeCharacter("human");
+	m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
+	m_pCharacterMaker->makeCharacter("human");
+	m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
 	m_pCharacterMaker->makeCharacter("human");
 	m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
 
@@ -117,7 +122,11 @@ void cArena_Implementation::Update()
 	double deltaTime = currTime - lastTime;
 	lastTime = currTime;
 
+
+	//////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////// PLAYER /////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////
+
 
 	// Start by updating player
 	m_thePlayer->Update(m_keysPressed, deltaTime);
@@ -173,9 +182,11 @@ void cArena_Implementation::Update()
 	}
 	tempInfo->mesh->drawPosition = glm::vec3(playerPos, 0);
 
-
+	
+	 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 ////////////////////////////////////////////////// ROBOTRONS ////////////////////////////////////////////////////////////
-
+	 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 
 	// Update robotrons and their animations
 
 	for (int i = 0; i < m_robotrons.size(); i++) // Increment through all robotrons
@@ -235,8 +246,61 @@ void cArena_Implementation::Update()
 		tempInfo->mesh->drawPosition = glm::vec3(currRobo->getPos(), 0); // Update position last
 	}
 
+	/////////////////////////////////////////////////////////////////////////////
+	///////////////////////////// HUMAN UPDATE //////////////////////////// This will be very similar to the player update above
+	////////////////////////////////////////////////////////////////////
 
+	for (cHuman* human : m_humans) // Update all humans
+	{
+		human->Update(deltaTime);
+		AnimationInfo* humanInfo = findAnimInfoByID(human->getID()); // Get animation info of player
+		glm::vec2 humanPos = human->getPos();
+
+		// Update human animation //////
+		if (glm::vec2(humanInfo->mesh->drawPosition) != humanPos) // If the human hasn't moved since last update, don't worry about animation TODO( In this case, reset back to 0th place in animation trio)
+			humanInfo->timeSinceLastAnim -= deltaTime;
+		if (humanInfo->timeSinceLastAnim <= 0) // Time to tick animation
+		{
+			humanInfo->timeSinceLastAnim += humanInfo->animationSpeed;
+			humanInfo->animationFrame = (humanInfo->animationFrame + 1) % humanInfo->down.size();
+
+
+			glm::vec2 humanDir = human->getDir();
+			if (humanDir.x != 0) // Any direction left or right
+			{
+				if (humanDir.x < 0) // Left
+				{
+					humanInfo->mesh->meshName = humanInfo->left[humanInfo->animationFrame];
+				}
+				else // Right
+				{
+					humanInfo->mesh->meshName = humanInfo->right[humanInfo->animationFrame];
+				}
+			}
+			else
+			{
+				if (humanDir.y < 0) // Down
+				{
+					humanInfo->mesh->meshName = humanInfo->down[humanInfo->animationFrame];
+				}
+				else // Right
+				{
+					humanInfo->mesh->meshName = humanInfo->up[humanInfo->animationFrame];
+				}
+			}
+		}
+		humanInfo->mesh->drawPosition = glm::vec3(humanPos, 0);
+
+		for (iRobotron* robo : m_robotrons)
+		{
+			if(robo->getRoboType() == )
+		}
+	}
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////// PROJECTILES //////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Update projectile animations and perform hit detection
 	for (int i = 0; i < m_projectiles.size(); i++)
