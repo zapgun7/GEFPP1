@@ -7,11 +7,13 @@
 #include "iRobotron.h"
 #include "iProjectile.h"
 #include "cMeshFactory.h"
+//#include "cHuman.h"
 
 //#include "cArena_Implementation.h"
 
 
 class cArena_Implementation;
+class cHuman;
 
 class cArena
 {
@@ -24,6 +26,7 @@ public:
 	void setPlayer(cPlayer* player, AnimationInfo* newInfo);
 	void addRobotron(iRobotron* newRobo, AnimationInfo* newInfo);
 	void addProjectile(iProjectile* newProjectile, AnimationInfo* newInfo);
+	void addHuman(cHuman* newHuman, AnimationInfo* newInfo);
 
 	void Initialize();
 	void storeKeys(std::vector<bool> keys);

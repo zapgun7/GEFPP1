@@ -4,6 +4,7 @@
 #include "cPlayer.h"
 #include "iRobotron.h"
 #include "cGrunt.h"
+#include "cHuman.h"
 
 cCharacterBuilder::cCharacterBuilder()
 {
@@ -32,6 +33,13 @@ void cCharacterBuilder::makeCharacter(std::string character)
 		newAnimInfo = m_pMeshFactory->makeMesh(character);
 		iRobotron* newRobo = new cGrunt();
 		m_pTheArena->addRobotron(newRobo, newAnimInfo);
+		return;
+	}
+	if (character == "human")
+	{
+		newAnimInfo = m_pMeshFactory->makeMesh(character);
+		cHuman* newHuman = new cHuman();
+		m_pTheArena->addHuman(newHuman, newAnimInfo);
 		return;
 	}
 }

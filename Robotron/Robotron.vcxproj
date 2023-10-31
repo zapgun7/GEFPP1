@@ -163,7 +163,6 @@
     <ClCompile Include="Other Graphics Stuff\cLightManager.cpp" />
     <ClCompile Include="Other Graphics Stuff\cMesh.cpp" />
     <ClCompile Include="Other Graphics Stuff\glad.c" />
-    <ClCompile Include="Other Graphics Stuff\LoadModels.cpp" />
     <ClCompile Include="Other Graphics Stuff\ScenePersistence.cpp" />
   </ItemGroup>
   <ItemGroup>

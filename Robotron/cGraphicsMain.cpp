@@ -1,6 +1,7 @@
 #include "cGraphicsMain.h"
 
 #include<iostream>
+#include <fstream>
 
 
 #include <glm/glm.hpp>
@@ -97,80 +98,118 @@ bool cGraphicsMain::Initialize()
 
 
 	// Do this for all models   TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-	sModelDrawInfo playerDrawingInfo;
-	m_pMeshManager->LoadModelIntoVAO("player1.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	sModelDrawInfo playerDrawingInfo;
+// 	m_pMeshManager->LoadModelIntoVAO("player1.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player2.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player3.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player4.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player5.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player6.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player7.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player8.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player9.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player10.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player11.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("player12.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("playerbullet1.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("playerbullet2.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("playerbullet3.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("playerbullet4.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("grunt1.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("grunt2.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("grunt3.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 
+// 	m_pMeshManager->LoadModelIntoVAO("daddy1.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy2.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy3.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy4.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy5.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy6.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy7.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy8.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy9.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy10.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy11.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
+// 	m_pMeshManager->LoadModelIntoVAO("daddy12.ply",
+// 		playerDrawingInfo, m_shaderProgramID);
+// 	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
 
-	m_pMeshManager->LoadModelIntoVAO("player2.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
 
-	m_pMeshManager->LoadModelIntoVAO("player3.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("player4.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("player5.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("player6.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("player7.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("player8.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("player9.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("player10.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("player11.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("player12.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-
-	m_pMeshManager->LoadModelIntoVAO("playerbullet1.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-	m_pMeshManager->LoadModelIntoVAO("playerbullet2.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-	m_pMeshManager->LoadModelIntoVAO("playerbullet3.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-	m_pMeshManager->LoadModelIntoVAO("playerbullet4.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	m_pMeshManager->LoadModelIntoVAO("grunt1.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-	m_pMeshManager->LoadModelIntoVAO("grunt2.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-	m_pMeshManager->LoadModelIntoVAO("grunt3.ply",
-		playerDrawingInfo, m_shaderProgramID);
-	std::cout << "Loaded: " << playerDrawingInfo.numberOfVertices << " vertices" << std::endl;
-
-	//LoadModels();
+	LoadModels();
 
 
 	// Initialize lights here if ya want em
@@ -449,71 +488,30 @@ void cGraphicsMain::DrawObject(cMesh* pCurrentMesh, glm::mat4 matModelParent, GL
 
 bool cGraphicsMain::LoadModels(void)
 {
+	sModelDrawInfo modelDrawingInfo;
+	// 	m_pMeshManager->LoadModelIntoVAO("bathtub_xyz_n_rgba.ply",
+	// 		modelDrawingInfo, m_shaderProgramID);
+	// 	std::cout << "Loaded: " << modelDrawingInfo.numberOfVertices << " vertices" << std::endl;
+	// 	m_AvailableModels.push_back("bathtub_xyz_n_rgba.ply");
 
-	// bun_zipper_res2_xyz_n_rgba.ply
-// bathtub_xyz_n_rgba.ply
+	std::ifstream modelsToLoad("assets/models/models.txt");
+	if (!modelsToLoad.is_open())
+	{
+		// didn't open :(
+		std::cout << "ERROR: Failed to open the model list file!" << std::endl;
+		std::cout << modelsToLoad.is_open();
+	}
+	std::string line = "";
 
-//    // Add some models to the "scene"
-//    cMesh bunny1;   
-//    bunny1.meshName = "bun_zipper_res2_xyz_n_rgba.ply";
-//    bunny1.position = glm::vec3(-1.0f, 0.0f, 0.0f);
-//    bunny1.scale = 10.0f;
-//    bunny1.orientation.x = glm::radians(45.0f);
-//
-//    cMesh bunny2;
-//    bunny2.meshName = "bun_zipper_res2_xyz_n_rgba.ply";
-//    bunny2.position = glm::vec3(1.0f, 0.0f, 0.0f);
-//    bunny2.scale = 7.5f;
-//    bunny2.orientation.y = glm::radians(135.0f);
-//
-//    cMesh bathtub;
-//    bathtub.meshName = "bathtub_xyz_n_rgba.ply";
-//    //bunny2.position = glm::vec3(1.0f, 0.0f, 0.0f);
-//    bathtub.scale = 0.25f;
-//
-////    // Smart array of cMesh object
-////    std::vector<cMesh> vecMeshesToDraw;
-//    g_vecMeshesToDraw.push_back(bunny1);
-//    g_vecMeshesToDraw.push_back(bunny2);
-//    g_vecMeshesToDraw.push_back(bathtub);
-//    g_vecMeshesToDraw.push_back(terrain);
+	while (std::getline(modelsToLoad, line))
+	{
+		m_pMeshManager->LoadModelIntoVAO(line.c_str(),
+			modelDrawingInfo, m_shaderProgramID);
+		std::cout << "Loaded: " << modelDrawingInfo.numberOfVertices << " vertices" << std::endl;
+		//m_AvailableModels.push_back(line.c_str());
+	}
 
-//    cMesh* pTerrain = new cMesh();
-//    pTerrain->meshName = "Terrain_xyz_n_rgba.ply";
-//    //bunny2.position = glm::vec3(1.0f, 0.0f, 0.0f);
-//    pTerrain->scale = 1.0f;
-//    pTerrain->drawPosition.y = -25.0f;
-//    ::g_vec_pMeshesToDraw.push_back(pTerrain);
-
-
-//    cMesh* pGridGroundMesh = new cMesh();
-//    pGridGroundMesh->meshName = "Flat_Grid_100x100.ply";
-//pGridGroundMesh->bIsWireframe = true;
-//pGridGroundMesh->bDoNotLight = true;
-// note this does NOT have a physProps, so is ignored by the physics update loop
-//    pGridGroundMesh->drawPosition.y = 0.0f;   //  0,-10,0
-//    pGridGroundMesh->friendlyName = "Ground";
-//    ::g_vec_pMeshesToDraw.push_back(pGridGroundMesh);
-
-	cMesh* player = new cMesh();
-	player->meshName = "player7.ply";
-	//pFlat_1x1_planeMesh->bIsWireframe = true;
-	//pFlat_1x1_planeMesh->bDoNotLight = true;
-	// note this does NOT have a physProps, so is ignored by the physics update loop
-	player->drawPosition.y = -0.0f;   //  0,-10,0
-	player->scale = 100;
-	player->friendlyName = "player";
-	m_vec_pMeshesToDraw.push_back(player);
-
-// 	cMesh* pFlat_1x1_planeMesh_DEBUG = new cMesh();
-// 	pFlat_1x1_planeMesh_DEBUG->meshName = "Flat_1x1_plane.ply";
-// 	pFlat_1x1_planeMesh->bIsWireframe = true;
-// 	pFlat_1x1_planeMesh->bDoNotLight = true;
-// 	pFlat_1x1_planeMesh->bUseDebugColours = true;
-// 	pFlat_1x1_planeMesh->wholeObjectDebugColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-// 	// note this does NOT have a physProps, so is ignored by the physics update loop
-// 	pFlat_1x1_planeMesh_DEBUG->drawPosition.y = pFlat_1x1_planeMesh->drawPosition.y - 0.01f;   //  0,-10,0
-// 	m_vec_pMeshesToDraw.push_back(pFlat_1x1_planeMesh_DEBUG);
+	modelsToLoad.close();
 
 
 	return true;

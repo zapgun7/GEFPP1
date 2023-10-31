@@ -67,6 +67,15 @@ void cArena_Implementation::addProjectile(iProjectile* newProjectile, AnimationI
 	m_pGraphMain->addToDrawMesh(newInfo->mesh);
 }
 
+void cArena_Implementation::addHuman(cHuman* newHuman, AnimationInfo* newInfo)
+{
+	m_humans.push_back(newHuman);
+	newHuman->setID(nextID++);
+	newInfo->mesh->uniqueID = nextID - 1;
+	m_spriteIDMap[newHuman->getID()] = newInfo;
+	m_pGraphMain->addToDrawMesh(newInfo->mesh);
+}
+
 void cArena_Implementation::Initialize()
 {
 	m_pCharacterMaker = new cCharacterBuilder();
@@ -83,6 +92,9 @@ void cArena_Implementation::Initialize()
 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 50));
 	m_pCharacterMaker->makeCharacter("grunt");
 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 10));
+
+	m_pCharacterMaker->makeCharacter("human");
+	m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
 
 
 	lastTime = glfwGetTime();

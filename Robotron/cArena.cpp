@@ -48,6 +48,11 @@ void cArena::addProjectile(iProjectile* newProjectile, AnimationInfo* newInfo)
 	m_pTheAcualArena->addProjectile(newProjectile, newInfo);
 }
 
+void cArena::addHuman(cHuman* newHuman, AnimationInfo* newInfo)
+{
+	m_pTheAcualArena->addHuman(newHuman, newInfo);
+}
+
 void cArena::Initialize()
 {
 	this->m_pTheAcualArena->Initialize();

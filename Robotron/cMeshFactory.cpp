@@ -72,6 +72,30 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
+	if (entity == "human")
+	{
+		entityMesh->left.push_back("daddy1.ply");
+		entityMesh->left.push_back("daddy2.ply");
+		entityMesh->left.push_back("daddy3.ply");
+		entityMesh->right.push_back("daddy4.ply");
+		entityMesh->right.push_back("daddy5.ply");
+		entityMesh->right.push_back("daddy6.ply");
+		entityMesh->down.push_back("daddy7.ply");
+		entityMesh->down.push_back("daddy8.ply");
+		entityMesh->down.push_back("daddy9.ply");
+		entityMesh->up.push_back("daddy10.ply");
+		entityMesh->up.push_back("daddy11.ply");
+		entityMesh->up.push_back("daddy12.ply");
+
+		entityMesh->mesh->meshName = "daddy7.ply";
+		//entityMesh->mesh->drawPosition.y = -40.0f;
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.05f; // every 50ms
+		entityMesh->animationFrame = 0;
+		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+		return entityMesh;
+	}
 
 	return NULL;
 

@@ -126,9 +126,6 @@
     <ClCompile Include="Other Graphics Stuff\glad.c">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Other Graphics Stuff\LoadModels.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Other Graphics Stuff\ScenePersistence.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
