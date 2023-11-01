@@ -24,6 +24,7 @@ public:
 	virtual void setID(int ID);
 	virtual void setPos(glm::vec2 newPos);
 	virtual void setRoboType(RoboType type);
+	virtual void isShot(void);
 	//virtual void setArena(cArena* arena);
 
 private:

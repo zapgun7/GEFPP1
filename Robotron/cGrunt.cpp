@@ -80,6 +80,11 @@ void cGrunt::setRoboType(RoboType type)
 	m_type = type;
 }
 
+void cGrunt::isShot(void)
+{
+	// Nothing for now...
+}
+
 // void cGrunt::setArena(cArena* arena)
 // {
 // 	m_pTheArena = arena;

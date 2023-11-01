@@ -12,9 +12,9 @@ cPlayerBullet::~cPlayerBullet()
 	// bullet is destroyed
 }
 
-void cPlayerBullet::Update()
+void cPlayerBullet::Update(double deltaTime)
 {
-	pos += dir*speed;
+	pos += dir * speed * (float)deltaTime;
 	return;
 }
 

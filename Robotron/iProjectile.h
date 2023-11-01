@@ -8,7 +8,7 @@ class iProjectile
 public:
 	virtual ~iProjectile() {};
 
-	virtual void Update() = 0; // To increment movement
+	virtual void Update(double deltaTime) = 0; // To increment movement
 	virtual glm::vec2 getPosition() = 0; // For mediator to check for hits
 	virtual void setID(int ID) = 0;
 	virtual int getID() = 0;

@@ -1,7 +1,7 @@
 #pragma once
 
 //#include "cArena.h"
-//#include <glm/vec2.hpp>
+#include <glm/vec2.hpp>
 enum RoboType
 {
 	Grunt,
@@ -30,4 +30,5 @@ public:
 	virtual glm::vec2 getPos() = 0;
 	virtual glm::vec2 getDir() = 0;
 	virtual RoboType getRoboType() = 0;
+	virtual void isShot() = 0;
 };

@@ -86,13 +86,15 @@ void cArena_Implementation::Initialize()
 	m_pCharacterMaker->makeCharacter("player");
 
 
-	m_pCharacterMaker->makeCharacter("grunt");
-	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(20, 40));
-	m_pCharacterMaker->makeCharacter("grunt");
-	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 50));
-	m_pCharacterMaker->makeCharacter("grunt");
-	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 10));
+// 	m_pCharacterMaker->makeCharacter("grunt");
+// 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(20, 40));
+// 	m_pCharacterMaker->makeCharacter("grunt");
+// 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 50));
+// 	m_pCharacterMaker->makeCharacter("grunt");
+// 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 10));
 
+	m_pCharacterMaker->makeCharacter("hulk");
+	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(45, 10));
 
 	m_pCharacterMaker->makeCharacter("human");
 	m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
@@ -293,7 +295,20 @@ void cArena_Implementation::Update()
 
 		for (iRobotron* robo : m_robotrons)
 		{
-			if(robo->getRoboType() == )
+			if (robo->getRoboType() == Hulk)
+			{
+				if (glm::distance(robo->getPos(), humanPos) < 5)
+				{
+					// TODO: Destroy human, put skull over this position (which disappears soon after or smthn, whatever it does in the real robotron)
+				}
+			}
+			else if (robo->getRoboType() == Brain)
+			{
+				if (glm::distance(robo->getPos(), humanPos) < 5)
+				{
+					// TODO: Turn human into prog (destroy human an replace with prog in the same position)
+				}
+			}
 		}
 	}
 
@@ -306,7 +321,7 @@ void cArena_Implementation::Update()
 	for (int i = 0; i < m_projectiles.size(); i++)
 	{
 		// Start by updating its position
-		m_projectiles[i]->Update(); // Update position of projectile first
+		m_projectiles[i]->Update(deltaTime); // Update position of projectile first
 		glm::vec2 projPos = m_projectiles[i]->getPosition(); // Then get its position
 		tempInfo = findAnimInfoByID(m_projectiles[i]->getID()); // Get draw info for projectile
 		tempInfo->mesh->drawPosition = glm::vec3(projPos, 0);
@@ -333,13 +348,21 @@ void cArena_Implementation::Update()
 			for (int e = 0; e < m_robotrons.size(); e++) // Check if bullet hits any robotrons
 			{
 				glm::vec2 roboPos = m_robotrons[e]->getPos();
-				if (glm::length(roboPos - projPos) < 5) 
+				if (glm::distance(roboPos, projPos) < 5) 
 				{											// ROBOHIT!!!
 					AnimationInfo* roboInfo = findAnimInfoByID(m_robotrons[e]->getID());                                     // TODO: Spawn an explosion here (some object that loops through an animation and terminates after)
 					deleteProjectile(i, tempInfo);
 					i--;
-					deleteRobotron(e, roboInfo);
-					break;
+					if(m_robotrons[e]->getRoboType() == Hulk)
+					{
+						m_robotrons[e]->isShot();
+						break;
+					}
+					else
+					{
+						deleteRobotron(e, roboInfo);
+						break;
+					}
 				}
 			}
 		}

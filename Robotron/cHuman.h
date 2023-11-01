@@ -33,9 +33,9 @@ private:
 	int m_YBoundary = 55;
 
 
-	float const m_Speed = 0.5f;
-	float const m_MoveInterval = 0.1f; // Time between moving
-	float m_TimeToNextMove = m_MoveInterval;
+	float const m_Speed = 10.0f;
+// 	float const m_MoveInterval = 0.1f; // Time between moving
+// 	float m_TimeToNextMove = m_MoveInterval;
 
 	//cArena* m_pTheArena;
 

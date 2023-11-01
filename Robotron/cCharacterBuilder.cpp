@@ -5,6 +5,7 @@
 #include "iRobotron.h"
 #include "cGrunt.h"
 #include "cHuman.h"
+#include "cHulk.h"
 
 cCharacterBuilder::cCharacterBuilder()
 {
@@ -43,4 +44,13 @@ void cCharacterBuilder::makeCharacter(std::string character)
 		m_pTheArena->addHuman(newHuman, newAnimInfo);
 		return;
 	}
+	if (character == "hulk")
+	{
+		newAnimInfo = m_pMeshFactory->makeMesh(character);
+		iRobotron* newRobo = new cHulk();
+		newRobo->setRoboType(Hulk);
+		m_pTheArena->addRobotron(newRobo, newAnimInfo);
+		return;
+	}
+
 }

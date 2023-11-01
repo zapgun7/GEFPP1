@@ -26,7 +26,7 @@ public:
 
 private:
 	float m_speed;
-	float const m_shootCoolDown = 0.2f;
+	float const m_shootCoolDown = 0.1f;
 	double m_timeTillNextShot;
 	int m_entityID; // To associate to a model in a map
 };

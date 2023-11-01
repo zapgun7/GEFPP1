@@ -52,7 +52,7 @@ void cHuman::Update(double deltaTime) // Walk in a straight line until it comes 
 	}
 
 
-	m_pos += m_dir * m_Speed;
+	m_pos += m_dir * m_Speed * (float)deltaTime;
 
 	return;
 }

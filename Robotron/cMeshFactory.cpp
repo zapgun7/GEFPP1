@@ -136,6 +136,30 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
+	if (entity == "hulk")
+	{
+		entityMesh->down.push_back("hulk4.ply");
+		entityMesh->down.push_back("hulk5.ply");
+		entityMesh->down.push_back("hulk6.ply");
+		entityMesh->up.push_back("hulk4.ply");
+		entityMesh->up.push_back("hulk5.ply");
+		entityMesh->up.push_back("hulk6.ply");
+		entityMesh->left.push_back("hulk1.ply");
+		entityMesh->left.push_back("hulk2.ply");
+		entityMesh->left.push_back("hulk3.ply");
+		entityMesh->right.push_back("hulk7.ply");
+		entityMesh->right.push_back("hulk8.ply");
+		entityMesh->right.push_back("hulk9.ply");
+
+		entityMesh->mesh->meshName = "hulk4.ply";
+		entityMesh->mesh->friendlyName = "hulk";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.2f; // every time it moves
+		entityMesh->animationFrame = 0;
+		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+		return entityMesh;
+	}
 
 	return NULL;
 

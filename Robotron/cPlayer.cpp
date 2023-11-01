@@ -7,7 +7,7 @@ cPlayer::cPlayer()
 {
 	this->pos = glm::vec2(0, 0);
 	this->dir = glm::vec2(0, -1); // Looking down to start (not sad)
-	this->m_speed = 0.5f;
+	this->m_speed = 50.0f;
 	m_timeTillNextShot = 0.0f;
 }
 
@@ -35,7 +35,7 @@ void cPlayer::Update(std::vector<bool> keysPressed, double deltaTime)
 	}
 	if(glm::length(movementToAdd) != 0)
 		movementToAdd = glm::normalize(movementToAdd);
-	movementToAdd *= m_speed;
+	movementToAdd *= m_speed * (float)deltaTime;
 	this->pos += movementToAdd;
 
 	if (m_timeTillNextShot > 0)
