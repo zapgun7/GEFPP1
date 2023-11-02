@@ -22,13 +22,14 @@ cArena_Implementation::~cArena_Implementation()
 
 glm::vec2 cArena_Implementation::getClosestHuman(glm::vec2 whereIAm)
 {
-	glm::vec2 closestCoord = glm::vec2(999, 999);
+	glm::vec2 closestCoord = glm::vec2(999, 999); // If this 999 999 returns, no humans left
 	if (m_humans.size() == 0)
 		return closestCoord; // Returns something outside the arena when no humans, will check for this
 	closestCoord = m_humans[0]->getPos();
 	for (unsigned int i = 1; i < m_humans.size(); i++)
 	{
-		//		if()
+		if ((glm::distance(whereIAm, m_humans[i]->getPos())) < (glm::distance(whereIAm, closestCoord)))
+			closestCoord = m_humans[i]->getPos();
 	}
 	return closestCoord;
 }
@@ -83,7 +84,7 @@ void cArena_Implementation::Initialize()
 
 
 
-	m_pCharacterMaker->makeCharacter("player");
+	m_pCharacterMaker->makeCharacter("player", glm::vec2(0, 0));
 
 
 // 	m_pCharacterMaker->makeCharacter("grunt");
@@ -93,15 +94,17 @@ void cArena_Implementation::Initialize()
 // 	m_pCharacterMaker->makeCharacter("grunt");
 // 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 10));
 
-	m_pCharacterMaker->makeCharacter("hulk");
-	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(45, 10));
+	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(45, 10));
+	//m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(45, 10));
 
-	m_pCharacterMaker->makeCharacter("human");
-	m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
-	m_pCharacterMaker->makeCharacter("human");
-	m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
-	m_pCharacterMaker->makeCharacter("human");
-	m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
+	m_pCharacterMaker->makeCharacter("human", glm::vec2(-20, 10));
+	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
+	m_pCharacterMaker->makeCharacter("human", glm::vec2(-20, 10));
+	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
+	m_pCharacterMaker->makeCharacter("human", glm::vec2(-20, 10));
+	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
+
+	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
 
 
 	lastTime = glfwGetTime();
@@ -195,7 +198,7 @@ void cArena_Implementation::Update()
 	{
 		iRobotron* currRobo = m_robotrons[i];
 		currRobo->Update(deltaTime); // Update robotron first
-
+		//currRobo->Update(0.2f);
 		tempInfo = findAnimInfoByID(currRobo->getID());
 		//std::cout << tempInfo->mesh->meshName << std::endl;
 		

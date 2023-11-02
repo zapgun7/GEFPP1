@@ -154,7 +154,31 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->meshName = "hulk4.ply";
 		entityMesh->mesh->friendlyName = "hulk";
 		entityMesh->mesh->scale = .05f;
-		entityMesh->animationSpeed = 0.2f; // every time it moves
+		entityMesh->animationSpeed = 0.2f;
+		entityMesh->animationFrame = 0;
+		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+		return entityMesh;
+	}
+	if (entity == "brain")
+	{
+		entityMesh->down.push_back("brain7.ply");
+		entityMesh->down.push_back("brain8.ply");
+		entityMesh->down.push_back("brain9.ply");
+		entityMesh->up.push_back("brain10.ply");
+		entityMesh->up.push_back("brain11.ply");
+		entityMesh->up.push_back("brain12.ply");
+		entityMesh->left.push_back("brain1.ply");
+		entityMesh->left.push_back("brain2.ply");
+		entityMesh->left.push_back("brain3.ply");
+		entityMesh->right.push_back("brain4.ply");
+		entityMesh->right.push_back("brain5.ply");
+		entityMesh->right.push_back("brain6.ply");
+
+		entityMesh->mesh->meshName = "brain7.ply";
+		entityMesh->mesh->friendlyName = "brain";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.2f; 
 		entityMesh->animationFrame = 0;
 		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;

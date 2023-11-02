@@ -138,6 +138,7 @@
     <ClCompile Include="cArena.cpp" />
     <ClCompile Include="cArena_Implementation.cpp" />
     <ClCompile Include="cBrain.cpp" />
+    <ClCompile Include="cBrainWeapon.cpp" />
     <ClCompile Include="cEnforcer.cpp" />
     <ClCompile Include="cEnforcerWeapon.cpp" />
     <ClCompile Include="cCharacterBuilder.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="cArena.h" />
     <ClInclude Include="cArena_Implementation.h" />
     <ClInclude Include="cBrain.h" />
+    <ClInclude Include="cBrainWeapon.h" />
     <ClInclude Include="cElectrode.h" />
     <ClInclude Include="cEnforcer.h" />
     <ClInclude Include="cEnforcerWeapon.h" />

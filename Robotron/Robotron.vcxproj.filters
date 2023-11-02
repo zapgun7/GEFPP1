@@ -150,6 +150,9 @@
     <ClCompile Include="cProjectileFactory.cpp">
       <Filter>Builders/Factories\Projectile Factory</Filter>
     </ClCompile>
+    <ClCompile Include="cBrainWeapon.cpp">
+      <Filter>Weapon\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="iRobotron.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="cProjectileFactory.h">
       <Filter>Builders/Factories\Projectile Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="cBrainWeapon.h">
+      <Filter>Weapon\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
