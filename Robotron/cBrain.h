@@ -38,8 +38,8 @@ private:
 
 
 	float const m_speed = 13.0f;
-	//float const m_MoveInterval = 0.5f; // Time between moving
-	//float m_TimeToNextMove = m_MoveInterval;
+	float const m_ShootInterval = 1.0f; // Time between moving
+	float m_TimeToNextShoot = m_ShootInterval;
 
 	cArena* m_pTheArena;
 };

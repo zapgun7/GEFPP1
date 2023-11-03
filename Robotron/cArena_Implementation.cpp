@@ -77,6 +77,12 @@ void cArena_Implementation::addHuman(cHuman* newHuman, AnimationInfo* newInfo)
 	m_pGraphMain->addToDrawMesh(newInfo->mesh);
 }
 
+void cArena_Implementation::addAfterimage(cMesh* aImg)
+{
+	// Graphics main will handle adjustment and death of afterimages
+	m_pGraphMain->addToDrawMesh(aImg);
+}
+
 void cArena_Implementation::Initialize()
 {
 	m_pCharacterMaker = new cCharacterBuilder();
@@ -97,11 +103,11 @@ void cArena_Implementation::Initialize()
 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(45, 10));
 	//m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(45, 10));
 
-	m_pCharacterMaker->makeCharacter("human", glm::vec2(-20, 10));
+	m_pCharacterMaker->makeCharacter("human", glm::vec2(-10, 10));
 	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-30, 10));
 	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
-	m_pCharacterMaker->makeCharacter("human", glm::vec2(-40, 10));
+	m_pCharacterMaker->makeCharacter("human", glm::vec2(-60, 10));
 	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
 
 	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
@@ -298,18 +304,19 @@ void cArena_Implementation::Update()
 		}
 		humanInfo->mesh->drawPosition = glm::vec3(humanPos, 0);
 
-		for (iRobotron* robo : m_robotrons)
+		//for (iRobotron* robo : m_robotrons)
+		for (unsigned int e = 0; e < m_robotrons.size(); e++)
 		{
-			if (robo->getRoboType() == Hulk)
+			if (m_robotrons[e]->getRoboType() == Hulk)
 			{
-				if (glm::distance(robo->getPos(), humanPos) < 5)
+				if (glm::distance(m_robotrons[e]->getPos(), humanPos) < 5)
 				{
 					// TODO: Destroy human, put skull over this position (which disappears soon after or smthn, whatever it does in the real robotron)
 				}
 			}
-			else if (robo->getRoboType() == Brain)
+			else if (m_robotrons[e]->getRoboType() == Brain)
 			{
-				if (glm::distance(robo->getPos(), humanPos) < 3)
+				if (glm::distance(m_robotrons[e]->getPos(), humanPos) < 3)
 				{
 					// TODO: Turn human into prog (destroy human an replace with prog in the same position)
 					AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID());
@@ -373,10 +380,63 @@ void cArena_Implementation::Update()
 					}
 				}
 			}
+			for (int e = 0; e < m_projectiles.size(); e++) // Check if player bullet hits cruise missile 
+			{
+				if (m_projectiles[e]->getType() != CMissile)
+					continue;
+
+				// Assuming e is a cruise missile
+				glm::vec2 otherProjPos = m_projectiles[e]->getPosition();
+				if (glm::distance(otherProjPos, projPos) < 2) // Distance of 2 for proj on proj collision
+				{											
+					AnimationInfo* otherProjInfo = findAnimInfoByID(m_projectiles[e]->getID());                                     // TODO: Spawn an explosion here (some object that goes through an animation and terminates after)
+					deleteProjectile(i, tempInfo);
+					i--;
+					deleteProjectile(e, otherProjInfo);
+					break;
+				}
+			}
 		}
 	}
 
 	//////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////
+	///////////////////////////////// AFTERIMAGES ///////////////////////////
+	/////////////////////////////////////////////////////////////////////////
+
+	for (iRobotron* robo : m_robotrons)
+	{
+		if (robo->getRoboType() == Prog)
+		{
+			cMesh* newAi = new cMesh();
+			cMesh* robomesh = findAnimInfoByID(robo->getID())->mesh;
+			memcpy(newAi, robomesh, sizeof(cMesh));
+			
+			newAi->friendlyName = "progAi";
+			newAi->wholeObjectDebugColourRGBA = glm::vec4(glm::vec3(0.5), 1);
+			addAfterimage(newAi);
+		}
+	}
+	for (iProjectile* proj : m_projectiles)
+	{
+		if (proj->getType() == CMissile)
+		{
+			//cMesh* newAi = findAnimInfoByID(proj->getID())->mesh;
+			cMesh* newAi = new cMesh();
+			cMesh* projmesh = findAnimInfoByID(proj->getID())->mesh;
+			memcpy(newAi, projmesh, sizeof(cMesh));
+
+			newAi->friendlyName = "missileAi";
+			addAfterimage(newAi);
+		}
+	}
+
+
+
+	/////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////
+
 
 	m_keysPressed.assign(8, false); // Clear the "buffer"
 	

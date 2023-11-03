@@ -21,6 +21,7 @@ public:
 	void Destroy();
 	void addToDrawMesh(cMesh* newMesh);
 	void removeFromDrawMesh(int ID);
+	void removeAfterimage(cMesh* mesh);
 
 
 private:

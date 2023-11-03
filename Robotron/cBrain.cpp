@@ -45,8 +45,26 @@ void cBrain::Update(double deltaTime)
 	// Move (toward player/randomly?) and shoot at them otherwise
 	glm::vec2 humanPos = m_pTheArena->getClosestHuman(m_pos);
 
-	if (humanPos.x == 999) // No more humans
+	if (humanPos.x == 999) // No more humans, move towards player
 	{
+		glm::vec2 playerDir = m_pTheArena->getPlayerDirection(m_pos);
+		if (abs(playerDir.x) > .75f) // Horizontal dominant, remove y component and renormalize
+		{
+			playerDir.y = 0;
+			playerDir = glm::normalize(playerDir);
+		}
+		else if (abs(playerDir.y) > .75f) // Vertical dominant, do same for above but vertically
+		{
+			playerDir.x = 0;
+			playerDir = glm::normalize(playerDir);
+		}
+		else // Neither are dominant, equate their abs
+		{
+			playerDir.x /= abs(playerDir.x);
+			playerDir.y /= abs(playerDir.y);
+			playerDir = glm::normalize(playerDir);
+		}
+		m_dir = playerDir;
 
 	}
 	else // Move towards human
@@ -73,6 +91,18 @@ void cBrain::Update(double deltaTime)
 	
 
 	m_pos += m_dir * m_speed * (float)deltaTime;
+
+	// RNG shoot
+	m_TimeToNextShoot -= deltaTime;
+	if (m_TimeToNextShoot <= 0.0f)
+	{
+		m_TimeToNextShoot += m_ShootInterval;
+		int shootNum = rand() % 1000;
+		if (shootNum < 100)
+		{
+			Attack();
+		}
+	}
 }
 
 void cBrain::setID(int ID)

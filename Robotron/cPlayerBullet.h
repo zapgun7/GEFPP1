@@ -12,8 +12,11 @@ public:
 	virtual glm::vec2 getPosition();
 	virtual void setID(int ID);
 	virtual int getID();
+	virtual void setType(ProjType type);
+	virtual ProjType getType();
 
 private:
+	ProjType m_type;
 	glm::vec2 pos;
 	glm::vec2 dir; // The step of the projectile per tick
 	float const speed = 500.0f;

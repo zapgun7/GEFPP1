@@ -32,3 +32,13 @@ int cPlayerBullet::getID()
 {
 	return entityID;
 }
+
+void cPlayerBullet::setType(ProjType type)
+{
+	m_type = type;
+}
+
+ProjType cPlayerBullet::getType()
+{
+	return m_type;
+}

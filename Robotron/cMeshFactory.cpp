@@ -184,6 +184,22 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
+	if (entity == "cmissile")// Cruise missile
+	{
+		entityMesh->down.push_back("cruise_missile.ply");
+		entityMesh->up.push_back("cruise_missile.ply");
+		entityMesh->left.push_back("cruise_missile.ply");
+		entityMesh->right.push_back("cruise_missile.ply");
+
+		entityMesh->mesh->meshName = "cruise_missile.ply";
+		entityMesh->mesh->friendlyName = "cmissile";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.2f;
+		entityMesh->animationFrame = 0;
+		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+		return entityMesh;
+	}
 	if (entity == "prog") // For now will just use daddy sprite
 	{
 		entityMesh->left.push_back("daddy1.ply");

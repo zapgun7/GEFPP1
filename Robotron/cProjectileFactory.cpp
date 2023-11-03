@@ -1,6 +1,7 @@
 #include "cProjectileFactory.h"
 
 #include "cPlayerBullet.h"
+#include "cCruiseMissile.h"
 #include "cArena.h"
 
 
@@ -39,7 +40,14 @@ void cProjectileFactory::makeProjectile(std::string proj, glm::vec2 pos, glm::ve
 			newAnimInfo->mesh->meshName = "playerbullet4.ply";
 		}
 		
-		
+		projectileToMake->setType(PBullet);
+		pTheArena->addProjectile(projectileToMake, newAnimInfo);
+	}
+	if (proj == "brain")
+	{
+		projectileToMake = new cCruiseMissile(pos, dir);
+		newAnimInfo = m_pMeshFactory->makeMesh("cmissile");
+		projectileToMake->setType(CMissile);
 		pTheArena->addProjectile(projectileToMake, newAnimInfo);
 	}
 

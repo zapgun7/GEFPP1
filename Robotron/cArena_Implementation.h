@@ -27,6 +27,7 @@ public:
 	void addRobotron(iRobotron* newRobo, AnimationInfo* newInfo);
 	void addProjectile(iProjectile* newProjectile, AnimationInfo* newInfo);
 	void addHuman(cHuman* newHuman, AnimationInfo* newInfo);
+	void addAfterimage(cMesh* aImg);
 
 	void Initialize();
 	void storeKeys(std::vector<bool> keys); // GLFW call back calls this to store key inputs for later parsing
