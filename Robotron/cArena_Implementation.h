@@ -36,6 +36,7 @@ private:
 	AnimationInfo* findAnimInfoByID(int ID);
 	void deleteProjectile(int projNum, AnimationInfo* anim);
 	void deleteRobotron(int roboNum, AnimationInfo* anim);
+	void deleteHuman(int humanNum, AnimationInfo* anim);
 
 	std::vector<bool> m_keysPressed; // Last recorded user input
 	std::vector<iRobotron*> m_robotrons; // Vector of all enemies

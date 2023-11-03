@@ -99,12 +99,14 @@ void cArena_Implementation::Initialize()
 
 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-20, 10));
 	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
-	m_pCharacterMaker->makeCharacter("human", glm::vec2(-20, 10));
+	m_pCharacterMaker->makeCharacter("human", glm::vec2(-30, 10));
 	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
-	m_pCharacterMaker->makeCharacter("human", glm::vec2(-20, 10));
+	m_pCharacterMaker->makeCharacter("human", glm::vec2(-40, 10));
 	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
 
 	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
+
+	//m_pCharacterMaker->makeCharacter("prog", glm::vec2(40, -40));
 
 
 	lastTime = glfwGetTime();
@@ -255,11 +257,11 @@ void cArena_Implementation::Update()
 	///////////////////////////// HUMAN UPDATE //////////////////////////// This will be very similar to the player update above
 	////////////////////////////////////////////////////////////////////
 
-	for (cHuman* human : m_humans) // Update all humans
+	for (unsigned int i = 0; i < m_humans.size(); i++) // Update all humans
 	{
-		human->Update(deltaTime);
-		AnimationInfo* humanInfo = findAnimInfoByID(human->getID()); // Get animation info of player
-		glm::vec2 humanPos = human->getPos();
+		m_humans[i]->Update(deltaTime);
+		AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID()); // Get animation info of player
+		glm::vec2 humanPos = m_humans[i]->getPos();
 
 		// Update human animation //////
 		if (glm::vec2(humanInfo->mesh->drawPosition) != humanPos) // If the human hasn't moved since last update, don't worry about animation TODO( In this case, reset back to 0th place in animation trio)
@@ -270,7 +272,7 @@ void cArena_Implementation::Update()
 			humanInfo->animationFrame = (humanInfo->animationFrame + 1) % humanInfo->down.size();
 
 
-			glm::vec2 humanDir = human->getDir();
+			glm::vec2 humanDir = m_humans[i]->getDir();
 			if (humanDir.x != 0) // Any direction left or right
 			{
 				if (humanDir.x < 0) // Left
@@ -307,9 +309,12 @@ void cArena_Implementation::Update()
 			}
 			else if (robo->getRoboType() == Brain)
 			{
-				if (glm::distance(robo->getPos(), humanPos) < 5)
+				if (glm::distance(robo->getPos(), humanPos) < 3)
 				{
 					// TODO: Turn human into prog (destroy human an replace with prog in the same position)
+					AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID());
+					deleteHuman(i, humanInfo);
+					m_pCharacterMaker->makeCharacter("prog", glm::vec2(humanPos));
 				}
 			}
 		}
@@ -405,4 +410,13 @@ void cArena_Implementation::deleteRobotron(int roboNum, AnimationInfo* anim)
 	m_spriteIDMap.erase(m_robotrons[roboNum]->getID()); // Remove from ID_to_Mesh map
 	delete m_robotrons[roboNum]; // Delete robotron object itself
 	m_robotrons.erase(m_robotrons.begin() + roboNum); // Remove from projectile vector
+}
+
+void cArena_Implementation::deleteHuman(int humanNum, AnimationInfo* anim)
+{
+	m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID); // Remove robo mesh from graphics class
+	delete anim; // Delete mesh info
+	m_spriteIDMap.erase(m_humans[humanNum]->getID()); // Remove from ID_to_Mesh map
+	delete m_humans[humanNum]; // Delete robotron object itself
+	m_humans.erase(m_humans.begin() + humanNum); // Remove from projectile vector
 }

@@ -8,6 +8,7 @@
 #include "cHuman.h"
 #include "cHulk.h"
 #include "cBrain.h"
+#include "cProg.h"
 
 cCharacterBuilder::cCharacterBuilder()
 {
@@ -66,6 +67,15 @@ void cCharacterBuilder::makeCharacter(std::string character, glm::vec2 pos)
 		newRobo->setPos(pos);
 		((cBrain*) newRobo)->brainWeapon = newWeapon;
 		newRobo->setRoboType(Brain);
+		m_pTheArena->addRobotron(newRobo, newAnimInfo);
+		return;
+	}
+	if (character == "prog")
+	{
+		newAnimInfo = m_pMeshFactory->makeMesh(character);
+		iRobotron* newRobo = new cProg();
+		newRobo->setPos(pos);
+		newRobo->setRoboType(Prog);
 		m_pTheArena->addRobotron(newRobo, newAnimInfo);
 		return;
 	}

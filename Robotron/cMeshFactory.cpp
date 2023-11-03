@@ -184,6 +184,25 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
+	if (entity == "prog") // For now will just use daddy sprite
+	{
+		entityMesh->left.push_back("daddy1.ply");
+		entityMesh->right.push_back("daddy4.ply");
+		entityMesh->down.push_back("daddy7.ply");
+		entityMesh->up.push_back("daddy10.ply");
+
+		entityMesh->mesh->meshName = "daddy7.ply";
+		entityMesh->mesh->friendlyName = "prog";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.2f;
+		entityMesh->animationFrame = 0;
+		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+
+		entityMesh->mesh->bUseDebugColours = true;
+		entityMesh->mesh->wholeObjectDebugColourRGBA = glm::vec4(1.0f); // Make it white
+		return entityMesh;
+	}
 
 	return NULL;
 
