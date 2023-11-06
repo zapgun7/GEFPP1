@@ -56,10 +56,10 @@ void cHulk::Attack()
 
 void cHulk::Update(double deltaTime)
 {
-	srand(time(NULL));
+	//srand(time(NULL));
 	// If near the border, changes direction
 	// Other than that, sometimes changes direction (set some probability)
-	if (rand() % (10 - m_oddsAdjuster) == 0) // Chance to abruptly change directions
+	if (rand() % (200 - m_oddsAdjuster) == 0) // Chance to abruptly change directions
 	{
 		m_oddsAdjuster = 0;
 		if (abs(m_pos.y) > m_YBoundary - 3) // If right on a border, have them travel away from it
@@ -101,6 +101,8 @@ void cHulk::Update(double deltaTime)
 	{
 		findNewDirection(); // Might set a new direction
 	}
+	else
+		m_oddsAdjuster = 0; // Don't need heightened chances of dir change if not close to a border
 
 	if (m_timeToRecovery <= 0)
 	{
@@ -122,12 +124,13 @@ void cHulk::Update(double deltaTime)
 // Changes direction around the area border
 void cHulk::findNewDirection(void)
 {
-	srand(time(NULL));
-	if (m_oddsAdjuster < 9) // Increases chance that hulk moves away from the wall the more they're against the wall
+	//srand(time(NULL));
+	if (m_oddsAdjuster < 150) // Increases chance that hulk moves away from the wall the more they're against the wall
 		m_oddsAdjuster++;
+
 	if (m_dir.x == 0) // Vertical moving robit
 	{
-		if ((m_dir.y > 0) && (abs(m_pos.y) > m_YBoundary - 1)) // If moving up into the border
+		if ((m_dir.y > 0) && (m_pos.y > m_YBoundary - 2)) // If moving up into the border
 		{ // Set new direction to left, right, or down
 			int randDir = rand() % 3;
 			if (randDir == 0) // Set to down
@@ -137,36 +140,48 @@ void cHulk::findNewDirection(void)
 			else if (randDir == 1) // Set to right
 			{
 				m_dir.y = 0;
-				m_dir.x = 1;
+				if (m_pos.x < m_XBoundary - 3) // Make sure it's not too close to the right wall
+					m_dir.x = 1;
+				else
+					m_dir.x = -1;
 			}
 			else
 			{
 				m_dir.y = 0;
-				m_dir.x = -1;
+				if (m_pos.x < -m_XBoundary + 3) // Make sure not too close to left wall
+					m_dir.x = -1;
+				else
+					m_dir.x = 1;
 			}
 		}
-		else if (abs(m_pos.y) > m_YBoundary - 1) // If moving down into the border
+		else if ((m_dir.y < 0) && (m_pos.y < -m_YBoundary + 2)) // If moving down into the border
 		{ // Set new direction to left, right, or up
 			int randDir = rand() % 3;
-			if (randDir == 0) // Set to down
+			if (randDir == 0) // Set to up
 			{
 				m_dir.y = 1;
 			}
 			else if (randDir == 1) // Set to right
 			{
 				m_dir.y = 0;
-				m_dir.x = 1;
+				if (m_pos.x < m_XBoundary - 3) // Make sure it's not too close to the right wall
+					m_dir.x = 1;
+				else
+					m_dir.x = -1;
 			}
 			else
 			{
 				m_dir.y = 0;
-				m_dir.x = -1;
+				if (m_pos.x < -m_XBoundary + 3) // Make sure not too close to left wall
+					m_dir.x = -1;
+				else
+					m_dir.x = 1;
 			}
 		}
 	}
 	else // Horizontal moving robit
 	{
-		if ((m_dir.x > 0) && (abs(m_pos.x) > m_XBoundary - 1)) // If moving right into the border
+		if ((m_dir.x > 0) && (m_pos.x > m_XBoundary - 2)) // If moving right into the border
 		{ // Set new direction to up, down or left
 			int randDir = rand() % 3;
 			if (randDir == 0) // Set to left
@@ -175,16 +190,24 @@ void cHulk::findNewDirection(void)
 			}
 			else if (randDir == 1) // Set to up
 			{
-				m_dir.y = 1;
 				m_dir.x = 0;
+				if (m_pos.y < m_YBoundary - 3) // Make sure not too close to ceiling
+					m_dir.y = 1;
+				else
+					m_dir.y = -1;
+				
 			}
 			else // Set to down
 			{
-				m_dir.y = -1;
 				m_dir.x = 0;
+				if (m_pos.y > -m_YBoundary + 3) // Make sure not too close to floor
+					m_dir.y = -1;
+				else
+					m_dir.y = 1;
+				
 			}
 		}
-		else if (abs(m_pos.x) > m_XBoundary - 1) // If moving left into the border
+		else if ((m_dir.x < 0) && (m_pos.x < -m_XBoundary + 2)) // If moving left into the border
 		{ // Set new direction to up, down or right
 			int randDir = rand() % 3;
 			if (randDir == 0) // Set to right
@@ -193,13 +216,19 @@ void cHulk::findNewDirection(void)
 			}
 			else if (randDir == 1) // Set to up
 			{
-				m_dir.y = 1;
 				m_dir.x = 0;
+				if (m_pos.y < m_YBoundary - 3) // Make sure not too close to ceiling
+					m_dir.y = 1;
+				else
+					m_dir.y = -1;
 			}
 			else // Set to down
 			{
-				m_dir.y = -1;
 				m_dir.x = 0;
+				if (m_pos.y > -m_YBoundary + 3) // Make sure not too close to floor
+					m_dir.y = -1;
+				else
+					m_dir.y = 1;
 			}
 		}
 	}

@@ -100,17 +100,17 @@ void cArena_Implementation::Initialize()
 // 	m_pCharacterMaker->makeCharacter("grunt");
 // 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 10));
 
+	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(20, 20));
 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(45, 10));
+	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-10, -10));
+	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-35, -30));
 	//m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(45, 10));
 
-	m_pCharacterMaker->makeCharacter("human", glm::vec2(-10, 10));
-	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
-	m_pCharacterMaker->makeCharacter("human", glm::vec2(-30, 10));
-	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
-	m_pCharacterMaker->makeCharacter("human", glm::vec2(-60, 10));
-	//m_humans[m_humans.size() - 1]->setPos((glm::vec2(-20, 10)));
+// 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-10, 10));
+// 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-30, 10));
+// 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-60, 10));
 
-	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
+	//m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
 
 	//m_pCharacterMaker->makeCharacter("prog", glm::vec2(40, -40));
 

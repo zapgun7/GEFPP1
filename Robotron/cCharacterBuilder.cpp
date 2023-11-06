@@ -76,6 +76,7 @@ void cCharacterBuilder::makeCharacter(std::string character, glm::vec2 pos)
 		iRobotron* newRobo = new cProg();
 		newRobo->setPos(pos);
 		newRobo->setRoboType(Prog);
+		newAnimInfo->mesh->drawPosition = glm::vec3(pos, 0);
 		m_pTheArena->addRobotron(newRobo, newAnimInfo);
 		return;
 	}
