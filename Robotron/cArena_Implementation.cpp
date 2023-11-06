@@ -34,11 +34,13 @@ glm::vec2 cArena_Implementation::getClosestHuman(glm::vec2 whereIAm)
 	return closestCoord;
 }
 
-glm::vec2 cArena_Implementation::getPlayerDirection(glm::vec2 whereIam) // Returns unit vector to player
+glm::vec2 cArena_Implementation::getPlayerPosition() // Returns unit vector to player
 {
-	glm::vec2 returnDir = m_thePlayer->getPos() - whereIam;
-	returnDir = glm::normalize(returnDir);
-	return returnDir;
+	//glm::vec2 returnDir = m_thePlayer->getPos() - whereIam;
+	//returnDir = glm::normalize(returnDir);
+	//return returnDir;
+	glm::vec2 playerPos = m_thePlayer->getPos();
+	return playerPos;
 }
 
 void cArena_Implementation::setPlayer(cPlayer* player, AnimationInfo* newInfo)
@@ -93,26 +95,28 @@ void cArena_Implementation::Initialize()
 	m_pCharacterMaker->makeCharacter("player", glm::vec2(0, 0));
 
 
-// 	m_pCharacterMaker->makeCharacter("grunt");
-// 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(20, 40));
-// 	m_pCharacterMaker->makeCharacter("grunt");
-// 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 50));
-// 	m_pCharacterMaker->makeCharacter("grunt");
-// 	m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(30, 10));
+// 	m_pCharacterMaker->makeCharacter("grunt", glm::vec2(20, 40));
+// 	
+// 	m_pCharacterMaker->makeCharacter("grunt", glm::vec2(30, 50));
+// 	
+// 	m_pCharacterMaker->makeCharacter("grunt", glm::vec2(30, 10));
+	
 
-	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(20, 20));
-	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(45, 10));
-	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-10, -10));
-	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-35, -30));
+// 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(20, 20));
+// 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(45, 10));
+// 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-10, -10));
+// 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-35, -30));
 	//m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(45, 10));
 
 // 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-10, 10));
 // 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-30, 10));
 // 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-60, 10));
-
-	//m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
+// 
+// 	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
 
 	//m_pCharacterMaker->makeCharacter("prog", glm::vec2(40, -40));
+
+	m_pCharacterMaker->makeCharacter("enforcer", glm::vec2(30, 40));
 
 
 	lastTime = glfwGetTime();

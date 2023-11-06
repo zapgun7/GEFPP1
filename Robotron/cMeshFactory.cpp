@@ -219,6 +219,44 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->wholeObjectDebugColourRGBA = glm::vec4(1.0f); // Make it white
 		return entityMesh;
 	}
+	if (entity == "enforcer")
+	{
+		entityMesh->left.push_back("enforcer1.ply");
+		entityMesh->right.push_back("enforcer1.ply");
+		entityMesh->down.push_back("enforcer1.ply");
+		entityMesh->up.push_back("enforcer1.ply");
+
+		entityMesh->mesh->meshName = "enforcer2.ply"; // Ideally have this flick through 6 when spawning, then stick to 1 afterwards
+		entityMesh->mesh->friendlyName = "enforcer";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.2f;
+		entityMesh->animationFrame = 0;
+		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+
+		return entityMesh;
+	}
+	if (entity == "xshot")
+	{
+		entityMesh->left.push_back("enforcerbullet1.ply");
+		entityMesh->left.push_back("enforcerbullet2.ply");
+		entityMesh->right.push_back("enforcerbullet1.ply");
+		entityMesh->right.push_back("enforcerbullet2.ply");
+		entityMesh->up.push_back("enforcerbullet1.ply");
+		entityMesh->up.push_back("enforcerbullet2.ply");
+		entityMesh->down.push_back("enforcerbullet1.ply");
+		entityMesh->down.push_back("enforcerbullet2.ply");
+
+		entityMesh->mesh->meshName = "enforcerbullet1.ply"; // Ideally have this flick through 6 when spawning, then stick to 1 afterwards
+		entityMesh->mesh->friendlyName = "xshot";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.1f;
+		entityMesh->animationFrame = 0;
+		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+
+		return entityMesh;
+	}
 
 	return NULL;
 

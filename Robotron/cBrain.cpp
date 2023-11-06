@@ -47,7 +47,8 @@ void cBrain::Update(double deltaTime)
 
 	if (humanPos.x == 999) // No more humans, move towards player
 	{
-		glm::vec2 playerDir = m_pTheArena->getPlayerDirection(m_pos);
+		glm::vec2 playerDir = m_pTheArena->getPlayerPosition();
+		playerDir = glm::normalize(playerDir - m_pos);
 		if (abs(playerDir.x) > .75f) // Horizontal dominant, remove y component and renormalize
 		{
 			playerDir.y = 0;

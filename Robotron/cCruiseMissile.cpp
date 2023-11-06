@@ -17,7 +17,8 @@ cCruiseMissile::~cCruiseMissile()
 
 void cCruiseMissile::Update(double deltaTime)
 {
-	glm::vec2 playerDir = m_pTheArena->getPlayerDirection(m_pos);
+	glm::vec2 playerDir = m_pTheArena->getPlayerPosition();
+	playerDir = glm::normalize(playerDir - m_pos);
 	////////// VERTICAL MOVEMENT /////////
 	if (playerDir.y > 0) // If player is above proj
 		m_pos.y += m_vspeed * deltaTime;
@@ -28,21 +29,6 @@ void cCruiseMissile::Update(double deltaTime)
 	///////// HORIZONTAL MOVEMENT //////////
 	if (m_TimeTillStopHMove > 0.0f) // If we're currently moving horizontally
 	{
-// 		if (playerDir.x > 0) // Player to the right
-// 		{
-// 			m_pos.x += m_hspeed * deltaTime;
-// 		}
-// 		else if (playerDir.x < 0) // Player to the left
-// 		{
-// 			m_pos.x -= m_hspeed * deltaTime;
-// 		}
-// 		else
-// 		{
-// 			if (rand() % 2 == 0)
-// 				m_pos.x += m_hspeed * deltaTime;
-// 			else
-// 				m_pos.x -= m_hspeed * deltaTime;
-// 		}
 		m_pos.x += m_hdir.x * m_hspeed * deltaTime;
 		m_TimeTillStopHMove -= deltaTime;
 

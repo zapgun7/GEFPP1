@@ -2,6 +2,7 @@
 
 #include "cPlayerBullet.h"
 #include "cCruiseMissile.h"
+#include "cXShot.h"
 #include "cArena.h"
 
 
@@ -48,6 +49,13 @@ void cProjectileFactory::makeProjectile(std::string proj, glm::vec2 pos, glm::ve
 		projectileToMake = new cCruiseMissile(pos, dir);
 		newAnimInfo = m_pMeshFactory->makeMesh("cmissile");
 		projectileToMake->setType(CMissile);
+		pTheArena->addProjectile(projectileToMake, newAnimInfo);
+	}
+	if (proj == "xshot")
+	{
+		projectileToMake = new cXShot(pos, dir);
+		newAnimInfo = m_pMeshFactory->makeMesh("xshot");
+		projectileToMake->setType(XShot);
 		pTheArena->addProjectile(projectileToMake, newAnimInfo);
 	}
 

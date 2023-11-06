@@ -27,9 +27,9 @@ glm::vec2 cArena::getClosestHuman(glm::vec2 whereIAm)
 	return this->m_pTheAcualArena->getClosestHuman(whereIAm);
 }
 
-glm::vec2 cArena::getPlayerDirection(glm::vec2 whereIam)
+glm::vec2 cArena::getPlayerPosition()
 {
-	return this->m_pTheAcualArena->getPlayerDirection(whereIam);
+	return this->m_pTheAcualArena->getPlayerPosition();
 }
 
 

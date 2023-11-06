@@ -47,7 +47,8 @@ void cGrunt::Update(double deltaTime)
 	if (m_TimeToNextMove <= 0)
 	{
 		m_TimeToNextMove += m_MoveInterval;
-		glm::vec2 moveDir = m_pTheArena->getPlayerDirection(m_pos);
+		glm::vec2 moveDir = m_pTheArena->getPlayerPosition();
+		moveDir = glm::normalize(moveDir - m_pos);
 
 		// Grunts only move on diagonals, so modify moveDir accordingly
 		if (abs(moveDir.x) > 0) // If some x 

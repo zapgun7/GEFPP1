@@ -44,7 +44,8 @@ void cProg::Update(double deltaTime)
 	// Moves towards player, only in 4 cardinal directions
 	// Should have it travel a distance before being able to change directions
 	// Delta time based or something
-	glm::vec2 playerDir = m_pTheArena->getPlayerDirection(m_pos);
+	glm::vec2 playerDir = m_pTheArena->getPlayerPosition();
+	playerDir = glm::normalize(playerDir - m_pos);
 
 	if (abs(playerDir.x) > abs(playerDir.y)) // Horizontal dominant movement
 	{

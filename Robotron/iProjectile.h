@@ -4,7 +4,8 @@
 enum ProjType
 {
 	PBullet,
-	CMissile
+	CMissile,
+	XShot
 };
 
 class iProjectile
