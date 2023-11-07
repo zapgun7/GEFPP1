@@ -39,6 +39,9 @@ private:
 	void deleteRobotron(int roboNum, AnimationInfo* anim);
 	void deleteHuman(int humanNum, AnimationInfo* anim);
 
+	void InitializeLevel(bool isFresh); // isFresh specifies if it's a brand new level requiring new enemy generation, player died and reloading otherwise
+	void ResetPlacementArray(); //Sets all values in m_SpawnSpots to false
+
 	std::vector<bool> m_keysPressed; // Last recorded user input
 	std::vector<iRobotron*> m_robotrons; // Vector of all enemies
 	std::vector<cHuman*> m_humans; // Vector of all existing humans
@@ -48,7 +51,7 @@ private:
 	int m_XBoundary = 113;
 	int m_YBoundary = 55;
 
-	bool m_SpawnSpots[19][9]; // 9 horizontal slots to left and right of 0,0 (player)| 4 vertical slots above and below 0,0 (player)
+	bool m_SpawnSpots[21][9]; // 10 horizontal slots to left and right of 0,0 (player)| 4 vertical slots above and below 0,0 (player)
 
 	double lastTime; // Time at last update; used for delta time
 	int nextID = 0; // Unique ID assigned to each entity

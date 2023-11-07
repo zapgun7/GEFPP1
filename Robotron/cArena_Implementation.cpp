@@ -118,12 +118,13 @@ void cArena_Implementation::Initialize()
 
 	//m_pCharacterMaker->makeCharacter("enforcer", glm::vec2(30, 40));
 
-	m_pCharacterMaker->makeCharacter("sphereoid", glm::vec2(30, 30));
+	//m_pCharacterMaker->makeCharacter("sphereoid", glm::vec2(30, 30));
 
 	//m_pCharacterMaker->makeCharacter("tank", glm::vec2(35, 40));
 
 	//m_pCharacterMaker->makeCharacter("quark", glm::vec2(35, 40));
 
+	InitializeLevel(true);
 
 	lastTime = glfwGetTime();
 
@@ -215,7 +216,7 @@ void cArena_Implementation::Update()
 	for (int i = 0; i < m_robotrons.size(); i++) // Increment through all robotrons
 	{
 		iRobotron* currRobo = m_robotrons[i];
-		currRobo->Update(deltaTime); // Update robotron first
+		//currRobo->Update(deltaTime); // Update robotron first
 		//currRobo->Update(0.2f);
 		tempInfo = findAnimInfoByID(currRobo->getID());
 		//std::cout << tempInfo->mesh->meshName << std::endl;
@@ -534,4 +535,66 @@ void cArena_Implementation::deleteHuman(int humanNum, AnimationInfo* anim)
 	m_spriteIDMap.erase(m_humans[humanNum]->getID()); // Remove from ID_to_Mesh map
 	delete m_humans[humanNum]; // Delete robotron object itself
 	m_humans.erase(m_humans.begin() + humanNum); // Remove from projectile vector
+}
+
+// Re(loads) the level, whether after player death or stage completion
+void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities can be spawned
+{
+	ResetPlacementArray();
+	if (isFresh)// Brand new level
+	{
+		//int hulks = rand() % 10 + 20;
+		int hulks = 160;
+		int grunts = rand() % 10 + 25;
+		int humans = rand() % 10 + 5;
+		int brains = rand() % 10 + 5;
+		int sphereoids = rand() % 5;
+		int quarks = rand() % 5;
+		bool isValid = false;
+		glm::vec2 placePos = glm::vec2(0);
+		int xPlace = 0;
+		int yPlace = 0;
+
+		while (hulks != 0)
+		{
+			while (!isValid) // Find a valid place for the entity
+			{
+				// Randomize array placement first, will convert into real vector position after validity check
+				xPlace = rand() % 21;
+				yPlace = rand() % 9;
+
+				if (!m_SpawnSpots[xPlace][yPlace])
+					isValid = true;
+			}
+
+			m_SpawnSpots[xPlace][yPlace] = true;
+			// Now to translate into real positions
+			placePos.x = (xPlace - 10) * 10;
+			placePos.y = (yPlace - 4) * 10;
+
+			m_pCharacterMaker->makeCharacter("hulk", placePos);
+			hulks--;
+			isValid = false;
+		}
+	}
+}
+
+void cArena_Implementation::ResetPlacementArray()
+{
+	for (unsigned int i = 0; i < 21; i++)
+	{
+		for (unsigned int e = 0; e < 9; e++)
+		{
+			m_SpawnSpots[i][e] = false;
+		}
+	}
+	// Now make space around player equal true i.e. taken and not available
+
+	for (unsigned int i = 9; i < 12; i++) // 3x3 with player in middle
+	{
+		for (unsigned int e = 3; e < 6; e++)
+		{
+			m_SpawnSpots[i][e] = true;
+		}
+	}
 }
