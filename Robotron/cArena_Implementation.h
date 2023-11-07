@@ -48,6 +48,8 @@ private:
 	int m_XBoundary = 113;
 	int m_YBoundary = 55;
 
+	bool m_SpawnSpots[19][9]; // 9 horizontal slots to left and right of 0,0 (player)| 4 vertical slots above and below 0,0 (player)
+
 	double lastTime; // Time at last update; used for delta time
 	int nextID = 0; // Unique ID assigned to each entity
 	std::map<int, AnimationInfo*> m_spriteIDMap; // Map matching unique ID to sprite information
