@@ -5,12 +5,14 @@
 
 cXShot::cXShot(glm::vec2 position, glm::vec2 direction)
 {
+	float playerDist = glm::length(direction); // Speed will scale off distance to the player
 	m_pos = position;
-	m_dir = direction;
+	m_dir = glm::normalize(direction);
 	//m_pTheArena = cArena::getArena();
 	// When this gets created, randomize private values to influence how it flies (random scalars for sin and cos (maybe tan??))
 	// Property randomization
-	m_speed = rand() % 50 + 50;
+	
+	m_speed = rand() % 20 + 20 + (playerDist * 0.7f);
 	m_curve = (rand() % 10 + 1);
 	m_curve /= 10; // Base curve influence reduction
 

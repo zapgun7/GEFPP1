@@ -41,10 +41,16 @@ private:
 	bool m_IsSpawning;
 	double m_TimeTillSpawned;
 
+	int m_XBoundary = 113;
+	int m_YBoundary = 55;
+
+	float const m_DirChangeInterval = 0.5f;
+	double m_TimeTillNextDir = m_DirChangeInterval;
+
 	float const m_ShootInterval = 2.0f;
 	double m_TimeTillNextShot = m_ShootInterval;
 
-	float const m_speed = 15.0f;
+	float const m_speed = 20.0f;
 
 
 	cArena* m_pTheArena;

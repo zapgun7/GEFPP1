@@ -12,6 +12,7 @@
 #include "cEnforcer.h"
 #include "cSpheroid.h"
 #include "cTank.h"
+#include "cQuark.h"
 
 cCharacterBuilder::cCharacterBuilder()
 {
@@ -111,6 +112,16 @@ void cCharacterBuilder::makeCharacter(std::string character, glm::vec2 pos)
 		newRobo->setPos(pos);
 		((cTank*)newRobo)->tankWeapon = newWeapon;
 		newRobo->setRoboType(Tank);
+		newAnimInfo->mesh->drawPosition = glm::vec3(pos, 0);
+		m_pTheArena->addRobotron(newRobo, newAnimInfo);
+		return;
+	}
+	if (character == "quark")
+	{
+		newAnimInfo = m_pMeshFactory->makeMesh(character);
+		iRobotron* newRobo = new cQuark();
+		newRobo->setPos(pos);
+		newRobo->setRoboType(Quark);
 		newAnimInfo->mesh->drawPosition = glm::vec3(pos, 0);
 		m_pTheArena->addRobotron(newRobo, newAnimInfo);
 		return;

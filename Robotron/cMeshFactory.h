@@ -10,7 +10,7 @@ struct AnimationInfo
 {
 	~AnimationInfo() 
 	{ 
-		delete mesh; 
+		//delete mesh; 
 	};
 	std::vector <std::string> up;    //
 	std::vector <std::string> down;  // Names of sprites for their respective directions

@@ -188,3 +188,11 @@ cruise_missile.ply
 prog_create.ply
 tank_shell1.ply
 tank_shell2.ply
+quark1.ply
+quark2.ply
+quark3.ply
+quark4.ply
+quark5.ply
+quark6.ply
+quark7.ply
+quark8.ply

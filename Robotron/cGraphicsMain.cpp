@@ -194,6 +194,24 @@ bool cGraphicsMain::Update() // Main "loop" of the window. Not really a loop, ju
 				continue;
 			}
 		}
+		else if (pCurrentMesh->friendlyName == "destructing") // Mesh of destroyed robotron that goes rapidly through animation then deletes
+		{
+			if (!pCurrentMesh->bUseDebugColours)
+			{
+				pCurrentMesh->bUseDebugColours = true;
+				pCurrentMesh->wholeObjectDebugColourRGBA = glm::vec4(.95f, .05f, 0.0f, 1.0f);
+			}
+
+			pCurrentMesh->wholeObjectDebugColourRGBA.x -= .025f;
+			pCurrentMesh->scale += .001f;
+
+			if (pCurrentMesh->wholeObjectDebugColourRGBA.x <= 0)
+			{
+				removeAfterimage(pCurrentMesh);
+				index--;
+				continue;
+			}
+		}
 
 		/////////////////////////////////////////////
 

@@ -118,9 +118,11 @@ void cArena_Implementation::Initialize()
 
 	//m_pCharacterMaker->makeCharacter("enforcer", glm::vec2(30, 40));
 
-	//m_pCharacterMaker->makeCharacter("sphereoid", glm::vec2(30, 30));
+	m_pCharacterMaker->makeCharacter("sphereoid", glm::vec2(30, 30));
 
-	m_pCharacterMaker->makeCharacter("tank", glm::vec2(35, 40));
+	//m_pCharacterMaker->makeCharacter("tank", glm::vec2(35, 40));
+
+	//m_pCharacterMaker->makeCharacter("quark", glm::vec2(35, 40));
 
 
 	lastTime = glfwGetTime();
@@ -390,7 +392,7 @@ void cArena_Implementation::Update()
 				tempInfo->animationFrame = ((tempInfo->animationFrame + 1) % tempInfo->down.size());
 				tempInfo->mesh->meshName = tempInfo->down[tempInfo->animationFrame];
 			}
-			// And detect hits on player
+			// TODO detect hits on player
 		}
 		else // Player bullet hit detection
 		{
@@ -422,6 +424,7 @@ void cArena_Implementation::Update()
 					}
 					else
 					{
+						roboInfo->mesh->friendlyName = "destructing";
 						deleteRobotron(e, roboInfo);
 						break;
 					}
@@ -512,7 +515,12 @@ void cArena_Implementation::deleteProjectile(int projNum, AnimationInfo* anim)
 
 void cArena_Implementation::deleteRobotron(int roboNum, AnimationInfo* anim)
 {
-	m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID); // Remove robo mesh from graphics class
+	if (anim->mesh->friendlyName != "destructing") // Let graphics main take care of destructing "animation" and deleting the mesh
+	{
+		m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID); // Remove robo mesh from graphics class
+		delete anim->mesh;
+	}
+
 	delete anim; // Delete mesh info
 	m_spriteIDMap.erase(m_robotrons[roboNum]->getID()); // Remove from ID_to_Mesh map
 	delete m_robotrons[roboNum]; // Delete robotron object itself

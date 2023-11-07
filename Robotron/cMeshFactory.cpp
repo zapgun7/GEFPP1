@@ -371,6 +371,54 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 
 		return entityMesh;
 	}
+	if (entity == "quark")
+	{
+		entityMesh->down.push_back("quark1.ply");
+		entityMesh->down.push_back("quark2.ply");
+		entityMesh->down.push_back("quark3.ply");
+		entityMesh->down.push_back("quark4.ply");
+		entityMesh->down.push_back("quark5.ply");
+		entityMesh->down.push_back("quark6.ply");
+		entityMesh->down.push_back("quark7.ply");
+		entityMesh->down.push_back("quark8.ply");
+
+		entityMesh->up.push_back("quark1.ply");
+		entityMesh->up.push_back("quark2.ply");
+		entityMesh->up.push_back("quark3.ply");
+		entityMesh->up.push_back("quark4.ply");
+		entityMesh->up.push_back("quark5.ply");
+		entityMesh->up.push_back("quark6.ply");
+		entityMesh->up.push_back("quark7.ply");
+		entityMesh->up.push_back("quark8.ply");
+
+		entityMesh->left.push_back("quark1.ply");
+		entityMesh->left.push_back("quark2.ply");
+		entityMesh->left.push_back("quark3.ply");
+		entityMesh->left.push_back("quark4.ply");
+		entityMesh->left.push_back("quark5.ply");
+		entityMesh->left.push_back("quark6.ply");
+		entityMesh->left.push_back("quark7.ply");
+		entityMesh->left.push_back("quark8.ply");
+
+		entityMesh->right.push_back("quark1.ply");
+		entityMesh->right.push_back("quark2.ply");
+		entityMesh->right.push_back("quark3.ply");
+		entityMesh->right.push_back("quark4.ply");
+		entityMesh->right.push_back("quark5.ply");
+		entityMesh->right.push_back("quark6.ply");
+		entityMesh->right.push_back("quark7.ply");
+		entityMesh->right.push_back("quark8.ply");
+
+
+		entityMesh->mesh->meshName = "quark1.ply";
+		entityMesh->mesh->friendlyName = "quark";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.05f;
+		entityMesh->animationFrame = 0;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+		return entityMesh;
+	}
 
 	return NULL;
 

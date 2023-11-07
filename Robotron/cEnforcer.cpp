@@ -140,15 +140,15 @@ void cEnforcer::Update(double deltaTime)
 		m_TimeTillNextShot += m_ShotCooldown;
 		int randShoot = 0;
 		if (m_state == Far)
-			randShoot = rand() % 500;
+			randShoot = rand() % 350;
 		else if (m_state == Closer)
-			randShoot = rand() % 300;
+			randShoot = rand() % 200;
 		else if (m_state == Closest)
 			randShoot = rand() % 100;
 
 		if (randShoot < 50)
 		{
-			enforcerWeapon->Shoot(m_pos, glm::normalize(playerPos - m_pos));
+			enforcerWeapon->Shoot(m_pos, playerPos - m_pos); // Pass in un-normalized direction to gage the distance which will influence the projectile speed
 		}
 	}
 }

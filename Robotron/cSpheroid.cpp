@@ -97,7 +97,7 @@ void cSphereoid::Update(double deltaTime)
 	if (m_TimeTillEnforcerSpawn <= 0)
 	{
 		m_TimeTillEnforcerSpawn += m_EnforcerSpawnInterval;
-		if (rand() % 20 == 0)
+		if (rand() % 10 == 0)
 		{
 			m_EnforcersInStock--;
 			m_pEnforcerSpawner->makeCharacter("enforcer", m_pos);
