@@ -11,7 +11,7 @@ enum RoboType
 	Enforcer,
 	Prog,
 	Quark,
-	Spheroid,
+	Sphereoid,
 	Tank
 };
 
@@ -32,4 +32,5 @@ public:
 	virtual RoboType getRoboType() = 0;
 	virtual void isShot() = 0;
 	virtual bool isSpawning() = 0;
+	virtual bool ShouldBeDestroyed() = 0;
 };

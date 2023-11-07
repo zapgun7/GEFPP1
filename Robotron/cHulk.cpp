@@ -267,3 +267,8 @@ bool cHulk::isSpawning(void)
 {
 	return false;
 }
+
+bool cHulk::ShouldBeDestroyed()
+{
+	return false;
+}

@@ -25,6 +25,7 @@ public:
 	virtual void setRoboType(RoboType type);
 	virtual void isShot(void);
 	virtual bool isSpawning(void);
+	virtual bool ShouldBeDestroyed(void);
 	//virtual void setArena(cArena* arena);
 
 	iWeapon* brainWeapon;

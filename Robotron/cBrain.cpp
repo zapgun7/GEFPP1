@@ -130,3 +130,8 @@ bool cBrain::isSpawning(void)
 {
 	return false;
 }
+
+bool cBrain::ShouldBeDestroyed(void)
+{
+	return false;
+}

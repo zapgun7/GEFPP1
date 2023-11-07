@@ -98,3 +98,8 @@ bool cProg::isSpawning(void)
 {
 	return m_IsSpawning;
 }
+
+bool cProg::ShouldBeDestroyed()
+{
+	return false;
+}

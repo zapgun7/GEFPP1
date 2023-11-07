@@ -24,6 +24,7 @@ public:
 	virtual void setRoboType(RoboType type);
 	virtual void isShot(void);
 	virtual bool isSpawning(void);
+	virtual bool ShouldBeDestroyed();
 	//virtual void setArena(cArena* arena);
 
 private:
@@ -36,7 +37,7 @@ private:
 	double m_TimeTillSpawned;
 
 
-	float const m_speed = 30.0f;
+	float const m_speed = 55.0f;
 	//float const m_MoveInterval = 0.5f; // Time between moving
 	//float m_TimeToNextMove = m_MoveInterval;
 

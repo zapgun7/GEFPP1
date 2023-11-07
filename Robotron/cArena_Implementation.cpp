@@ -108,15 +108,17 @@ void cArena_Implementation::Initialize()
 // 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-35, -30));
 	//m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(45, 10));
 
-	m_pCharacterMaker->makeCharacter("human", glm::vec2(-10, 10));
+//	m_pCharacterMaker->makeCharacter("human", glm::vec2(-10, 10));
 // 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-30, 10));
 // 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-60, 10));
 // 
-	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
+//	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
 
 	//m_pCharacterMaker->makeCharacter("prog", glm::vec2(40, -40));
 
 	//m_pCharacterMaker->makeCharacter("enforcer", glm::vec2(30, 40));
+
+	m_pCharacterMaker->makeCharacter("sphereoid", glm::vec2(30, 30));
 
 
 	lastTime = glfwGetTime();
@@ -226,6 +228,13 @@ void cArena_Implementation::Update()
 			tempInfo->mesh->meshName = tempInfo->spawning[tempInfo->animationFrame];
 			tempInfo->mesh->drawPosition = glm::vec3(currRobo->getPos(), 0);
 
+		}
+
+		if (currRobo->ShouldBeDestroyed()) // This is for Sphereoids and Quarks when they've exhausted their spawn limit
+		{
+			deleteRobotron(i, tempInfo);
+			i--;
+			continue;
 		}
 
 		// Animation

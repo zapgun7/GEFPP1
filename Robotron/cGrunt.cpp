@@ -91,7 +91,8 @@ bool cGrunt::isSpawning(void)
 	return false;
 }
 
-// void cGrunt::setArena(cArena* arena)
-// {
-// 	m_pTheArena = arena;
-// }
+bool cGrunt::ShouldBeDestroyed()
+{
+	return false;
+}
+

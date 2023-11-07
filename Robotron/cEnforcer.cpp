@@ -9,8 +9,14 @@
 cEnforcer::cEnforcer()
 {
 	m_pTheArena = cArena::getArena();
-	m_dir = glm::vec2(0, 0);
-	m_state = Far;
+	// Randomize direction
+	m_dir = glm::vec2(rand() % 9 + 1, rand() % 9 + 1);
+	m_dir /= 10;
+	if (rand() % 2 == 0) m_dir.x *= -1;
+	if (rand() % 2 == 0) m_dir.y *= -1;
+	m_dir = glm::normalize(m_dir);
+
+	m_state = Closest; // Set a state (any) to start
 	m_speed = 5.0f;
 	m_rotate = 0;
 	m_IsSpawning = true;
@@ -115,7 +121,6 @@ void cEnforcer::Update(double deltaTime)
 
 
 	// Make sure it stays within bounds
-	// Make sure xshot gets stopped by the border
 	if (abs(m_pos.x) > m_XBoundary)
 	{
 		m_pos.x = m_XBoundary * (m_pos.x / abs(m_pos.x));
@@ -171,4 +176,9 @@ void cEnforcer::isShot(void)
 bool cEnforcer::isSpawning(void)
 {
 	return m_IsSpawning;
+}
+
+bool cEnforcer::ShouldBeDestroyed()
+{
+	return false;
 }

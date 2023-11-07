@@ -266,6 +266,54 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 
 		return entityMesh;
 	}
+	if (entity == "sphereoid")
+	{
+		entityMesh->down.push_back("sphereoid1.ply");
+		entityMesh->down.push_back("sphereoid2.ply");
+		entityMesh->down.push_back("sphereoid3.ply");
+		entityMesh->down.push_back("sphereoid4.ply");
+		entityMesh->down.push_back("sphereoid5.ply");
+		entityMesh->down.push_back("sphereoid6.ply");
+		entityMesh->down.push_back("sphereoid7.ply");
+		entityMesh->down.push_back("sphereoid8.ply");
+
+		entityMesh->up.push_back("sphereoid1.ply");
+		entityMesh->up.push_back("sphereoid2.ply");
+		entityMesh->up.push_back("sphereoid3.ply");
+		entityMesh->up.push_back("sphereoid4.ply");
+		entityMesh->up.push_back("sphereoid5.ply");
+		entityMesh->up.push_back("sphereoid6.ply");
+		entityMesh->up.push_back("sphereoid7.ply");
+		entityMesh->up.push_back("sphereoid8.ply");
+
+		entityMesh->left.push_back("sphereoid1.ply");
+		entityMesh->left.push_back("sphereoid2.ply");
+		entityMesh->left.push_back("sphereoid3.ply");
+		entityMesh->left.push_back("sphereoid4.ply");
+		entityMesh->left.push_back("sphereoid5.ply");
+		entityMesh->left.push_back("sphereoid6.ply");
+		entityMesh->left.push_back("sphereoid7.ply");
+		entityMesh->left.push_back("sphereoid8.ply");
+
+		entityMesh->right.push_back("sphereoid1.ply");
+		entityMesh->right.push_back("sphereoid2.ply");
+		entityMesh->right.push_back("sphereoid3.ply");
+		entityMesh->right.push_back("sphereoid4.ply");
+		entityMesh->right.push_back("sphereoid5.ply");
+		entityMesh->right.push_back("sphereoid6.ply");
+		entityMesh->right.push_back("sphereoid7.ply");
+		entityMesh->right.push_back("sphereoid8.ply");
+
+
+		entityMesh->mesh->meshName = "sphereoid1.ply";
+		entityMesh->mesh->friendlyName = "sphereoid";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.05f;
+		entityMesh->animationFrame = 0;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+		return entityMesh;
+	}
 
 	return NULL;
 

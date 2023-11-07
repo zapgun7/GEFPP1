@@ -145,7 +145,6 @@
     <ClCompile Include="cCharacterBuilder.cpp" />
     <ClCompile Include="cGraphicsMain.cpp" />
     <ClCompile Include="cGrunt.cpp" />
-    <ClCompile Include="cElectrode.cpp" />
     <ClCompile Include="cHulk.cpp" />
     <ClCompile Include="cHuman.cpp" />
     <ClCompile Include="cInputHandler.cpp" />
@@ -174,7 +173,6 @@
     <ClInclude Include="cBrain.h" />
     <ClInclude Include="cBrainWeapon.h" />
     <ClInclude Include="cCruiseMissile.h" />
-    <ClInclude Include="cElectrode.h" />
     <ClInclude Include="cEnforcer.h" />
     <ClInclude Include="cEnforcerWeapon.h" />
     <ClInclude Include="cCharacterBuilder.h" />

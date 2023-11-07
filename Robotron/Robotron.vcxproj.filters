@@ -60,9 +60,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cElectrode.cpp">
-      <Filter>Robotrons</Filter>
-    </ClCompile>
     <ClCompile Include="cHuman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -159,9 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="iRobotron.h">
-      <Filter>Robotrons</Filter>
-    </ClInclude>
-    <ClInclude Include="cElectrode.h">
       <Filter>Robotrons</Filter>
     </ClInclude>
     <ClInclude Include="cHuman.h">

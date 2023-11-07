@@ -10,6 +10,7 @@
 #include "cBrain.h"
 #include "cProg.h"
 #include "cEnforcer.h"
+#include "cSpheroid.h"
 
 cCharacterBuilder::cCharacterBuilder()
 {
@@ -89,6 +90,16 @@ void cCharacterBuilder::makeCharacter(std::string character, glm::vec2 pos)
 		newRobo->setPos(pos);
 		((cEnforcer*)newRobo)->enforcerWeapon = newWeapon;
 		newRobo->setRoboType(Enforcer);
+		newAnimInfo->mesh->drawPosition = glm::vec3(pos, 0);
+		m_pTheArena->addRobotron(newRobo, newAnimInfo);
+		return;
+	}
+	if (character == "sphereoid")
+	{
+		newAnimInfo = m_pMeshFactory->makeMesh(character);
+		iRobotron* newRobo = new cSphereoid();
+		newRobo->setPos(pos);
+		newRobo->setRoboType(Sphereoid);
 		newAnimInfo->mesh->drawPosition = glm::vec3(pos, 0);
 		m_pTheArena->addRobotron(newRobo, newAnimInfo);
 		return;
