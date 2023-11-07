@@ -84,8 +84,10 @@ void cCharacterBuilder::makeCharacter(std::string character, glm::vec2 pos)
 	if (character == "enforcer")
 	{
 		newAnimInfo = m_pMeshFactory->makeMesh(character);
+		iWeapon* newWeapon = m_pWeaponFactory->makeWeapon(character);
 		iRobotron* newRobo = new cEnforcer();
 		newRobo->setPos(pos);
+		((cEnforcer*)newRobo)->enforcerWeapon = newWeapon;
 		newRobo->setRoboType(Enforcer);
 		newAnimInfo->mesh->drawPosition = glm::vec3(pos, 0);
 		m_pTheArena->addRobotron(newRobo, newAnimInfo);

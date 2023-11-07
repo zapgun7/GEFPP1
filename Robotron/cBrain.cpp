@@ -125,3 +125,8 @@ void cBrain::isShot(void)
 {
 	// Does nothing
 }
+
+bool cBrain::isSpawning(void)
+{
+	return false;
+}

@@ -7,6 +7,8 @@ cProg::cProg()
 {
 	m_dir = glm::vec2(0.0f, 1.0f);
 	m_pTheArena = cArena::getArena();
+	m_IsSpawning = true;
+	m_TimeTillSpawned = 1.5f;
 }
 
 cProg::~cProg()
@@ -41,6 +43,16 @@ void cProg::Attack()
 
 void cProg::Update(double deltaTime)
 {
+
+	// Spawning behavior
+	if (m_IsSpawning)
+	{
+		m_TimeTillSpawned -= deltaTime;
+		if (m_TimeTillSpawned <= 0)
+			m_IsSpawning = false;
+		return;
+	}
+
 	// Moves towards player, only in 4 cardinal directions
 	// Should have it travel a distance before being able to change directions
 	// Delta time based or something
@@ -80,4 +92,9 @@ void cProg::setRoboType(RoboType type)
 void cProg::isShot(void)
 {
 	// Dies
+}
+
+bool cProg::isSpawning(void)
+{
+	return m_IsSpawning;
 }

@@ -108,15 +108,15 @@ void cArena_Implementation::Initialize()
 // 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-35, -30));
 	//m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(45, 10));
 
-// 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-10, 10));
+	m_pCharacterMaker->makeCharacter("human", glm::vec2(-10, 10));
 // 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-30, 10));
 // 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-60, 10));
 // 
-// 	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
+	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
 
 	//m_pCharacterMaker->makeCharacter("prog", glm::vec2(40, -40));
 
-	m_pCharacterMaker->makeCharacter("enforcer", glm::vec2(30, 40));
+	//m_pCharacterMaker->makeCharacter("enforcer", glm::vec2(30, 40));
 
 
 	lastTime = glfwGetTime();
@@ -166,10 +166,10 @@ void cArena_Implementation::Update()
 
 	// Update player animation //////
 	if (glm::vec2(tempInfo->mesh->drawPosition) != playerPos) // If the player hasn't moved since last update, don't worry about animation TODO( In this case, reset back to 0th place in animation trio)
-		tempInfo->timeSinceLastAnim -= deltaTime;
-	if (tempInfo->timeSinceLastAnim <= 0) // Time to tick animation
+		tempInfo->timeTillNextAnim -= deltaTime;
+	if (tempInfo->timeTillNextAnim <= 0) // Time to tick animation
 	{
-		tempInfo->timeSinceLastAnim += tempInfo->animationSpeed;
+		tempInfo->timeTillNextAnim += tempInfo->animationSpeed;
 		tempInfo->animationFrame = (tempInfo->animationFrame + 1) % tempInfo->down.size();
 
 
@@ -214,21 +214,34 @@ void cArena_Implementation::Update()
 		tempInfo = findAnimInfoByID(currRobo->getID());
 		//std::cout << tempInfo->mesh->meshName << std::endl;
 		
+		// Spawning animation
+		if (currRobo->isSpawning())
+		{
+			tempInfo->timeTillNextAnim -= deltaTime;
+			if (tempInfo->timeTillNextAnim <= 0)
+			{
+				tempInfo->timeTillNextAnim += tempInfo->animationSpeed;
+				tempInfo->animationFrame = (tempInfo->animationFrame + 1) % tempInfo->spawning.size();
+			}
+			tempInfo->mesh->meshName = tempInfo->spawning[tempInfo->animationFrame];
+			tempInfo->mesh->drawPosition = glm::vec3(currRobo->getPos(), 0);
+
+		}
 
 		// Animation
 		if (glm::vec2(tempInfo->mesh->drawPosition) != currRobo->getPos()) // If last tick position is different then current position
 		{
-			tempInfo->timeSinceLastAnim -= deltaTime;
+			tempInfo->timeTillNextAnim -= deltaTime;
 		}
-		if (tempInfo->timeSinceLastAnim <= 0) // Increment animation frame
+		if (tempInfo->timeTillNextAnim <= 0) // Increment animation frame
 		{
 			if (tempInfo->mesh->friendlyName == "grunt") // Those who only animate when they move (regardless of time passed)
 			{
-				tempInfo->timeSinceLastAnim = 0.001f;
+				tempInfo->timeTillNextAnim = 0.001f;
 			}
 			else // Those based on time
 			{
-				tempInfo->timeSinceLastAnim += tempInfo->animationSpeed;
+				tempInfo->timeTillNextAnim += tempInfo->animationSpeed;
 			}
 			tempInfo->animationFrame = (tempInfo->animationFrame + 1) % tempInfo->down.size(); // Mod frame number by length of frames available
 
@@ -275,10 +288,10 @@ void cArena_Implementation::Update()
 
 		// Update human animation //////
 		if (glm::vec2(humanInfo->mesh->drawPosition) != humanPos) // If the human hasn't moved since last update, don't worry about animation TODO( In this case, reset back to 0th place in animation trio)
-			humanInfo->timeSinceLastAnim -= deltaTime;
-		if (humanInfo->timeSinceLastAnim <= 0) // Time to tick animation
+			humanInfo->timeTillNextAnim -= deltaTime;
+		if (humanInfo->timeTillNextAnim <= 0) // Time to tick animation
 		{
-			humanInfo->timeSinceLastAnim += humanInfo->animationSpeed;
+			humanInfo->timeTillNextAnim += humanInfo->animationSpeed;
 			humanInfo->animationFrame = (humanInfo->animationFrame + 1) % humanInfo->down.size();
 
 
@@ -341,12 +354,31 @@ void cArena_Implementation::Update()
 	{
 		// Start by updating its position
 		m_projectiles[i]->Update(deltaTime); // Update position of projectile first
+
 		glm::vec2 projPos = m_projectiles[i]->getPosition(); // Then get its position
 		tempInfo = findAnimInfoByID(m_projectiles[i]->getID()); // Get draw info for projectile
 		tempInfo->mesh->drawPosition = glm::vec3(projPos, 0);
+
+		// Quickly check if projectile flagged itself for deletion
+		if (m_projectiles[i]->ShouldBeDestroyed())
+		{
+			deleteProjectile(i, tempInfo);
+			i--;
+			continue;
+		}
+
+
 		if (tempInfo->mesh->friendlyName != "pbullet") // Only do this if not a player bullet (might change to if = if there's less projectiles overall to animate)
 		{
 			// TODO some enemy projectiles will animate
+			tempInfo->timeTillNextAnim -= deltaTime;
+
+			if (tempInfo->timeTillNextAnim <= 0) // Time to tick next fram of animation
+			{
+				tempInfo->timeTillNextAnim += tempInfo->animationSpeed;
+				tempInfo->animationFrame = ((tempInfo->animationFrame + 1) % tempInfo->down.size());
+				tempInfo->mesh->meshName = tempInfo->down[tempInfo->animationFrame];
+			}
 			// And detect hits on player
 		}
 		else // Player bullet hit detection
@@ -384,12 +416,12 @@ void cArena_Implementation::Update()
 					}
 				}
 			}
-			for (int e = 0; e < m_projectiles.size(); e++) // Check if player bullet hits cruise missile 
+			for (int e = 0; e < m_projectiles.size(); e++) // Check if player bullet hits cruise missile or XShots
 			{
-				if (m_projectiles[e]->getType() != CMissile)
+				if ((m_projectiles[e]->getType() != CMissile) && (m_projectiles[e]->getType() != XShot))
 					continue;
 
-				// Assuming e is a cruise missile
+				// Assuming e is a cruise missile or XShot
 				glm::vec2 otherProjPos = m_projectiles[e]->getPosition();
 				if (glm::distance(otherProjPos, projPos) < 2) // Distance of 2 for proj on proj collision
 				{											

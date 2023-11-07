@@ -14,6 +14,7 @@ public:
 	virtual int getID();
 	virtual void setType(ProjType type);
 	virtual ProjType getType();
+	virtual bool ShouldBeDestroyed(); // Way for projectile to terminate itself via the arena
 
 private:
 	ProjType m_type;

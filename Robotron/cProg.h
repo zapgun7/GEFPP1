@@ -23,6 +23,7 @@ public:
 	virtual void setPos(glm::vec2 newPos);
 	virtual void setRoboType(RoboType type);
 	virtual void isShot(void);
+	virtual bool isSpawning(void);
 	//virtual void setArena(cArena* arena);
 
 private:
@@ -30,6 +31,9 @@ private:
 	int m_EntityID;
 	glm::vec2 m_pos;
 	glm::vec2 m_dir;
+
+	bool m_IsSpawning;
+	double m_TimeTillSpawned;
 
 
 	float const m_speed = 30.0f;

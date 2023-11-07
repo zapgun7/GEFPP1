@@ -86,6 +86,11 @@ void cGrunt::isShot(void)
 	// Nothing for now...
 }
 
+bool cGrunt::isSpawning(void)
+{
+	return false;
+}
+
 // void cGrunt::setArena(cArena* arena)
 // {
 // 	m_pTheArena = arena;

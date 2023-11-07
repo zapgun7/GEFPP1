@@ -16,9 +16,10 @@ struct AnimationInfo
 	std::vector <std::string> down;  // Names of sprites for their respective directions
 	std::vector <std::string> left;  //
 	std::vector <std::string> right; //
+	std::vector <std::string> spawning;
 	cMesh* mesh;
 	float animationSpeed; // Every animationSpeed seconds the animation ticks
-	double timeSinceLastAnim;
+	double timeTillNextAnim;
 	int animationFrame; // Keeps track of current animation frame
 };
 class cMeshFactory

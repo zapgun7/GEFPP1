@@ -24,6 +24,7 @@ public:
 	virtual void setPos(glm::vec2 newPos);
 	virtual void setRoboType(RoboType type);
 	virtual void isShot(void);
+	virtual bool isSpawning(void);
 	//virtual void setArena(cArena* arena);
 
 	iWeapon* brainWeapon;

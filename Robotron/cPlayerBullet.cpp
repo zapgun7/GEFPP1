@@ -42,3 +42,8 @@ ProjType cPlayerBullet::getType()
 {
 	return m_type;
 }
+
+bool cPlayerBullet::ShouldBeDestroyed()
+{
+	return false;
+}

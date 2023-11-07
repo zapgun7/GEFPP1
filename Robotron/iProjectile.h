@@ -19,5 +19,6 @@ public:
 	virtual int getID() = 0;
 	virtual void setType(ProjType type) = 0;
 	virtual ProjType getType() = 0;
+	virtual bool ShouldBeDestroyed() = 0;
 	//virtual void Destroy() = 0; // For mediator to call when projectile hits something that would destroy it
 };

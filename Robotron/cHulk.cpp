@@ -262,3 +262,8 @@ void cHulk::isShot(void)
 	// Make recovery delay proportional to how much it got shot
 	m_timeToRecovery = (m_maxSpeed - m_speed)/3; // At most 3.33s delay
 }
+
+bool cHulk::isSpawning(void)
+{
+	return false;
+}

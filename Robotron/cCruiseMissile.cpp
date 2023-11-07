@@ -88,3 +88,8 @@ ProjType cCruiseMissile::getType()
 	return m_type;
 }
 
+bool cCruiseMissile::ShouldBeDestroyed()
+{
+	return false;
+}
+

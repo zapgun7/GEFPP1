@@ -29,7 +29,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->scale = .05f;
 		entityMesh->animationSpeed = 0.05f; // every 50ms
 		entityMesh->animationFrame = 0;
-		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
@@ -70,7 +70,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->scale = .05f;
 		entityMesh->animationSpeed = 0.0f; // every time it moves
 		entityMesh->animationFrame = 0;
-		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
@@ -132,7 +132,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->scale = .05f;
 		entityMesh->animationSpeed = 0.2f; // every 50ms
 		entityMesh->animationFrame = 0;
-		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
@@ -156,7 +156,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->scale = .05f;
 		entityMesh->animationSpeed = 0.2f;
 		entityMesh->animationFrame = 0;
-		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
@@ -180,7 +180,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->scale = .05f;
 		entityMesh->animationSpeed = 0.2f; 
 		entityMesh->animationFrame = 0;
-		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
@@ -196,7 +196,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->scale = .05f;
 		entityMesh->animationSpeed = 0.2f;
 		entityMesh->animationFrame = 0;
-		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
@@ -207,12 +207,14 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->down.push_back("daddy7.ply");
 		entityMesh->up.push_back("daddy10.ply");
 
-		entityMesh->mesh->meshName = "daddy7.ply";
+		entityMesh->spawning.push_back("prog_create.ply");
+
+		entityMesh->mesh->meshName = "prog_create.ply";
 		entityMesh->mesh->friendlyName = "prog";
 		entityMesh->mesh->scale = .05f;
 		entityMesh->animationSpeed = 0.2f;
 		entityMesh->animationFrame = 0;
-		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;
 
 		entityMesh->mesh->bUseDebugColours = true;
@@ -226,12 +228,19 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->down.push_back("enforcer1.ply");
 		entityMesh->up.push_back("enforcer1.ply");
 
+		entityMesh->spawning.push_back("enforcer2.ply");
+		entityMesh->spawning.push_back("enforcer3.ply");
+		entityMesh->spawning.push_back("enforcer4.ply");
+		entityMesh->spawning.push_back("enforcer5.ply");
+		entityMesh->spawning.push_back("enforcer6.ply");
+
+
 		entityMesh->mesh->meshName = "enforcer2.ply"; // Ideally have this flick through 6 when spawning, then stick to 1 afterwards
 		entityMesh->mesh->friendlyName = "enforcer";
 		entityMesh->mesh->scale = .05f;
 		entityMesh->animationSpeed = 0.2f;
 		entityMesh->animationFrame = 0;
-		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;
 
 		return entityMesh;
@@ -252,7 +261,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->scale = .05f;
 		entityMesh->animationSpeed = 0.1f;
 		entityMesh->animationFrame = 0;
-		entityMesh->timeSinceLastAnim = entityMesh->animationSpeed;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
 		entityMesh->mesh->yOffset = 2.75f;
 
 		return entityMesh;
