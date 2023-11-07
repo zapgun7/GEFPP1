@@ -7,7 +7,7 @@ cXShot::cXShot(glm::vec2 position, glm::vec2 direction)
 {
 	m_pos = position;
 	m_dir = direction;
-	m_pTheArena = cArena::getArena();
+	//m_pTheArena = cArena::getArena();
 	// When this gets created, randomize private values to influence how it flies (random scalars for sin and cos (maybe tan??))
 	// Property randomization
 	m_speed = rand() % 50 + 50;

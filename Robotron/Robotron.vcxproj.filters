@@ -153,6 +153,12 @@
     <ClCompile Include="cCruiseMissile.cpp">
       <Filter>Weapon\Projectiles</Filter>
     </ClCompile>
+    <ClCompile Include="cTankWeapon.cpp">
+      <Filter>Weapon\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="cTankShell.cpp">
+      <Filter>Weapon\Projectiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="iRobotron.h">
@@ -252,6 +258,12 @@
       <Filter>Weapon\Weapons</Filter>
     </ClInclude>
     <ClInclude Include="cCruiseMissile.h">
+      <Filter>Weapon\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="cTankWeapon.h">
+      <Filter>Weapon\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="cTankShell.h">
       <Filter>Weapon\Projectiles</Filter>
     </ClInclude>
   </ItemGroup>

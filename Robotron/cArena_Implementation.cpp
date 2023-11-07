@@ -118,7 +118,9 @@ void cArena_Implementation::Initialize()
 
 	//m_pCharacterMaker->makeCharacter("enforcer", glm::vec2(30, 40));
 
-	m_pCharacterMaker->makeCharacter("sphereoid", glm::vec2(30, 30));
+	//m_pCharacterMaker->makeCharacter("sphereoid", glm::vec2(30, 30));
+
+	m_pCharacterMaker->makeCharacter("tank", glm::vec2(35, 40));
 
 
 	lastTime = glfwGetTime();
@@ -427,7 +429,7 @@ void cArena_Implementation::Update()
 			}
 			for (int e = 0; e < m_projectiles.size(); e++) // Check if player bullet hits cruise missile or XShots
 			{
-				if ((m_projectiles[e]->getType() != CMissile) && (m_projectiles[e]->getType() != XShot))
+				if ((m_projectiles[e]->getType() != CMissile) && (m_projectiles[e]->getType() != XShot) && (m_projectiles[e]->getType() != TankShell))
 					continue;
 
 				// Assuming e is a cruise missile or XShot

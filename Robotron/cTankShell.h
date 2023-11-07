@@ -3,12 +3,11 @@
 #include "iProjectile.h"
 #include "cArena.h"
 
-
-class cXShot : public  iProjectile
+class cTankShell : public iProjectile
 {
 public:
-	cXShot(glm::vec2 position, glm::vec2 direction);
-	virtual ~cXShot();
+	cTankShell(glm::vec2 position, glm::vec2 direction);
+	virtual ~cTankShell();
 	virtual void Update(double deltaTime);
 	virtual glm::vec2 getPosition();
 	virtual void setID(int ID);
@@ -27,15 +26,15 @@ private:
 
 
 	float m_speed;
-	float m_curve; // Variable to dictate projectile curve direction and power
+	double m_TimeAlive;
 
 	int m_XBoundary = 113;
 	int m_YBoundary = 55;
 
-	int m_BorderHits = 0;
 
 
 
 
 	//cArena* m_pTheArena;
+
 };

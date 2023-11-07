@@ -186,3 +186,5 @@ tank7.ply
 tank8.ply
 cruise_missile.ply
 prog_create.ply
+tank_shell1.ply
+tank_shell2.ply

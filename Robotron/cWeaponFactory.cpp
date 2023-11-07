@@ -3,6 +3,7 @@
 #include "cPlayerWeapon.h"
 #include "cBrainWeapon.h"
 #include "cEnforcerWeapon.h"
+#include "cTankWeapon.h"
 #include "cProjectileFactory.h"
 
 iWeapon* cWeaponFactory::makeWeapon(std::string weapon)
@@ -24,6 +25,12 @@ iWeapon* cWeaponFactory::makeWeapon(std::string weapon)
 	if (weapon == "enforcer")
 	{
 		weaponToMake = new cEnforcerWeapon();
+		weaponToMake->setProjectilePrinter(newPrinter);
+		return weaponToMake;
+	}
+	if (weapon == "tank")
+	{
+		weaponToMake = new cTankWeapon();
 		weaponToMake->setProjectilePrinter(newPrinter);
 		return weaponToMake;
 	}

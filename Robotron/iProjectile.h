@@ -5,7 +5,8 @@ enum ProjType
 {
 	PBullet,
 	CMissile,
-	XShot
+	XShot,
+	TankShell
 };
 
 class iProjectile

@@ -314,6 +314,63 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->mesh->yOffset = 2.75f;
 		return entityMesh;
 	}
+	if (entity == "tank")
+	{
+		entityMesh->down.push_back("tank3.ply");
+		entityMesh->down.push_back("tank2.ply");
+		entityMesh->down.push_back("tank1.ply");
+		entityMesh->up.push_back("tank1.ply");
+		entityMesh->up.push_back("tank2.ply");
+		entityMesh->up.push_back("tank3.ply");
+
+		entityMesh->left.push_back("tank3.ply");
+		entityMesh->left.push_back("tank2.ply");
+		entityMesh->left.push_back("tank1.ply");
+
+		entityMesh->right.push_back("tank1.ply");
+		entityMesh->right.push_back("tank2.ply");
+		entityMesh->right.push_back("tank3.ply");
+
+
+		entityMesh->spawning.push_back("tank5.ply");
+		entityMesh->spawning.push_back("tank5.ply");
+		entityMesh->spawning.push_back("tank6.ply");
+		entityMesh->spawning.push_back("tank6.ply");
+		entityMesh->spawning.push_back("tank7.ply");
+		entityMesh->spawning.push_back("tank7.ply");
+		entityMesh->spawning.push_back("tank8.ply");
+		entityMesh->spawning.push_back("tank8.ply");
+
+		entityMesh->mesh->meshName = "brain5.ply";
+		entityMesh->mesh->friendlyName = "tank";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.05f;
+		entityMesh->animationFrame = 0;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+		return entityMesh;
+	}
+	if (entity == "tankshell")
+	{
+		entityMesh->left.push_back("tank_shell1.ply");
+		entityMesh->left.push_back("tank_shell2.ply");
+		entityMesh->right.push_back("tank_shell1.ply");
+		entityMesh->right.push_back("tank_shell2.ply");
+		entityMesh->up.push_back("tank_shell1.ply");
+		entityMesh->up.push_back("tank_shell2.ply");
+		entityMesh->down.push_back("tank_shell1.ply");
+		entityMesh->down.push_back("tank_shell2.ply");
+
+		entityMesh->mesh->meshName = "tank_shell1.ply"; // Ideally have this flick through 6 when spawning, then stick to 1 afterwards
+		entityMesh->mesh->friendlyName = "tankshell";
+		entityMesh->mesh->scale = .05f;
+		entityMesh->animationSpeed = 0.1f;
+		entityMesh->animationFrame = 0;
+		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
+		entityMesh->mesh->yOffset = 2.75f;
+
+		return entityMesh;
+	}
 
 	return NULL;
 

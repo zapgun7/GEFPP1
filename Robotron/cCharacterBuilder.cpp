@@ -11,6 +11,7 @@
 #include "cProg.h"
 #include "cEnforcer.h"
 #include "cSpheroid.h"
+#include "cTank.h"
 
 cCharacterBuilder::cCharacterBuilder()
 {
@@ -21,8 +22,6 @@ cCharacterBuilder::cCharacterBuilder()
 
 void cCharacterBuilder::makeCharacter(std::string character, glm::vec2 pos)
 {
-// 	if (m_pTheArena == NULL)
-// 		m_pTheArena = cArena::getArena();
 	AnimationInfo* newAnimInfo;
 
 	if (character == "player")
@@ -100,6 +99,18 @@ void cCharacterBuilder::makeCharacter(std::string character, glm::vec2 pos)
 		iRobotron* newRobo = new cSphereoid();
 		newRobo->setPos(pos);
 		newRobo->setRoboType(Sphereoid);
+		newAnimInfo->mesh->drawPosition = glm::vec3(pos, 0);
+		m_pTheArena->addRobotron(newRobo, newAnimInfo);
+		return;
+	}
+	if (character == "tank")
+	{
+		newAnimInfo = m_pMeshFactory->makeMesh(character);
+		iWeapon* newWeapon = m_pWeaponFactory->makeWeapon(character);
+		iRobotron* newRobo = new cTank();
+		newRobo->setPos(pos);
+		((cTank*)newRobo)->tankWeapon = newWeapon;
+		newRobo->setRoboType(Tank);
 		newAnimInfo->mesh->drawPosition = glm::vec3(pos, 0);
 		m_pTheArena->addRobotron(newRobo, newAnimInfo);
 		return;

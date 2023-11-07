@@ -3,6 +3,7 @@
 #include "cPlayerBullet.h"
 #include "cCruiseMissile.h"
 #include "cXShot.h"
+#include "cTankShell.h"
 #include "cArena.h"
 
 
@@ -56,6 +57,13 @@ void cProjectileFactory::makeProjectile(std::string proj, glm::vec2 pos, glm::ve
 		projectileToMake = new cXShot(pos, dir);
 		newAnimInfo = m_pMeshFactory->makeMesh("xshot");
 		projectileToMake->setType(XShot);
+		pTheArena->addProjectile(projectileToMake, newAnimInfo);
+	}
+	if (proj == "tankshell")
+	{
+		projectileToMake = new cTankShell(pos, dir);
+		newAnimInfo = m_pMeshFactory->makeMesh("tankshell");
+		projectileToMake->setType(TankShell);
 		pTheArena->addProjectile(projectileToMake, newAnimInfo);
 	}
 

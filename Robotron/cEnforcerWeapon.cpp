@@ -8,7 +8,7 @@ cEnforcerWeapon::cEnforcerWeapon()
 
 cEnforcerWeapon::~cEnforcerWeapon()
 {
-
+	delete m_pProjectilePrinter;
 }
 
 void cEnforcerWeapon::Shoot(glm::vec2 pos, glm::vec2 dir)

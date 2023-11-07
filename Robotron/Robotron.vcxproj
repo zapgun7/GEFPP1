@@ -157,6 +157,8 @@
     <ClCompile Include="cQuark.cpp" />
     <ClCompile Include="cSpheroid.cpp" />
     <ClCompile Include="cTank.cpp" />
+    <ClCompile Include="cTankShell.cpp" />
+    <ClCompile Include="cTankWeapon.cpp" />
     <ClCompile Include="cVAOManager\cVAOManager.cpp" />
     <ClCompile Include="cWeaponFactory.cpp" />
     <ClCompile Include="cXShot.cpp" />
@@ -190,6 +192,8 @@
     <ClInclude Include="cQuark.h" />
     <ClInclude Include="cSpheroid.h" />
     <ClInclude Include="cTank.h" />
+    <ClInclude Include="cTankShell.h" />
+    <ClInclude Include="cTankWeapon.h" />
     <ClInclude Include="cVAOManager\cVAOManager.h" />
     <ClInclude Include="cWeaponFactory.h" />
     <ClInclude Include="cXShot.h" />
