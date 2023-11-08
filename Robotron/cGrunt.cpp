@@ -42,9 +42,12 @@ void cGrunt::Attack()
 
 void cGrunt::Update(double deltaTime) 
 {
+	// Moves purely on diagonals, takes whichever diagonal is most pointed toward the player
+	// Speed up the longer the level goes on
 	m_TimeToNextMove -= deltaTime;
 	m_TimeToSpeedUp -= deltaTime;
 
+	// Speed up the grunt
 	if (m_TimeToSpeedUp <= 0)
 	{
 		m_TimeToSpeedUp += m_SpeedUpInterval;
@@ -53,6 +56,7 @@ void cGrunt::Update(double deltaTime)
 		if (m_MoveInterval < 0.15) m_MoveInterval = 0.2f;
 	}
 
+	// Move
 	if (m_TimeToNextMove <= 0)
 	{
 		m_TimeToNextMove += m_MoveInterval;

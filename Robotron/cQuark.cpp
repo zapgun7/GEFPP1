@@ -56,6 +56,9 @@ void cQuark::Attack()
 
 void cQuark::Update(double deltaTime)
 {
+	// Moves very erratically, choosing a new direction and speed on a whim (every 0.5s a 1/3 chance)
+	// Disappears from the arena upon running out of enforcers left to spawn
+
 	m_TimeTillDirChange -= deltaTime;
 	if (m_TimeTillDirChange <= 0)
 	{

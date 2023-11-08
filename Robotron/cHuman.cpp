@@ -45,6 +45,8 @@ int cHuman::getID()
 
 void cHuman::Update(double deltaTime) // Walk in a straight line until it comes close to a boarder, then pick a new dir?
 {
+	// Finds a new direction when it walks into a wall
+
 	if ((abs(m_pos.x) > m_XBoundary - 1) || (abs(m_pos.y) > m_YBoundary - 1))
 	{
 		findNewDirection(); // Might set a new direction
@@ -59,6 +61,8 @@ void cHuman::Update(double deltaTime) // Walk in a straight line until it comes 
 // Checks to see if the current direction is in the direction of a wall they are adjacent to, if they are it rerolls their direction
 void cHuman::findNewDirection()
 {
+	// Chooses a new direction that does not go into the wall(s) it is adjacent to
+
 	bool isXProblem = false;
 	bool isYProblem = false;
 	if (abs(m_pos.x) > m_XBoundary - 1) // X-Boundary problem

@@ -589,6 +589,8 @@ void cArena_Implementation::Update()
 	///////////////////////////////// AFTERIMAGES ///////////////////////////
 	/////////////////////////////////////////////////////////////////////////
 
+
+// Just duplicate the current sprite of the thing, give it a distinguishable friendlyname and the graphics main takes care of the rest
 	for (iRobotron* robo : m_robotrons)
 	{
 		if (robo->getRoboType() == Prog)

@@ -80,6 +80,8 @@ void cEnforcer::Update(double deltaTime)
 		newState = Far;
 
 
+	// The closer the enforcer is, the slower they move, the more they shoot, and the slower their shots. All opposite for being farther away
+
 	if (newState == Closest) // Closest
 	{
 		m_speed = 15.0f;

@@ -58,7 +58,9 @@ bool cGraphicsMain::Initialize()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	m_window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
+	GLFWmonitor* primary = glfwGetPrimaryMonitor();
+
+	m_window = glfwCreateWindow(1920, 980, "Robotron", NULL, NULL);
 	if (!m_window)
 	{
 		glfwTerminate();

@@ -43,6 +43,7 @@ void cProg::Attack()
 
 void cProg::Update(double deltaTime)
 {
+	// Moves very fast purely in 4 cardinal directions (no diagonals)
 
 	// Spawning behavior
 	if (m_IsSpawning)

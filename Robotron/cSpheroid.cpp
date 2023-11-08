@@ -54,23 +54,33 @@ void cSphereoid::Attack()
 
 void cSphereoid::Update(double deltaTime)
 {
-	if (rand() % 150 == 0) // Change direction
+	// Similar to quarks, but with a bit more control, and smoother turning
+	// Every 0.1s has a 1/10 chance to have a new target direction
+	// Every update, shifts its actual direction a little closer to the target
+	// Changes have to be more than 50 degrees from the last target direction
+
+
+	m_TimeTillDirChange -= deltaTime;
+	if (m_TimeTillDirChange <= 0)
 	{
-		m_NewDir = m_dir;
-		//acos(glm::dot(newDir, m_dir)/ glm::dot(glm::length(newDir), glm::length(m_dir)))
-		float tempFlt = 0;
-		while (tempFlt < 50) // Makes sure newDir is at least 60 degrees different than the old direction
+		m_TimeTillDirChange += m_ChangeDirInterval;
+		if (rand() % 10 == 0) // Change direction
 		{
-			m_NewDir.x = (rand() % 99 + 1);
-			m_NewDir.x /= 100;
-			m_NewDir.y = (rand() % 99 + 1);
-			m_NewDir.y /= 100;
-			if (rand() % 2 == 0) m_NewDir.x *= -1;
-			if (rand() % 2 == 0) m_NewDir.y *= -1;
-			m_NewDir = glm::normalize(m_NewDir);
-			tempFlt = glm::degrees(abs(acos(glm::dot(m_NewDir, m_dir) / glm::length(m_NewDir) * glm::length(m_dir))));
+			m_NewDir = m_dir;
+			//acos(glm::dot(newDir, m_dir)/ glm::dot(glm::length(newDir), glm::length(m_dir)))
+			float tempFlt = 0;
+			while (tempFlt < 50) // Makes sure newDir is at least 60 degrees different than the old direction
+			{
+				m_NewDir.x = (rand() % 99 + 1);
+				m_NewDir.x /= 100;
+				m_NewDir.y = (rand() % 99 + 1);
+				m_NewDir.y /= 100;
+				if (rand() % 2 == 0) m_NewDir.x *= -1;
+				if (rand() % 2 == 0) m_NewDir.y *= -1;
+				m_NewDir = glm::normalize(m_NewDir);
+				tempFlt = glm::degrees(abs(acos(glm::dot(m_NewDir, m_dir) / glm::length(m_NewDir) * glm::length(m_dir))));
+			}
 		}
-		//m_dir = m_NewDir;
 	}
 
 	// Graviatate towards newDir

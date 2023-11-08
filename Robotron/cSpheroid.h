@@ -44,6 +44,9 @@ private:
 	float const m_EnforcerSpawnInterval = 0.3f;
 	double m_TimeTillEnforcerSpawn = m_EnforcerSpawnInterval;
 
+	float const m_ChangeDirInterval = 0.1f;
+	double m_TimeTillDirChange = m_ChangeDirInterval;
+
 	// Map boundary
 	int m_XBoundary = 113;
 	int m_YBoundary = 55;

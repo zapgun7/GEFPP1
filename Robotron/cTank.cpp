@@ -52,6 +52,13 @@ void cTank::Attack()
 
 void cTank::Update(double deltaTime)
 {
+	// Moves only on diagonals
+	// Tries to keep its distance from the player
+	// Tries to avoid being on the player's diagonals
+	// Zigzags a lot
+
+
+
 	// Spawning behavior
 	if (m_IsSpawning)
 	{
@@ -127,16 +134,6 @@ void cTank::Update(double deltaTime)
 			m_dir = glm::normalize(m_dir);
 		}
 	}
-
-
-	
-	//m_dir = playerDir;
-	// Move towards player in a tanky way
-	// If y direction dominant relative to player, zigzag L/R       if x zigzag up/down
-	// Random chance to change zig/zag direction, each time might put it into a different sector
-
-
-
 
 
 	m_pos += m_dir * m_speed * (float)deltaTime;

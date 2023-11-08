@@ -57,7 +57,8 @@ void cHulk::Attack()
 void cHulk::Update(double deltaTime)
 {
 	// If near the border, changes direction
-	// Other than that, sometimes changes direction (set some probability)
+	// Mostly just wanders around, completely in its own world
+
 	if (rand() % (200 - m_oddsAdjuster) == 0) // Chance to abruptly change directions
 	{
 		m_oddsAdjuster = 0;
@@ -123,6 +124,10 @@ void cHulk::Update(double deltaTime)
 // Changes direction around the area border
 void cHulk::findNewDirection(void)
 {
+	// This only gets triggered when the hulk is near enough to a border
+	// Checks if it is actively moving towards a wall that is too close, then forces a direction change
+	// Otherwise if just moving along a wall encourages it to change direction by incrementing m_oddsAdjuster, which increases chance of movement in its Update()
+
 	if (m_oddsAdjuster < 150) // Increases chance that hulk moves away from the wall the more they're against the wall
 		m_oddsAdjuster++;
 
