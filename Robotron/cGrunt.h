@@ -37,8 +37,11 @@ private:
 
 
 	float const m_speed = 5.0f;
-	float const m_MoveInterval = 0.5f; // Time between moving
+	float m_MoveInterval = 0.7f; // Time between moving
 	float m_TimeToNextMove = m_MoveInterval;
+
+	float const m_SpeedUpInterval = 0.2f;
+	float m_TimeToSpeedUp = m_SpeedUpInterval;
 
 	cArena* m_pTheArena;
 };

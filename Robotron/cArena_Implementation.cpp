@@ -104,6 +104,36 @@ void cArena_Implementation::Initialize()
 		scorePos.x += 4;
 	}
 
+	// Initialize the wave counter
+	glm::vec2 wavePos = glm::vec2(-20, -60);
+	std::string wavestr = "WAVE";
+	for (unsigned int i = 0; i < 4; i++) // Build the 'wave' word first
+	{
+		cMesh* newNumber = new cMesh();
+		newNumber->meshName = "largefont";
+		newNumber->meshName += wavestr[i];
+		newNumber->meshName += ".ply";
+		newNumber->scale = 0.05f;
+		newNumber->drawPosition = glm::vec3(wavePos, 0);
+		newNumber->bDoNotLight = true;
+		newNumber->uniqueID = -1; // Set to -1, as nothing else should be this (default 0 gets in the way)
+		m_pGraphMain->addToDrawMesh(newNumber);
+		wavePos.x += 4;
+	}
+	wavePos.x += 2;
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		cMesh* newNumber = new cMesh();
+		newNumber->meshName = "largefont0.ply";
+		newNumber->scale = 0.05f;
+		newNumber->drawPosition = glm::vec3(wavePos, 0);
+		newNumber->bDoNotLight = true;
+		newNumber->uniqueID = -1; // Set to -1, as nothing else should be this (default 0 gets in the way)
+		m_pGraphMain->addToDrawMesh(newNumber);
+		mWaveCounter.push_back(newNumber);
+		wavePos.x += 4;
+	}
+
 	InitializeLevel(true);
 
 	lastTime = glfwGetTime();
@@ -397,6 +427,7 @@ void cArena_Implementation::Update()
 				if (glm::distance(m_robotrons[e]->getPos(), humanPos) < 3)
 				{
 					// TODO: Destroy human, put skull over this position (which disappears soon after or smthn, whatever it does in the real robotron)
+					createScoreNumber(-1, humanPos);
 					AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID());
 					deleteHuman(m_humans[i]->getID(), humanInfo);
 				    i--;
@@ -592,6 +623,17 @@ void cArena_Implementation::Update()
 	}
 
 
+	//////////////////////// WAVE COUNTER ////////////////////
+	std::string wavestr = std::to_string(m_wave);
+	int waveIdx = 0;
+	for (int i = wavestr.size() - 1; i > -1; i--)
+	{
+		std::string filename = "largefont";
+		filename += wavestr[i];
+		filename += ".ply";
+
+		mWaveCounter[2 - waveIdx++]->meshName = filename;
+	}
 
 
 	m_keysPressed.assign(8, false); // Clear the "buffer"
@@ -718,8 +760,8 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 		int grunts = 0;
 		int humans = 10;
 		int brains = 0;
-		int sphereoids = 1;
-		int quarks = 1;
+		int sphereoids = 0;
+		int quarks = 0;
 
 		///////////////////////////////////////////////////////////////    1 Grunts + humans                                         +Diff-> Hulks
 		///////////LEVEL RANDOMIZATION (With difficulty scaling!///////    2 Many Grunts + few Hulks + sphereoids + humans           +Diff-> +1 quark, maybe increase amounts of quark and sphereoids
@@ -1045,6 +1087,18 @@ int cArena_Implementation::getScoreAmount(RoboType type)
 // Creates a score mesh
 void cArena_Implementation::createScoreNumber(int score, glm::vec2 pos)
 {
+	if (score == -1) // Human death
+	{
+		cMesh* familyDeath = new cMesh();
+		familyDeath->drawPosition = glm::vec3(pos, 0);
+		familyDeath->scale = 0.05f;
+		familyDeath->bDoNotLight = true;
+		familyDeath->uniqueID = -1;
+		familyDeath->friendlyName = "score";
+		familyDeath->meshName = "familydeath.ply";
+		m_pGraphMain->addToDrawMesh(familyDeath);
+		return;
+	}
 	if (score % 1000 != 0) // A little safety so we don't call the wrong score
 		return;
 

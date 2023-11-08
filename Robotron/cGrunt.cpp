@@ -43,6 +43,15 @@ void cGrunt::Attack()
 void cGrunt::Update(double deltaTime) 
 {
 	m_TimeToNextMove -= deltaTime;
+	m_TimeToSpeedUp -= deltaTime;
+
+	if (m_TimeToSpeedUp <= 0)
+	{
+		m_TimeToSpeedUp += m_SpeedUpInterval;
+		m_MoveInterval -= (0.05 / (rand() % 5 + 2));
+
+		if (m_MoveInterval < 0.15) m_MoveInterval = 0.2f;
+	}
 
 	if (m_TimeToNextMove <= 0)
 	{

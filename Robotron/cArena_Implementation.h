@@ -53,6 +53,7 @@ private:
 	cPlayer* m_thePlayer;
 
 	std::vector<cMesh*> mScoreboard;
+	std::vector<cMesh*> mWaveCounter;
 
 	int m_XBoundary = 113;
 	int m_YBoundary = 55;
