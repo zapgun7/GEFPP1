@@ -19,7 +19,8 @@ cTankShell::~cTankShell()
 
 void cTankShell::Update(double deltaTime)
 {
-	// Move in direction, bounce off border
+	// Moves in the direction it was fired, only changing when it hits a wall
+	// Has a lifetime, which is reduced additionally when hitting a wall
 
 	m_pos += m_dir * m_speed * (float)deltaTime;
 

@@ -14,6 +14,8 @@ cPlayerBullet::~cPlayerBullet()
 
 void cPlayerBullet::Update(double deltaTime)
 {
+	// What a simple projectile :)
+
 	pos += dir * speed * (float)deltaTime;
 	return;
 }

@@ -21,6 +21,7 @@ cCharacterBuilder::cCharacterBuilder()
 	m_pMeshFactory = new cMeshFactory();
 }
 
+// Creates and assembles the necessary components for each entity type (non-projectile) and calls an add function to the area to properly add them
 void cCharacterBuilder::makeCharacter(std::string character, glm::vec2 pos)
 {
 	AnimationInfo* newAnimInfo;

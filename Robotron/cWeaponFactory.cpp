@@ -6,6 +6,9 @@
 #include "cTankWeapon.h"
 #include "cProjectileFactory.h"
 
+
+// Sets up different kinds of weapons; they're kinda all the same, except which kinds of projectils it makes with its printers
+// Basic ol' factory I guess
 iWeapon* cWeaponFactory::makeWeapon(std::string weapon)
 {
 	iWeapon* weaponToMake;

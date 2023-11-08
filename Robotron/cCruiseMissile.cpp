@@ -18,6 +18,9 @@ cCruiseMissile::~cCruiseMissile()
 
 void cCruiseMissile::Update(double deltaTime)
 {
+	// Always is moving vertically if y is different than the players
+	// Rapidly moves horizontally in controlled-randomized intervals
+
 	glm::vec2 playerDir = m_pTheArena->getPlayerPosition();
 	playerDir = glm::normalize(playerDir - m_pos);
 	////////// VERTICAL MOVEMENT /////////

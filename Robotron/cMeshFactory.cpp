@@ -2,6 +2,8 @@
 #include "cMeshFactory.h"
 #include <random>
 
+
+// Creates animation info for every entity, setting up direction meshes, animation speed, and some parameters for spawning animations!
 AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 {
 	AnimationInfo* entityMesh = new AnimationInfo();

@@ -8,11 +8,8 @@
 cArena_Implementation::cArena_Implementation()
 {
 	std::cout << "cArena_Implementation created." << std::endl;
-	//m_meshFactory = new cMeshFactory();
 	m_keysPressed.assign(8, false);
 	m_pGraphMain = cGraphicsMain::getGraphicsMain();
-	//this->pTheWeaponFactory = new cWeaponMaker();
-	//this->m_arenaSizeInMeters = 0.0f;
 }
 
 cArena_Implementation::~cArena_Implementation()
@@ -36,9 +33,6 @@ glm::vec2 cArena_Implementation::getClosestHuman(glm::vec2 whereIAm)
 
 glm::vec2 cArena_Implementation::getPlayerPosition() // Returns unit vector to player
 {
-	//glm::vec2 returnDir = m_thePlayer->getPos() - whereIam;
-	//returnDir = glm::normalize(returnDir);
-	//return returnDir;
 	glm::vec2 playerPos = m_thePlayer->getPos();
 	return playerPos;
 }
@@ -85,6 +79,7 @@ void cArena_Implementation::addAfterimage(cMesh* aImg)
 	m_pGraphMain->addToDrawMesh(aImg);
 }
 
+// This initializes the game as a whole, only run once per app startup
 void cArena_Implementation::Initialize()
 {
 	m_pCharacterMaker = new cCharacterBuilder();
@@ -155,28 +150,29 @@ void cArena_Implementation::Initialize()
 
 }
 
+// This is called from the cInputHandler to update the state of relevant keys
 void cArena_Implementation::storeKeys(std::vector<bool> keys)
 {
 	m_keysPressed = keys;
 	return;
 }
 
-// This function updates animations, calls update functions for all entities that require it, will scan for hit detection, and keep things in the boundaries
+// This function does a lot, perhaps too much but it works!
+// Updates all entities, including animation
+// Performs hit detection between entities and responds accordingly
+// Updates score, wave counter, lives on-screen
+// Initiates special visual effects for progs, cruiser missiles, and dead robotrons, with the cGraphicsMain taking care of the rest
 void cArena_Implementation::Update()
 {
-	// Update animations
-	// Apply logged input to player
-
 	double currTime = glfwGetTime();
 	double deltaTime = currTime - lastTime;
 	lastTime = currTime;
-	//deltaTime = 0.001f;
 
-	if (m_TimeTillGameContinues > 0) // TODO On game start, have player size big and gradually decrease size to correct amount leading up to game start
+	if (m_TimeTillGameContinues > 0) // This is what puts delay after a stage load, or after player death
 	{
 		m_TimeTillGameContinues -= deltaTime;
-		// Scale down player
-		if (!m_bResetStage)
+
+		if (!m_bResetStage) // If it is a new stage, have the player size decrease in line with the start of the level
 		{
 			AnimationInfo* playerInfo = findAnimInfoByID(m_thePlayer->getID());
 			playerInfo->mesh->scale = 0.05f + m_TimeTillGameContinues;
@@ -185,21 +181,21 @@ void cArena_Implementation::Update()
 
 		return;
 	}
-	else if(!m_bResetStage)
+	else if(!m_bResetStage) // Make sure player draw info is correct
 	{
 		AnimationInfo* playerInfo = findAnimInfoByID(m_thePlayer->getID());
 		playerInfo->mesh->scale = 0.05f;
 		playerInfo->mesh->yOffset = 2.75f;
 	}
 
-	if (m_bResetStage)
+	if (m_bResetStage) // If a stage re-initialization was called
 	{
 		InitializeLevel(m_bResetFresh);
 		return;
 	}
 
 
-	// Check if stage has been completed
+	// Check if stage has been completed, i.e. if only robotrons left (if any) are hulks and if there's no more humans left to save
 	bool isAllHulks = true;
 	for (iRobotron* robo : m_robotrons)
 	{
@@ -219,8 +215,8 @@ void cArena_Implementation::Update()
 		}
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////// PLAYER /////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////     Updates the player
+	////////////////////////////////////// PLAYER ///////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -279,9 +275,9 @@ void cArena_Implementation::Update()
 	tempInfo->mesh->drawPosition = glm::vec3(playerPos, 0);
 
 	
-	 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 ////////////////////////////////////////////////// ROBOTRONS ////////////////////////////////////////////////////////////
-	 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 ///////////////////////////////////////////////////////////////////////////////////////////////    Updates all currently active robotrons
+	 ////////////////////////////////////////////////// ROBOTRONS //////////////////////////////////    Checks if it is colliding with the player and updates accordingly
+	 ///////////////////////////////////////////////////////////////////////////////////////////////
 	 
 	// Update robotrons and their animations
 
@@ -375,9 +371,9 @@ void cArena_Implementation::Update()
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////
-	///////////////////////////// HUMAN UPDATE //////////////////////////// This will be very similar to the player update above
-	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////   Updates all humans currently active
+	///////////////////////////// HUMAN UPDATE /////////////////////////   Detects if it is touching a hulk or brain and acts accordingly
+	////////////////////////////////////////////////////////////////////   Detects if it is touching the player and acts accordingly
 
 	for (unsigned int i = 0; i < m_humans.size(); i++) // Update all humans
 	{
@@ -426,7 +422,7 @@ void cArena_Implementation::Update()
 			deleteHuman(m_humans[i]->getID(), humanInfo);
 			i--;
 			m_score += m_NextHumanPoints;
-			createScoreNumber(m_NextHumanPoints, humanPos);
+			createScoreNumber(m_NextHumanPoints, humanPos); // Spawns score mesh
 			
 			m_NextHumanPoints += 1000;
 			m_NextHumanPoints = m_NextHumanPoints > 5000 ? 5000 : m_NextHumanPoints;
@@ -441,8 +437,7 @@ void cArena_Implementation::Update()
 			{
 				if (glm::distance(m_robotrons[e]->getPos(), humanPos) < 3)
 				{
-					// TODO: Destroy human, put skull over this position (which disappears soon after or smthn, whatever it does in the real robotron)
-					createScoreNumber(-1, humanPos);
+					createScoreNumber(-1, humanPos); // Spawns a skull
 					AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID());
 					deleteHuman(m_humans[i]->getID(), humanInfo);
 				    i--;
@@ -453,10 +448,9 @@ void cArena_Implementation::Update()
 			{
 				if (glm::distance(m_robotrons[e]->getPos(), humanPos) < 3)
 				{
-					// TODO: Turn human into prog (destroy human an replace with prog in the same position)
 					AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID());
-					deleteHuman(m_humans[i]->getID(), humanInfo);
-					m_pCharacterMaker->makeCharacter("prog", glm::vec2(humanPos));
+					deleteHuman(m_humans[i]->getID(), humanInfo); // Deletes human
+					m_pCharacterMaker->makeCharacter("prog", glm::vec2(humanPos)); // Then spawns a prog in its place
 					i--;
 					break;
 				}
@@ -465,9 +459,9 @@ void cArena_Implementation::Update()
 	}
 
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////// PROJECTILES //////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////     Updates every projectile currently active
+	////////////////////////////////////////// PROJECTILES ////////////////////////////////////////////////////     This checks player bullet collision with walls and enemies
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////     Also checks enemy projectiles with player
 
 	// Update projectile animations and perform hit detection
 	for (int i = 0; i < m_projectiles.size(); i++)
@@ -504,11 +498,10 @@ void cArena_Implementation::Update()
 			// Detect hit on player
 			if (glm::distance(projPos, m_thePlayer->getPos()) < 2.5)
 			{
-				std::cout << "Player hit with projectile (dies)" << std::endl;
 				tempInfo = findAnimInfoByID(m_thePlayer->getID());
-				tempInfo->mesh->friendlyName = "destructing";
-				deletePlayer(tempInfo);
-				m_TimeTillGameContinues = m_GameContinueInterval; // 4s of pause after player death
+				tempInfo->mesh->friendlyName = "destructing"; // This name tells the cGraphicsMain to set it to red, increase scale and decrease red over an amount of time before deleting
+				deletePlayer(tempInfo); 
+				m_TimeTillGameContinues = m_GameContinueInterval; // 2s of pause after player death
 				m_bResetStage = true;
 				return;
 			}
@@ -668,7 +661,7 @@ void cArena_Implementation::Update()
 	}
 
 
-	m_keysPressed.assign(8, false); // Clear the "buffer"
+	m_keysPressed.assign(8, false); // Clear the input buffer
 	
 }
 
@@ -706,6 +699,7 @@ void cArena_Implementation::deleteRobotron(int roboNum, AnimationInfo* anim)
 {
 	if (anim->mesh->friendlyName != "destructing") // Let graphics main take care of destructing "animation" and deleting the mesh
 	{
+		// No death animation, so delete mesh info
 		m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID); // Remove robo mesh from graphics class
 		delete anim->mesh;
 	}
@@ -749,8 +743,8 @@ void cArena_Implementation::deletePlayer(AnimationInfo* anim)
 	delete m_thePlayer; // Delete robotron object itself
 }
 
-// Re(loads) the level, whether after player death or stage completion
-void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities can be spawned
+// (Re)loads the level, whether after player death or stage completion
+void cArena_Implementation::InitializeLevel(bool isFresh) // 180 max entities can be spawned
 {
 	AnimationInfo* tempInfo;
 	// Only projectiles all get deleted on either condition of this function
@@ -884,6 +878,8 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 		int xPlace = 0;
 		int yPlace = 0;
 
+
+		///////////////// NOW SPAWN ALL RANDOMIZED ENTITIES //////////////////
 
 		while (hulks != 0)
 		{
@@ -1024,13 +1020,14 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 		}
 
 	}
-	else if (!isFresh)
+	else if (!isFresh) // Reload the level, i.e. replace all currently active robotrons and humans;     Player must've died to get here
 	{
 		m_lives--;
 
 		if (m_lives < 0)
 		{
 			// Game Over
+			// Returns to Update(), returns, then upon Update() getting called again from main, calls this InitializeLevel() again with the following parameters
 			m_score = 0;
 			m_lifeScore = 0;
 			m_wave = 0;
@@ -1040,13 +1037,16 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 			return;
 		}
 
+
+		// Here assuming the player used up another valid life and gets to keep on goin
+
 		bool isValid = false;
 		glm::vec2 placePos = glm::vec2(0);
 		int xPlace = 0;
 		int yPlace = 0;
 
 
-		for(unsigned int i = 0; i < m_robotrons.size(); i++)
+		for(unsigned int i = 0; i < m_robotrons.size(); i++) // Find new spots for all robotrons
 		{
 			
 			while (!isValid) // Find a valid place for the entity
@@ -1059,6 +1059,7 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 					isValid = true;
 			}
 
+
 			m_SpawnSpots[xPlace][yPlace] = true;
 			// Now to translate into real positions
 			placePos.x = (xPlace - 10) * 10;
@@ -1069,7 +1070,7 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 			tempInfo->mesh->drawPosition = glm::vec3(placePos, 0);
 			isValid = false;
 		}
-		for (unsigned int i = 0; i < m_humans.size(); i++)
+		for (unsigned int i = 0; i < m_humans.size(); i++) // Find new spots for all humans
 		{
 
 			while (!isValid) // Find a valid place for the entity
@@ -1103,6 +1104,8 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 	m_NextHumanPoints = 1000;
 }
 
+
+// Resest placement array to default values: all false except for a 3x3 encompassing the center position (player position)
 void cArena_Implementation::ResetPlacementArray()
 {
 	for (unsigned int i = 0; i < 21; i++)
@@ -1123,6 +1126,7 @@ void cArena_Implementation::ResetPlacementArray()
 	}
 }
 
+// Returns the amount of score for the type of passed enemy; used in adding to the internal m_score
 int cArena_Implementation::getScoreAmount(RoboType type)
 {
 	switch (type)
@@ -1147,7 +1151,7 @@ int cArena_Implementation::getScoreAmount(RoboType type)
 	}
 }
 
-// Creates a score mesh
+// Creates a score mesh (the little 1000, 2000, ..., 5000 that appears when saving a human or killing the releveant robotron)
 void cArena_Implementation::createScoreNumber(int score, glm::vec2 pos)
 {
 	if (score == -1) // Human death
@@ -1179,3 +1183,4 @@ void cArena_Implementation::createScoreNumber(int score, glm::vec2 pos)
 
 	m_pGraphMain->addToDrawMesh(newNumberMesh);
 }
+// Wowee 1186 lines, surely this is too much responsibility for one class?

@@ -13,6 +13,8 @@ cProjectileFactory::cProjectileFactory()
 	m_pMeshFactory = new cMeshFactory();
 }
 
+// Creates all projectiles, calling other classes to make necessary stuff and combining it together to form the projectile!
+// An abstract factory or a builder... or both? 
 void cProjectileFactory::makeProjectile(std::string proj, glm::vec2 pos, glm::vec2 dir)
 {
 	//if (m_TheArena == NULL) // Initialize arena if not already

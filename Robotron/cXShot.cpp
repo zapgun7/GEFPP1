@@ -30,9 +30,13 @@ cXShot::~cXShot()
 
 void cXShot::Update(double deltaTime)
 {
+	// Pretty funky little projectile: Fires in a direction with a little noise added
+	// Upon being made generates a "curve" strength, which adds perpendicular (to its current direction) force to its direction
+	// If against the wall for long enough, expires
+	// Possible for it to be perpetually spinning (not able to hit the wall for long enough), but it's rare so I thought it was fun
+
 	bool isHittingBorder = false;
-	// Moves relative to the initial position
-	// Changes weirdly: Keep original direction, add to position some multiple of the direction, plus some sin/cos shit to the perpendicular direction, to make it all wacky
+	
 	glm::vec2 curve;
 	if (m_curve < 0)
 		curve = glm::vec2(m_dir.y, -m_dir.x);
