@@ -11,7 +11,7 @@ cBrain::cBrain()
 
 cBrain::~cBrain()
 {
-
+	delete brainWeapon;
 }
 
 glm::vec2 cBrain::getPos()

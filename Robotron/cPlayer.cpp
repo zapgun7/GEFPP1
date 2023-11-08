@@ -11,6 +11,11 @@ cPlayer::cPlayer()
 	m_timeTillNextShot = 0.0f;
 }
 
+cPlayer::~cPlayer()
+{
+	delete playerWeapon;
+}
+
 void cPlayer::Update(std::vector<bool> keysPressed, double deltaTime)
 {
 	//std::cout << pos.y << std::endl;
@@ -38,14 +43,41 @@ void cPlayer::Update(std::vector<bool> keysPressed, double deltaTime)
 	movementToAdd *= m_speed * (float)deltaTime;
 	this->pos += movementToAdd;
 
+	bool isShooting = false;
+	glm::vec2 shootDir = glm::vec2(0);
+	if (keysPressed[4]) // Up
+	{
+		shootDir.y = 1;
+		isShooting = true;
+	}
+	if (keysPressed[5]) // Down
+	{
+		shootDir.y = -1;
+		isShooting = true;
+	}
+	if (keysPressed[6]) // Left
+	{
+		shootDir.x = -1;
+		isShooting = true;
+	}
+	if (keysPressed[7]) // Right
+	{
+		shootDir.x = 1;
+		isShooting = true;
+	}
+	shootDir = glm::normalize(shootDir);
+
+
+
+
 	if (m_timeTillNextShot > 0)
 		m_timeTillNextShot -= deltaTime;
-	if (keysPressed[4]) // Up button
+	if (isShooting) // Up button
 	{
 		// Currently shooting
 		if (m_timeTillNextShot <= 0)
 		{
-			playerWeapon->Shoot(pos, dir);
+			playerWeapon->Shoot(pos, shootDir);
 			m_timeTillNextShot += m_shootCoolDown;
 		}
 		return;

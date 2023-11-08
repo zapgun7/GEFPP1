@@ -35,12 +35,15 @@ public:
 
 private:
 	AnimationInfo* findAnimInfoByID(int ID);
-	void deleteProjectile(int projNum, AnimationInfo* anim);
+	void deleteProjectile(int projID, AnimationInfo* anim);
 	void deleteRobotron(int roboNum, AnimationInfo* anim);
-	void deleteHuman(int humanNum, AnimationInfo* anim);
+	void deleteHuman(int humanID, AnimationInfo* anim);
+	void deletePlayer(AnimationInfo* anim);
 
 	void InitializeLevel(bool isFresh); // isFresh specifies if it's a brand new level requiring new enemy generation, player died and reloading otherwise
 	void ResetPlacementArray(); //Sets all values in m_SpawnSpots to false
+
+	int getScoreAmount(RoboType type);
 
 	std::vector<bool> m_keysPressed; // Last recorded user input
 	std::vector<iRobotron*> m_robotrons; // Vector of all enemies
@@ -48,8 +51,20 @@ private:
 	std::vector<iProjectile*> m_projectiles; // Vector of all existing projectiles
 	cPlayer* m_thePlayer;
 
+	std::vector<cMesh*> mScoreboard;
+
 	int m_XBoundary = 113;
 	int m_YBoundary = 55;
+
+	int m_score = 0; // Internal representation of score, used to update visual score
+	int m_NextHumanPoints = 1000;
+
+	float const m_GameContinueInterval = 2.0f; // Pause time after player death, and upon stage regeneration
+	double m_TimeTillGameContinues = m_GameContinueInterval; // Variable that delays game object updates. Allows a delay at the start of the game, and when the player dies before continuing
+
+	bool m_bResetStage = false; // Triggers from completing a level or a player death
+	bool m_bResetFresh = false; // Bool indicating if a stage should start fresh, player dies - false       player completes stage - true
+
 
 	bool m_SpawnSpots[21][9]; // 10 horizontal slots to left and right of 0,0 (player)| 4 vertical slots above and below 0,0 (player)
 

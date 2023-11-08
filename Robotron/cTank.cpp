@@ -22,7 +22,7 @@ cTank::cTank()
 
 cTank::~cTank()
 {
-
+	delete tankWeapon;
 }
 
 glm::vec2 cTank::getPos()

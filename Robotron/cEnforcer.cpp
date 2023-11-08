@@ -25,7 +25,7 @@ cEnforcer::cEnforcer()
 
 cEnforcer::~cEnforcer()
 {
-
+	delete enforcerWeapon;
 }
 
 glm::vec2 cEnforcer::getPos()

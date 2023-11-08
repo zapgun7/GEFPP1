@@ -56,11 +56,11 @@ void cInputHandler::queryKeys(GLFWwindow* window)
 	else
 		keysPressed.push_back(false);
 
-	state = glfwGetKey(window, GLFW_KEY_UP);
-	if (state == GLFW_PRESS)
-		keysPressed.push_back(true);
-	else
-		keysPressed.push_back(false);
+// 	state = glfwGetKey(window, GLFW_KEY_UP);
+// 	if (state == GLFW_PRESS)
+// 		keysPressed.push_back(true);
+// 	else
+// 		keysPressed.push_back(false);
 
 	theArena->storeKeys(keysPressed);
 }

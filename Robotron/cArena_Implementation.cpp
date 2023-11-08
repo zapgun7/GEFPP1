@@ -88,41 +88,20 @@ void cArena_Implementation::addAfterimage(cMesh* aImg)
 void cArena_Implementation::Initialize()
 {
 	m_pCharacterMaker = new cCharacterBuilder();
-	// Spawns things for the level
 
-
-
-	m_pCharacterMaker->makeCharacter("player", glm::vec2(0, 0));
-
-
-// 	m_pCharacterMaker->makeCharacter("grunt", glm::vec2(20, 40));
-// 	
-// 	m_pCharacterMaker->makeCharacter("grunt", glm::vec2(30, 50));
-// 	
-// 	m_pCharacterMaker->makeCharacter("grunt", glm::vec2(30, 10));
-	
-
-// 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(20, 20));
-// 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(45, 10));
-// 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-10, -10));
-// 	m_pCharacterMaker->makeCharacter("hulk", glm::vec2(-35, -30));
-	//m_robotrons[m_robotrons.size() - 1]->setPos(glm::vec2(45, 10));
-
-//	m_pCharacterMaker->makeCharacter("human", glm::vec2(-10, 10));
-// 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-30, 10));
-// 	m_pCharacterMaker->makeCharacter("human", glm::vec2(-60, 10));
-// 
-//	m_pCharacterMaker->makeCharacter("brain", glm::vec2(40, 50));
-
-	//m_pCharacterMaker->makeCharacter("prog", glm::vec2(40, -40));
-
-	//m_pCharacterMaker->makeCharacter("enforcer", glm::vec2(30, 40));
-
-	//m_pCharacterMaker->makeCharacter("sphereoid", glm::vec2(30, 30));
-
-	//m_pCharacterMaker->makeCharacter("tank", glm::vec2(35, 40));
-
-	//m_pCharacterMaker->makeCharacter("quark", glm::vec2(35, 40));
+	// Initialize the scoreboard
+	glm::vec2 scorePos = glm::vec2(-100, 55);
+	for (unsigned int i = 0; i < 9; i++)
+	{
+		cMesh* newNumber = new cMesh();
+		newNumber->meshName = "smallfont0.ply";
+		newNumber->scale = 0.05f;
+		newNumber->drawPosition = glm::vec3(scorePos, 0);
+		newNumber->bDoNotLight = true;
+		m_pGraphMain->addToDrawMesh(newNumber);
+		mScoreboard.push_back(newNumber);
+		scorePos.x += 4;
+	}
 
 	InitializeLevel(true);
 
@@ -145,7 +124,54 @@ void cArena_Implementation::Update()
 	double currTime = glfwGetTime();
 	double deltaTime = currTime - lastTime;
 	lastTime = currTime;
+	//deltaTime = 0.001f;
 
+	if (m_TimeTillGameContinues > 0) // TODO On game start, have player size big and gradually decrease size to correct amount leading up to game start
+	{
+		m_TimeTillGameContinues -= deltaTime;
+		// Scale down player
+		if (!m_bResetStage)
+		{
+			AnimationInfo* playerInfo = findAnimInfoByID(m_thePlayer->getID());
+			playerInfo->mesh->scale = 0.05f + m_TimeTillGameContinues;
+			playerInfo->mesh->yOffset = 2.75f + (m_TimeTillGameContinues * 30);
+		}
+
+		return;
+	}
+	else if(!m_bResetStage)
+	{
+		AnimationInfo* playerInfo = findAnimInfoByID(m_thePlayer->getID());
+		playerInfo->mesh->scale = 0.05f;
+		playerInfo->mesh->yOffset = 2.75f;
+	}
+
+	if (m_bResetStage)
+	{
+		InitializeLevel(m_bResetFresh);
+		return;
+	}
+
+
+	// Check if stage has been completed
+	bool isAllHulks = true;
+	for (iRobotron* robo : m_robotrons)
+	{
+		if (robo->getRoboType() != Hulk)
+		{
+			isAllHulks = false;
+			break;
+		}
+	}
+	if (isAllHulks)
+	{
+		if (m_humans.size() == 0)
+		{
+			m_bResetFresh = true;
+			m_bResetStage = true;
+			m_TimeTillGameContinues = m_GameContinueInterval;
+		}
+	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////// PLAYER /////////////////////////////////////////////
@@ -216,8 +242,8 @@ void cArena_Implementation::Update()
 	for (int i = 0; i < m_robotrons.size(); i++) // Increment through all robotrons
 	{
 		iRobotron* currRobo = m_robotrons[i];
-		//currRobo->Update(deltaTime); // Update robotron first
-		//currRobo->Update(0.2f);
+		currRobo->Update(deltaTime); // Update robotron first
+		//currRobo->Update(0.02f);
 		tempInfo = findAnimInfoByID(currRobo->getID());
 		//std::cout << tempInfo->mesh->meshName << std::endl;
 		
@@ -288,6 +314,19 @@ void cArena_Implementation::Update()
 
 
 		tempInfo->mesh->drawPosition = glm::vec3(currRobo->getPos(), 0); // Update position last
+
+
+		// Here check if the robot is colliding with the player
+		if (glm::distance(currRobo->getPos(), m_thePlayer->getPos()) < 3)
+		{
+			//std::cout << "player dies holy moly" << std::endl;
+			tempInfo = findAnimInfoByID(m_thePlayer->getID());
+			tempInfo->mesh->friendlyName = "destructing";
+			deletePlayer(tempInfo);
+			m_TimeTillGameContinues = m_GameContinueInterval; // 4s of pause after player death
+			m_bResetStage = true;
+			return;
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -297,7 +336,7 @@ void cArena_Implementation::Update()
 	for (unsigned int i = 0; i < m_humans.size(); i++) // Update all humans
 	{
 		m_humans[i]->Update(deltaTime);
-		AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID()); // Get animation info of player
+		AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID()); // Get animation info of human
 		glm::vec2 humanPos = m_humans[i]->getPos();
 
 		// Update human animation //////
@@ -334,15 +373,32 @@ void cArena_Implementation::Update()
 			}
 		}
 		humanInfo->mesh->drawPosition = glm::vec3(humanPos, 0);
+		// Check if human is touching the player and is rescued
+		if (glm::distance(humanPos, m_thePlayer->getPos()) < 4.5)
+		{
+			AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID());
+			deleteHuman(m_humans[i]->getID(), humanInfo);
+			i--;
+			m_score += m_NextHumanPoints;
+			// TODOSCORE put a little number thingy corresponding to m_NextHumanPoints
+			m_NextHumanPoints += 1000;
+			m_NextHumanPoints = m_NextHumanPoints > 5000 ? 5000 : m_NextHumanPoints;
+			
+			continue;
+		}
 
-		//for (iRobotron* robo : m_robotrons)
+		// Check if human is touching any relevant robotron
 		for (unsigned int e = 0; e < m_robotrons.size(); e++)
 		{
 			if (m_robotrons[e]->getRoboType() == Hulk)
 			{
-				if (glm::distance(m_robotrons[e]->getPos(), humanPos) < 5)
+				if (glm::distance(m_robotrons[e]->getPos(), humanPos) < 3)
 				{
 					// TODO: Destroy human, put skull over this position (which disappears soon after or smthn, whatever it does in the real robotron)
+					AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID());
+					deleteHuman(m_humans[i]->getID(), humanInfo);
+				    i--;
+					break;
 				}
 			}
 			else if (m_robotrons[e]->getRoboType() == Brain)
@@ -351,8 +407,10 @@ void cArena_Implementation::Update()
 				{
 					// TODO: Turn human into prog (destroy human an replace with prog in the same position)
 					AnimationInfo* humanInfo = findAnimInfoByID(m_humans[i]->getID());
-					deleteHuman(i, humanInfo);
+					deleteHuman(m_humans[i]->getID(), humanInfo);
 					m_pCharacterMaker->makeCharacter("prog", glm::vec2(humanPos));
+					i--;
+					break;
 				}
 			}
 		}
@@ -366,6 +424,8 @@ void cArena_Implementation::Update()
 	// Update projectile animations and perform hit detection
 	for (int i = 0; i < m_projectiles.size(); i++)
 	{
+		if (i < 0) continue;
+		
 		// Start by updating its position
 		m_projectiles[i]->Update(deltaTime); // Update position of projectile first
 
@@ -376,15 +436,15 @@ void cArena_Implementation::Update()
 		// Quickly check if projectile flagged itself for deletion
 		if (m_projectiles[i]->ShouldBeDestroyed())
 		{
-			deleteProjectile(i, tempInfo);
+			deleteProjectile(m_projectiles[i]->getID(), tempInfo);
 			i--;
 			continue;
 		}
 
 
-		if (tempInfo->mesh->friendlyName != "pbullet") // Only do this if not a player bullet (might change to if = if there's less projectiles overall to animate)
+		if (tempInfo->mesh->friendlyName != "pbullet") // Non-player bullets
 		{
-			// TODO some enemy projectiles will animate
+			// Animate robotron projectiles
 			tempInfo->timeTillNextAnim -= deltaTime;
 
 			if (tempInfo->timeTillNextAnim <= 0) // Time to tick next fram of animation
@@ -393,31 +453,42 @@ void cArena_Implementation::Update()
 				tempInfo->animationFrame = ((tempInfo->animationFrame + 1) % tempInfo->down.size());
 				tempInfo->mesh->meshName = tempInfo->down[tempInfo->animationFrame];
 			}
-			// TODO detect hits on player
+			// Detect hit on player
+			if (glm::distance(projPos, m_thePlayer->getPos()) < 2.5)
+			{
+				std::cout << "Player hit with projectile (dies)" << std::endl;
+				tempInfo = findAnimInfoByID(m_thePlayer->getID());
+				tempInfo->mesh->friendlyName = "destructing";
+				deletePlayer(tempInfo);
+				m_TimeTillGameContinues = m_GameContinueInterval; // 4s of pause after player death
+				m_bResetStage = true;
+				return;
+			}
 		}
 		else // Player bullet hit detection
 		{
 			if (abs(projPos.x) > m_XBoundary) // outside x boundary
 			{
-				deleteProjectile(i, tempInfo);
+				deleteProjectile(m_projectiles[i]->getID(), tempInfo);
 				i--;
 				continue;
 			}
 			else if (abs(projPos.y) > m_YBoundary) // outside y boundary 
 			{
-				deleteProjectile(i, tempInfo);
+				deleteProjectile(m_projectiles[i]->getID(), tempInfo);
 				i--;
 				continue;
 			}
-
+			bool doesProjDie = false;
 			for (int e = 0; e < m_robotrons.size(); e++) // Check if bullet hits any robotrons
 			{
 				glm::vec2 roboPos = m_robotrons[e]->getPos();
 				if (glm::distance(roboPos, projPos) < 5) 
 				{											// ROBOHIT!!!
-					AnimationInfo* roboInfo = findAnimInfoByID(m_robotrons[e]->getID());                                     // TODO: Spawn an explosion here (some object that loops through an animation and terminates after)
-					deleteProjectile(i, tempInfo);
+					AnimationInfo* roboInfo = findAnimInfoByID(m_robotrons[e]->getID());
+					deleteProjectile(m_projectiles[i]->getID(), tempInfo);
 					i--;
+					doesProjDie = true;
 					if(m_robotrons[e]->getRoboType() == Hulk)
 					{
 						m_robotrons[e]->isShot();
@@ -425,25 +496,39 @@ void cArena_Implementation::Update()
 					}
 					else
 					{
+						int scoreToAdd = getScoreAmount(m_robotrons[e]->getRoboType());
+						m_score += scoreToAdd;
+						if (scoreToAdd == 1000)
+						{
+							// TODOSCORE add a little 1000 thing here
+						}
 						roboInfo->mesh->friendlyName = "destructing";
 						deleteRobotron(e, roboInfo);
 						break;
 					}
 				}
 			}
+			if (doesProjDie) // Detect if projectile was deleted above
+			{
+				continue;
+			}
 			for (int e = 0; e < m_projectiles.size(); e++) // Check if player bullet hits cruise missile or XShots
 			{
 				if ((m_projectiles[e]->getType() != CMissile) && (m_projectiles[e]->getType() != XShot) && (m_projectiles[e]->getType() != TankShell))
 					continue;
 
-				// Assuming e is a cruise missile or XShot
+				// Assuming e is a cruise missile or XShot or tank shell
 				glm::vec2 otherProjPos = m_projectiles[e]->getPosition();
-				if (glm::distance(otherProjPos, projPos) < 2) // Distance of 2 for proj on proj collision
-				{											
-					AnimationInfo* otherProjInfo = findAnimInfoByID(m_projectiles[e]->getID());                                     // TODO: Spawn an explosion here (some object that goes through an animation and terminates after)
-					deleteProjectile(i, tempInfo);
+				if (glm::distance(otherProjPos, projPos) < 2.5) // Distance of 2.5 for proj on proj collision
+				{	
+					if (m_projectiles[e]->getType() == CMissile)
+					{
+						m_score += 25;
+					}
+					AnimationInfo* otherProjInfo = findAnimInfoByID(m_projectiles[e]->getID());
+					deleteProjectile(m_projectiles[i]->getID(), tempInfo);
 					i--;
-					deleteProjectile(e, otherProjInfo);
+					deleteProjectile(m_projectiles[e]->getID(), otherProjInfo);
 					break;
 				}
 			}
@@ -489,6 +574,26 @@ void cArena_Implementation::Update()
 	/////////////////////////////////////////////////////////////////////////
 
 
+	/////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////SCOREBOARD//////////////////////////////
+	/////////////////////////////////////////////////////////////////////////
+	if (m_score > 0)
+		std::cout << "break" << std::endl;
+
+	std::string scorestr = std::to_string(m_score);
+	int scoreBoardIdx = 0;
+	for (int i = scorestr.size() -1; i > -1; i--)
+	{
+		std::string filename = "smallfont";
+		filename += scorestr[i];
+		filename += ".ply";
+
+		mScoreboard[8 - scoreBoardIdx++]->meshName = filename;
+	}
+
+
+
+
 	m_keysPressed.assign(8, false); // Clear the "buffer"
 	
 }
@@ -505,13 +610,22 @@ AnimationInfo* cArena_Implementation::findAnimInfoByID(int ID)
 	return itAnim->second;
 }
 
-void cArena_Implementation::deleteProjectile(int projNum, AnimationInfo* anim)
+void cArena_Implementation::deleteProjectile(int projID, AnimationInfo* anim)
 {
 	m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID);
 	delete anim; // Delete mesh info
-	m_spriteIDMap.erase(m_projectiles[projNum]->getID()); // Remove from ID_to_Mesh map
-	delete m_projectiles[projNum]; // Delete projectile object itself
-	m_projectiles.erase(m_projectiles.begin() + projNum); // Remove from projectile vector
+	m_spriteIDMap.erase(projID); // Remove from ID_to_Mesh map
+	int projIdx = 0;
+	for (unsigned int i = 0; i < m_projectiles.size(); i++)
+	{
+		if (m_projectiles[i]->getID() == projID)
+		{
+			projIdx = i;
+			break;
+		}
+	}
+	delete m_projectiles[projIdx]; // Delete projectile object itself
+	m_projectiles.erase(m_projectiles.begin() + projIdx); // Remove from projectile vector
 }
 
 void cArena_Implementation::deleteRobotron(int roboNum, AnimationInfo* anim)
@@ -528,23 +642,72 @@ void cArena_Implementation::deleteRobotron(int roboNum, AnimationInfo* anim)
 	m_robotrons.erase(m_robotrons.begin() + roboNum); // Remove from projectile vector
 }
 
-void cArena_Implementation::deleteHuman(int humanNum, AnimationInfo* anim)
+void cArena_Implementation::deleteHuman(int humanID, AnimationInfo* anim)
 {
 	m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID); // Remove robo mesh from graphics class
 	delete anim; // Delete mesh info
-	m_spriteIDMap.erase(m_humans[humanNum]->getID()); // Remove from ID_to_Mesh map
-	delete m_humans[humanNum]; // Delete robotron object itself
-	m_humans.erase(m_humans.begin() + humanNum); // Remove from projectile vector
+	m_spriteIDMap.erase(humanID); // Remove from ID_to_Mesh map
+	int humanIdx = 0;
+	for (unsigned int i = 0; i < m_humans.size(); i++)
+	{
+		if (m_humans[i]->getID() == humanID)
+		{
+			humanIdx = i;
+			break;
+		}
+	}
+	delete m_humans[humanIdx]; // Delete robotron object itself
+	m_humans.erase(m_humans.begin() + humanIdx); // Remove from projectile vector
+}
+
+void cArena_Implementation::deletePlayer(AnimationInfo* anim)
+{
+	if (anim->mesh->friendlyName != "destructing") // Let graphics main take care of destructing "animation" and deleting the mesh
+	{
+		m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID); // Remove robo mesh from graphics class
+		delete anim->mesh;
+	}
+
+	delete anim; // Delete mesh info
+	m_spriteIDMap.erase(m_thePlayer->getID()); // Remove from ID_to_Mesh map
+	delete m_thePlayer; // Delete robotron object itself
 }
 
 // Re(loads) the level, whether after player death or stage completion
 void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities can be spawned
 {
+	AnimationInfo* tempInfo;
+	// Only projectiles all get deleted on either condition of this function
+	while (m_projectiles.size() > 0)
+	{
+		tempInfo = findAnimInfoByID(m_projectiles[0]->getID());
+		deleteProjectile(m_projectiles[0]->getID(), tempInfo);
+	}
+
 	ResetPlacementArray();
+
 	if (isFresh)// Brand new level
 	{
-		//int hulks = rand() % 10 + 20;
-		int hulks = 160;
+		//Start by clearing all existing info if any
+		while (m_robotrons.size() > 0)
+		{
+			AnimationInfo* tempInfo = findAnimInfoByID(m_robotrons[0]->getID());
+			deleteRobotron(0, tempInfo);
+		}
+		
+		while (m_humans.size() > 0)
+		{
+			AnimationInfo* tempInfo = findAnimInfoByID(m_humans[0]->getID());
+			deleteHuman(0, tempInfo);
+		}
+		if (m_thePlayer)
+		{
+			AnimationInfo* tempInfo = findAnimInfoByID(m_thePlayer->getID());
+			deletePlayer(tempInfo);
+		}
+
+		// Randomize enemy counts
+		int hulks = rand() % 10 + 20;
 		int grunts = rand() % 10 + 25;
 		int humans = rand() % 10 + 5;
 		int brains = rand() % 10 + 5;
@@ -554,6 +717,7 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 		glm::vec2 placePos = glm::vec2(0);
 		int xPlace = 0;
 		int yPlace = 0;
+
 
 		while (hulks != 0)
 		{
@@ -576,7 +740,187 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 			hulks--;
 			isValid = false;
 		}
+		while (humans != 0)
+		{
+			while (!isValid) // Find a valid place for the entity
+			{
+				// Randomize array placement first, will convert into real vector position after validity check
+				xPlace = rand() % 21;
+				yPlace = rand() % 9;
+
+				if (!m_SpawnSpots[xPlace][yPlace])
+					isValid = true;
+			}
+
+			m_SpawnSpots[xPlace][yPlace] = true;
+			// Now to translate into real positions
+			placePos.x = (xPlace - 10) * 10;
+			placePos.y = (yPlace - 4) * 10;
+
+			m_pCharacterMaker->makeCharacter("human", placePos);
+			humans--;
+			isValid = false;
+		}
+		while (sphereoids != 0)
+		{
+			while (!isValid) // Find a valid place for the entity
+			{
+				// Randomize array placement first, will convert into real vector position after validity check
+				xPlace = rand() % 21;
+				yPlace = rand() % 9;
+
+				if (!m_SpawnSpots[xPlace][yPlace])
+					isValid = true;
+			}
+
+			m_SpawnSpots[xPlace][yPlace] = true;
+			// Now to translate into real positions
+			placePos.x = (xPlace - 10) * 10;
+			placePos.y = (yPlace - 4) * 10;
+
+			m_pCharacterMaker->makeCharacter("sphereoid", placePos);
+			sphereoids--;
+			isValid = false;
+		}
+		while (quarks != 0)
+		{
+			while (!isValid) // Find a valid place for the entity
+			{
+				// Randomize array placement first, will convert into real vector position after validity check
+				xPlace = rand() % 21;
+				yPlace = rand() % 9;
+
+				if (!m_SpawnSpots[xPlace][yPlace])
+					isValid = true;
+			}
+
+			m_SpawnSpots[xPlace][yPlace] = true;
+			// Now to translate into real positions
+			placePos.x = (xPlace - 10) * 10;
+			placePos.y = (yPlace - 4) * 10;
+
+			m_pCharacterMaker->makeCharacter("quark", placePos);
+			quarks--;
+			isValid = false;
+		}
+		while (brains != 0)
+		{
+			while (!isValid) // Find a valid place for the entity
+			{
+				// Randomize array placement first, will convert into real vector position after validity check
+				xPlace = rand() % 21;
+				yPlace = rand() % 9;
+
+				if (!m_SpawnSpots[xPlace][yPlace])
+					isValid = true;
+			}
+
+			m_SpawnSpots[xPlace][yPlace] = true;
+			// Now to translate into real positions
+			placePos.x = (xPlace - 10) * 10;
+			placePos.y = (yPlace - 4) * 10;
+
+			m_pCharacterMaker->makeCharacter("brain", placePos);
+			brains--;
+			isValid = false;
+		}
+		while (grunts != 0)
+		{
+			while (!isValid) // Find a valid place for the entity
+			{
+				// Randomize array placement first, will convert into real vector position after validity check
+				xPlace = rand() % 21;
+				yPlace = rand() % 9;
+
+				if (!m_SpawnSpots[xPlace][yPlace])
+					isValid = true;
+			}
+
+			m_SpawnSpots[xPlace][yPlace] = true;
+			// Now to translate into real positions
+			placePos.x = (xPlace - 10) * 10;
+			placePos.y = (yPlace - 4) * 10;
+
+			m_pCharacterMaker->makeCharacter("grunt", placePos);
+			grunts--;
+			isValid = false;
+		}
+		// Now set all their draw positions
+		for (iRobotron* robo: m_robotrons)
+		{
+			tempInfo = findAnimInfoByID(robo->getID());
+			tempInfo->mesh->drawPosition = glm::vec3(robo->getPos(), 0);
+		}
+		for (cHuman* human : m_humans)
+		{
+			tempInfo = findAnimInfoByID(human->getID());
+			tempInfo->mesh->drawPosition = glm::vec3(human->getPos(), 0);
+		}
+
 	}
+	else if (!isFresh)
+	{
+		bool isValid = false;
+		glm::vec2 placePos = glm::vec2(0);
+		int xPlace = 0;
+		int yPlace = 0;
+
+
+		for(unsigned int i = 0; i < m_robotrons.size(); i++)
+		{
+			
+			while (!isValid) // Find a valid place for the entity
+			{
+				// Randomize array placement first, will convert into real vector position after validity check
+				xPlace = rand() % 21;
+				yPlace = rand() % 9;
+
+				if (!m_SpawnSpots[xPlace][yPlace])
+					isValid = true;
+			}
+
+			m_SpawnSpots[xPlace][yPlace] = true;
+			// Now to translate into real positions
+			placePos.x = (xPlace - 10) * 10;
+			placePos.y = (yPlace - 4) * 10;
+
+			m_robotrons[i]->setPos(placePos);
+			tempInfo = findAnimInfoByID(m_robotrons[i]->getID());
+			tempInfo->mesh->drawPosition = glm::vec3(placePos, 0);
+			isValid = false;
+		}
+		for (unsigned int i = 0; i < m_humans.size(); i++)
+		{
+
+			while (!isValid) // Find a valid place for the entity
+			{
+				// Randomize array placement first, will convert into real vector position after validity check
+				xPlace = rand() % 21;
+				yPlace = rand() % 9;
+
+				if (!m_SpawnSpots[xPlace][yPlace])
+					isValid = true;
+			}
+
+			m_SpawnSpots[xPlace][yPlace] = true;
+			// Now to translate into real positions
+			placePos.x = (xPlace - 10) * 10;
+			placePos.y = (yPlace - 4) * 10;
+
+			m_humans[i]->setPos(placePos);
+			tempInfo = findAnimInfoByID(m_humans[i]->getID());
+			tempInfo->mesh->drawPosition = glm::vec3(placePos, 0);
+			isValid = false;
+		}
+	}
+
+	// Both conditions will have the player remade
+	m_pCharacterMaker->makeCharacter("player", glm::vec2(0, 0));
+
+	m_TimeTillGameContinues = m_GameContinueInterval; // Pause the game for a moment upon starting the arena
+	m_bResetFresh = false;
+	m_bResetStage = false;
+	m_NextHumanPoints = 1000;
 }
 
 void cArena_Implementation::ResetPlacementArray()
@@ -596,5 +940,29 @@ void cArena_Implementation::ResetPlacementArray()
 		{
 			m_SpawnSpots[i][e] = true;
 		}
+	}
+}
+
+int cArena_Implementation::getScoreAmount(RoboType type)
+{
+	switch (type)
+	{
+	case Grunt:
+		return 100;
+	case Brain:
+		return 500;
+	case Prog:
+		return 100;
+	case Sphereoid:
+		return 1000;
+	case Enforcer:
+		return 150;
+	case Quark:
+		return 1000;
+	case Tank:
+		return 200;
+	default:
+		return 0;
+
 	}
 }

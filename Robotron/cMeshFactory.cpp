@@ -26,7 +26,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 
 		entityMesh->mesh->meshName = "player7.ply";
 		//entityMesh->mesh->drawPosition.y = -40.0f;
-		entityMesh->mesh->scale = .05f;
+		entityMesh->mesh->scale = .5f;
 		entityMesh->animationSpeed = 0.05f; // every 50ms
 		entityMesh->animationFrame = 0;
 		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
@@ -197,7 +197,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->animationSpeed = 0.2f;
 		entityMesh->animationFrame = 0;
 		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
-		entityMesh->mesh->yOffset = 2.75f;
+		entityMesh->mesh->yOffset = 0.0f;
 		return entityMesh;
 	}
 	if (entity == "prog") // For now will just use daddy sprite
@@ -367,7 +367,7 @@ AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 		entityMesh->animationSpeed = 0.1f;
 		entityMesh->animationFrame = 0;
 		entityMesh->timeTillNextAnim = entityMesh->animationSpeed;
-		entityMesh->mesh->yOffset = 2.75f;
+		entityMesh->mesh->yOffset = 1.3f;
 
 		return entityMesh;
 	}
