@@ -134,6 +134,21 @@ void cArena_Implementation::Initialize()
 		wavePos.x += 4;
 	}
 
+	// Initialize life sprites
+	scorePos.x += 70;
+	for (unsigned int i = 0; i < 6; i++) // Six max lives
+	{
+		cMesh* newLife = new cMesh();
+		newLife->meshName = "player7.ply";
+		newLife->scale = 0.03f;
+		newLife->drawPosition = glm::vec3(scorePos, 0);
+		newLife->bDoNotLight = true;
+		newLife->uniqueID = -1; // Set to -1, as nothing else should be this (default 0 gets in the way)
+		m_pGraphMain->addToDrawMesh(newLife);
+		mLives.push_back(newLife);
+		scorePos.x += 3;
+	}
+
 	InitializeLevel(true);
 
 	lastTime = glfwGetTime();
@@ -613,6 +628,7 @@ void cArena_Implementation::Update()
 
 	std::string scorestr = std::to_string(m_score);
 	int scoreBoardIdx = 0;
+	for (unsigned int i = 0; i < mScoreboard.size(); i++) mScoreboard[i]->meshName = "smallfont0.ply"; // Reset scoreboard before writing the updated one
 	for (int i = scorestr.size() -1; i > -1; i--)
 	{
 		std::string filename = "smallfont";
@@ -633,6 +649,20 @@ void cArena_Implementation::Update()
 		filename += ".ply";
 
 		mWaveCounter[2 - waveIdx++]->meshName = filename;
+	}
+
+	///////////////////////// LIVES /////////////////////
+	// Quickly check if a new life has been earned
+	if (m_score - m_lifeScore >= 150'000)
+	{
+		m_lives++;
+		m_lifeScore += 150'000;
+	}
+
+	for (unsigned int i = 0; i < 6; i++) mLives[i]->bIsVisible = false;
+	for (unsigned int i = 0; i < m_lives; i++)
+	{
+		mLives[i]->bIsVisible = true;
 	}
 
 
@@ -704,6 +734,8 @@ void cArena_Implementation::deleteHuman(int humanID, AnimationInfo* anim)
 
 void cArena_Implementation::deletePlayer(AnimationInfo* anim)
 {
+	if (!anim)
+		return;
 	if (anim->mesh->friendlyName != "destructing") // Let graphics main take care of destructing "animation" and deleting the mesh
 	{
 		m_pGraphMain->removeFromDrawMesh(anim->mesh->uniqueID); // Remove robo mesh from graphics class
@@ -749,81 +781,96 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 			deletePlayer(tempInfo);
 		}
 
-		// Randomize enemy counts
-// 		int hulks = rand() % 10 + 20;
-// 		int grunts = rand() % 10 + 25;
-// 		int humans = rand() % 10 + 5;
-// 		int brains = rand() % 10 + 5;
-// 		int sphereoids = rand() % 5;
-// 		int quarks = rand() % 5;
 		int hulks = 0;
 		int grunts = 0;
-		int humans = 10;
+		int humans = 0;
 		int brains = 0;
 		int sphereoids = 0;
 		int quarks = 0;
+
+		static int lastLevel = 0;
+		bool hasGenerated = false;
 
 		///////////////////////////////////////////////////////////////    1 Grunts + humans                                         +Diff-> Hulks
 		///////////LEVEL RANDOMIZATION (With difficulty scaling!///////    2 Many Grunts + few Hulks + sphereoids + humans           +Diff-> +1 quark, maybe increase amounts of quark and sphereoids
 		//////////////////////MAX 180 ENEMIES//////////////////////////    3 Grunts = Brains + many humans + 1 sphereoid             +Diff-> Some hulks, more sphereoids, mayhaps a quark
 		///////////////////////////////////////////////////////////////    4 Hulks + many quarks + humans                            +Diff-> Equal amounts of quarks and sphereoids (summing to old quark total)
-		int levelType = rand() % m_wave;
-		if (levelType < m_wave * 0.2)
+		while (!hasGenerated)
 		{
-			humans = rand() % (2 + (m_wave/10)) + 5;
-			grunts = rand() % (10 + m_wave/2) + (40 + (m_wave / 4));
-			hulks = rand() % (1 + (m_wave/2)) + (m_wave / 5);
-			// Cap possible numbers
-			if (hulks > 30) hulks = 30;
-			if (grunts > 100) grunts = 100;
-			if (humans > 20) humans = 20;
-		}
-		else if (levelType < m_wave * 0.5)
-		{
-			humans = rand() % (2 + (m_wave / 10)) + 5;
-			grunts = rand() % (int)(20 + (m_wave / 1.5)) + (60 + (m_wave / 2));
-			hulks = rand() % (1 + (m_wave / 8)) + (3 + (m_wave / 10));
-			sphereoids = rand() % (1 + (m_wave / 5)) + (3);
-			quarks = rand() % (1 + (m_wave / 10));
-			// Number caps
-			if (hulks > 15) hulks = 15;
-			if (grunts > 100) grunts = 110;
-			if (humans > 20) humans = 20;
-			if (sphereoids > 20) sphereoids = 20;
-			if (quarks > 10) quarks = 10;
-		}
-		else if (levelType <= m_wave * 0.8)
-		{
-			humans = rand() % (2 + (m_wave / 10)) + 15;
-			grunts = rand() % (1 + (m_wave / 10)) + (20 + (m_wave / 5));
-			brains = rand() % (1 + (m_wave / 10)) + (20 + (m_wave / 5));
-			sphereoids = rand() % (1 + (m_wave/10)) + (m_wave / 20);
-			quarks = rand() % (1 + (m_wave / 15)) + (m_wave / 30);
-			hulks = rand() % (1 + (m_wave/10)) + (m_wave / 15);
-			// Number caps
-			if (humans > 35) humans = 35;
-			if (grunts > 50) grunts = 50;
-			if (brains > 50) brains = 50;
-			if (sphereoids > 7) sphereoids = 7;
-			if (quarks > 7) quarks = 7;
-			if (hulks > 15) hulks = 15;
-		}
-		else if (levelType < m_wave * 1.0)
-		{
-			humans = rand() % (1 + (m_wave/7)) + 5;
-			hulks = rand() % (1 + (m_wave/7)) + (15 + (m_wave / 10));
-			quarks = rand() % (1 + (m_wave/10)) + (10 + (m_wave / 15));
-			int randSph = rand() % m_wave;
-			if (randSph > (10 + m_wave / 5))
+			int levelType = rand() % m_wave;
+			if (levelType < m_wave * 0.2)
 			{
-				sphereoids = quarks / 2;
-				quarks /= 2;
+				if (lastLevel == 1) continue; // Prevent same subsequent level types
+
+				humans = rand() % (2 + (m_wave / 10)) + 5;
+				grunts = rand() % (10 + m_wave / 2) + (40 + (m_wave / 4));
+				hulks = rand() % (1 + (m_wave / 2)) + (m_wave / 5);
+				// Cap possible numbers
+				if (hulks > 30) hulks = 30;
+				if (grunts > 100) grunts = 100;
+				if (humans > 20) humans = 20;
+				lastLevel = 1;
+				hasGenerated = true;
 			}
-			// Number caps
-			if (humans > 20) humans == 20;
-			if (hulks > 50) hulks = 50;
-			if (quarks > 35) quarks = 35;
-			if (sphereoids > 35) sphereoids = 35;
+			else if (levelType < m_wave * 0.5)
+			{
+				if (lastLevel == 2) continue;
+
+				humans = rand() % (2 + (m_wave / 10)) + 5;
+				grunts = rand() % (int)(20 + (m_wave / 1.5)) + (60 + (m_wave / 2));
+				hulks = rand() % (1 + (m_wave / 8)) + (3 + (m_wave / 10));
+				sphereoids = rand() % (1 + (m_wave / 5)) + (3);
+				quarks = rand() % (1 + (m_wave / 10));
+				// Number caps
+				if (hulks > 15) hulks = 15;
+				if (grunts > 100) grunts = 110;
+				if (humans > 20) humans = 20;
+				if (sphereoids > 20) sphereoids = 20;
+				if (quarks > 10) quarks = 10;
+				lastLevel = 2;
+				hasGenerated = true;
+			}
+			else if (levelType <= m_wave * 0.8)
+			{
+				if (lastLevel == 3) continue;
+
+				humans = rand() % (2 + (m_wave / 10)) + 15;
+				grunts = rand() % (1 + (m_wave / 10)) + (20 + (m_wave / 5));
+				brains = rand() % (1 + (m_wave / 10)) + (20 + (m_wave / 5));
+				sphereoids = rand() % (1 + (m_wave / 10)) + (m_wave / 20);
+				quarks = rand() % (1 + (m_wave / 15)) + (m_wave / 30);
+				hulks = rand() % (1 + (m_wave / 10)) + (m_wave / 15);
+				// Number caps
+				if (humans > 35) humans = 35;
+				if (grunts > 50) grunts = 50;
+				if (brains > 50) brains = 50;
+				if (sphereoids > 7) sphereoids = 7;
+				if (quarks > 7) quarks = 7;
+				if (hulks > 15) hulks = 15;
+				lastLevel = 3;
+				hasGenerated = true;
+			}
+			else if (levelType < m_wave * 1.0)
+			{
+				if (lastLevel == 4) continue;
+
+				humans = rand() % (1 + (m_wave / 7)) + 5;
+				hulks = rand() % (1 + (m_wave / 7)) + (15 + (m_wave / 10));
+				quarks = rand() % (1 + (m_wave / 10)) + (10 + (m_wave / 15));
+				int randSph = rand() % m_wave;
+				if (randSph > (10 + m_wave / 5))
+				{
+					sphereoids = quarks / 2;
+					quarks /= 2;
+				}
+				// Number caps
+				if (humans > 20) humans == 20;
+				if (hulks > 50) hulks = 50;
+				if (quarks > 35) quarks = 35;
+				if (sphereoids > 35) sphereoids = 35;
+				lastLevel = 4;
+				hasGenerated = true;
+			}
 		}
 
 
@@ -977,6 +1024,20 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 	}
 	else if (!isFresh)
 	{
+		m_lives--;
+
+		if (m_lives < 0)
+		{
+			// Game Over
+			m_score = 0;
+			m_lifeScore = 0;
+			m_wave = 0;
+			m_lives = 3;
+			m_bResetFresh = true;
+			m_bResetStage = true;
+			return;
+		}
+
 		bool isValid = false;
 		glm::vec2 placePos = glm::vec2(0);
 		int xPlace = 0;

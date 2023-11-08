@@ -24,13 +24,16 @@ private:
 
 	glm::vec2 m_hdir; // Direction bullet goes for the duration of the horizontal period
 
+	int m_XBoundary = 113;
+	int m_YBoundary = 55;
+
 	float const m_hspeed = 100.0f; // Horizontal speed
-	float const m_BreakHInterval = 0.6f; // 600ms      Time between end and start of horizontal movement
+	float const m_BreakHInterval = 0.4f; // 400ms      Time between end and start of horizontal movement
 	double m_TimeTillHMove = m_BreakHInterval;         // The current time left between end and start of horizontal movement
-	float const m_MoveHInterval = 0.35f;    // Time projectile spends moving horizontally
+	float const m_MoveHInterval = 0.25f;    // Time projectile spends moving horizontally
 	double m_TimeTillStopHMove = 0.0f; // Time left able to move horizontally
 
-	float const m_vspeed = 15.0f; // Vertical speed
+	float m_vspeed = 15.0f; // Vertical speed
 
 
 

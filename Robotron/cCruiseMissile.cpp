@@ -8,6 +8,7 @@ cCruiseMissile::cCruiseMissile(glm::vec2 position, glm::vec2 direction)
 {
 	m_pTheArena = cArena::getArena();
 	m_pos = position;
+	m_vspeed = rand() % 12 + 6; // Randomize vertical speed
 }
 
 cCruiseMissile::~cCruiseMissile()
@@ -60,6 +61,15 @@ void cCruiseMissile::Update(double deltaTime)
 			else
 				m_hdir.x = 1;
 		}
+	}
+	// Make sure missile gets stopped by the border
+	if (abs(m_pos.x) > m_XBoundary)
+	{
+		m_pos.x = m_XBoundary * (m_pos.x / abs(m_pos.x));
+	}
+	if (abs(m_pos.y) > m_YBoundary)
+	{
+		m_pos.y = m_YBoundary * (m_pos.y / abs(m_pos.y));
 	}
 }
 

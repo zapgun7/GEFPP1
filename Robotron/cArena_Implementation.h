@@ -54,11 +54,14 @@ private:
 
 	std::vector<cMesh*> mScoreboard;
 	std::vector<cMesh*> mWaveCounter;
+	std::vector<cMesh*> mLives;
 
 	int m_XBoundary = 113;
 	int m_YBoundary = 55;
 
+	int m_lives = 3; // Default start with 3 lives
 	int m_score = 0; // Internal representation of score, used to update visual score
+	int m_lifeScore = 0; // Internal number to keep track of when to add a life (every time difference between this and score is >= 150,000 add a life and add 150,000 to it)
 	int m_wave = 0; // Current wave (helps scale difficulty)
 	int m_NextHumanPoints = 1000;
 
