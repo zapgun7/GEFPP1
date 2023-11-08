@@ -5,7 +5,6 @@
 
 cHuman::cHuman()
 {
-	//srand(time(NULL));
 	// Randomize the human's starting direction
 	m_dir = glm::vec2(rand() %10 + 1, rand() %10 + 1);
 

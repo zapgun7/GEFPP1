@@ -98,6 +98,7 @@ void cArena_Implementation::Initialize()
 		newNumber->scale = 0.05f;
 		newNumber->drawPosition = glm::vec3(scorePos, 0);
 		newNumber->bDoNotLight = true;
+		newNumber->uniqueID = -1; // Set to -1, as nothing else should be this (default 0 gets in the way)
 		m_pGraphMain->addToDrawMesh(newNumber);
 		mScoreboard.push_back(newNumber);
 		scorePos.x += 4;
@@ -380,7 +381,8 @@ void cArena_Implementation::Update()
 			deleteHuman(m_humans[i]->getID(), humanInfo);
 			i--;
 			m_score += m_NextHumanPoints;
-			// TODOSCORE put a little number thingy corresponding to m_NextHumanPoints
+			createScoreNumber(m_NextHumanPoints, humanPos);
+			
 			m_NextHumanPoints += 1000;
 			m_NextHumanPoints = m_NextHumanPoints > 5000 ? 5000 : m_NextHumanPoints;
 			
@@ -500,7 +502,7 @@ void cArena_Implementation::Update()
 						m_score += scoreToAdd;
 						if (scoreToAdd == 1000)
 						{
-							// TODOSCORE add a little 1000 thing here
+							createScoreNumber(1000, roboPos);
 						}
 						roboInfo->mesh->friendlyName = "destructing";
 						deleteRobotron(e, roboInfo);
@@ -577,8 +579,6 @@ void cArena_Implementation::Update()
 	/////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////SCOREBOARD//////////////////////////////
 	/////////////////////////////////////////////////////////////////////////
-	if (m_score > 0)
-		std::cout << "break" << std::endl;
 
 	std::string scorestr = std::to_string(m_score);
 	int scoreBoardIdx = 0;
@@ -688,6 +688,7 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 
 	if (isFresh)// Brand new level
 	{
+		m_wave++; // Increment current wave
 		//Start by clearing all existing info if any
 		while (m_robotrons.size() > 0)
 		{
@@ -707,12 +708,86 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 162 max entities ca
 		}
 
 		// Randomize enemy counts
-		int hulks = rand() % 10 + 20;
-		int grunts = rand() % 10 + 25;
-		int humans = rand() % 10 + 5;
-		int brains = rand() % 10 + 5;
-		int sphereoids = rand() % 5;
-		int quarks = rand() % 5;
+// 		int hulks = rand() % 10 + 20;
+// 		int grunts = rand() % 10 + 25;
+// 		int humans = rand() % 10 + 5;
+// 		int brains = rand() % 10 + 5;
+// 		int sphereoids = rand() % 5;
+// 		int quarks = rand() % 5;
+		int hulks = 0;
+		int grunts = 0;
+		int humans = 10;
+		int brains = 0;
+		int sphereoids = 1;
+		int quarks = 1;
+
+		///////////////////////////////////////////////////////////////    1 Grunts + humans                                         +Diff-> Hulks
+		///////////LEVEL RANDOMIZATION (With difficulty scaling!///////    2 Many Grunts + few Hulks + sphereoids + humans           +Diff-> +1 quark, maybe increase amounts of quark and sphereoids
+		//////////////////////MAX 180 ENEMIES//////////////////////////    3 Grunts = Brains + many humans + 1 sphereoid             +Diff-> Some hulks, more sphereoids, mayhaps a quark
+		///////////////////////////////////////////////////////////////    4 Hulks + many quarks + humans                            +Diff-> Equal amounts of quarks and sphereoids (summing to old quark total)
+		int levelType = rand() % m_wave;
+		if (levelType < m_wave * 0.2)
+		{
+			humans = rand() % (2 + (m_wave/10)) + 5;
+			grunts = rand() % (10 + m_wave/2) + (40 + (m_wave / 4));
+			hulks = rand() % (1 + (m_wave/2)) + (m_wave / 5);
+			// Cap possible numbers
+			if (hulks > 30) hulks = 30;
+			if (grunts > 100) grunts = 100;
+			if (humans > 20) humans = 20;
+		}
+		else if (levelType < m_wave * 0.5)
+		{
+			humans = rand() % (2 + (m_wave / 10)) + 5;
+			grunts = rand() % (int)(20 + (m_wave / 1.5)) + (60 + (m_wave / 2));
+			hulks = rand() % (1 + (m_wave / 8)) + (3 + (m_wave / 10));
+			sphereoids = rand() % (1 + (m_wave / 5)) + (3);
+			quarks = rand() % (1 + (m_wave / 10));
+			// Number caps
+			if (hulks > 15) hulks = 15;
+			if (grunts > 100) grunts = 110;
+			if (humans > 20) humans = 20;
+			if (sphereoids > 20) sphereoids = 20;
+			if (quarks > 10) quarks = 10;
+		}
+		else if (levelType <= m_wave * 0.8)
+		{
+			humans = rand() % (2 + (m_wave / 10)) + 15;
+			grunts = rand() % (1 + (m_wave / 10)) + (20 + (m_wave / 5));
+			brains = rand() % (1 + (m_wave / 10)) + (20 + (m_wave / 5));
+			sphereoids = rand() % (1 + (m_wave/10)) + (m_wave / 20);
+			quarks = rand() % (1 + (m_wave / 15)) + (m_wave / 30);
+			hulks = rand() % (1 + (m_wave/10)) + (m_wave / 15);
+			// Number caps
+			if (humans > 35) humans = 35;
+			if (grunts > 50) grunts = 50;
+			if (brains > 50) brains = 50;
+			if (sphereoids > 7) sphereoids = 7;
+			if (quarks > 7) quarks = 7;
+			if (hulks > 15) hulks = 15;
+		}
+		else if (levelType < m_wave * 1.0)
+		{
+			humans = rand() % (1 + (m_wave/7)) + 5;
+			hulks = rand() % (1 + (m_wave/7)) + (15 + (m_wave / 10));
+			quarks = rand() % (1 + (m_wave/10)) + (10 + (m_wave / 15));
+			int randSph = rand() % m_wave;
+			if (randSph > (10 + m_wave / 5))
+			{
+				sphereoids = quarks / 2;
+				quarks /= 2;
+			}
+			// Number caps
+			if (humans > 20) humans == 20;
+			if (hulks > 50) hulks = 50;
+			if (quarks > 35) quarks = 35;
+			if (sphereoids > 35) sphereoids = 35;
+		}
+
+
+		///////////////////////////////////////////////////////////////
+		////////////////////END OF LEVEL RANDO/////////////////////////
+
 		bool isValid = false;
 		glm::vec2 placePos = glm::vec2(0);
 		int xPlace = 0;
@@ -965,4 +1040,25 @@ int cArena_Implementation::getScoreAmount(RoboType type)
 		return 0;
 
 	}
+}
+
+// Creates a score mesh
+void cArena_Implementation::createScoreNumber(int score, glm::vec2 pos)
+{
+	if (score % 1000 != 0) // A little safety so we don't call the wrong score
+		return;
+
+	cMesh* newNumberMesh = new cMesh();
+	newNumberMesh->drawPosition = glm::vec3(pos, 0);
+	newNumberMesh->scale = 0.05f;
+	newNumberMesh->bDoNotLight = true;
+	newNumberMesh->uniqueID = -1;
+	newNumberMesh->friendlyName = "score";
+
+	std::string filename = std::to_string(score);
+	filename += ".ply";
+
+	newNumberMesh->meshName = filename;
+
+	m_pGraphMain->addToDrawMesh(newNumberMesh);
 }

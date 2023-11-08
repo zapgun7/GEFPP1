@@ -44,6 +44,7 @@ private:
 	void ResetPlacementArray(); //Sets all values in m_SpawnSpots to false
 
 	int getScoreAmount(RoboType type);
+	void createScoreNumber(int score, glm::vec2 pos); // Creates a mesh of the desired score(1000-5000) at the location provided
 
 	std::vector<bool> m_keysPressed; // Last recorded user input
 	std::vector<iRobotron*> m_robotrons; // Vector of all enemies
@@ -57,6 +58,7 @@ private:
 	int m_YBoundary = 55;
 
 	int m_score = 0; // Internal representation of score, used to update visual score
+	int m_wave = 0; // Current wave (helps scale difficulty)
 	int m_NextHumanPoints = 1000;
 
 	float const m_GameContinueInterval = 2.0f; // Pause time after player death, and upon stage regeneration

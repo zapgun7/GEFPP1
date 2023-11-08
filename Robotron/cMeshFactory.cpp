@@ -4,7 +4,6 @@
 
 AnimationInfo* cMeshFactory::makeMesh(std::string entity)
 {
-	//srand(time(NULL));
 	AnimationInfo* entityMesh = new AnimationInfo();
 	entityMesh->mesh = new cMesh();
 	entityMesh->mesh->bDoNotLight = true;

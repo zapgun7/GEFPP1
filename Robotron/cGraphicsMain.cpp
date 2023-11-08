@@ -212,6 +212,17 @@ bool cGraphicsMain::Update() // Main "loop" of the window. Not really a loop, ju
 				continue;
 			}
 		}
+		else if (pCurrentMesh->friendlyName == "score") // Little score objects for any score increase over 1000 (sphereoid/quark kill, human rescue)
+		{										// This will float up slowly, increase in size VERY slowly (size mostly to keep track of when to terminate)
+			pCurrentMesh->drawPosition.y += 0.02f;
+			pCurrentMesh->scale += 0.00001f;
+			if (pCurrentMesh->scale > 0.051f)
+			{
+				removeAfterimage(pCurrentMesh);
+				index--;
+				continue;
+			}
+		}
 
 		/////////////////////////////////////////////
 
