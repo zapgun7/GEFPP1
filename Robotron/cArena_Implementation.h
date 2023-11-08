@@ -45,6 +45,7 @@ private:
 
 	int getScoreAmount(RoboType type);
 	void createScoreNumber(int score, glm::vec2 pos); // Creates a mesh of the desired score(1000-5000) at the location provided
+	void updateOnScreenInfo(); // Updates wave counter, score, and lives
 
 	std::vector<bool> m_keysPressed; // Last recorded user input
 	std::vector<iRobotron*> m_robotrons; // Vector of all enemies

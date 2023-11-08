@@ -616,51 +616,7 @@ void cArena_Implementation::Update()
 	/////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////
 
-
-	/////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////SCOREBOARD//////////////////////////////
-	/////////////////////////////////////////////////////////////////////////
-
-	std::string scorestr = std::to_string(m_score);
-	int scoreBoardIdx = 0;
-	for (unsigned int i = 0; i < mScoreboard.size(); i++) mScoreboard[i]->meshName = "smallfont0.ply"; // Reset scoreboard before writing the updated one
-	for (int i = scorestr.size() -1; i > -1; i--)
-	{
-		std::string filename = "smallfont";
-		filename += scorestr[i];
-		filename += ".ply";
-
-		mScoreboard[8 - scoreBoardIdx++]->meshName = filename;
-	}
-
-
-	//////////////////////// WAVE COUNTER ////////////////////
-	std::string wavestr = std::to_string(m_wave);
-	int waveIdx = 0;
-	for (int i = wavestr.size() - 1; i > -1; i--)
-	{
-		std::string filename = "largefont";
-		filename += wavestr[i];
-		filename += ".ply";
-
-		mWaveCounter[2 - waveIdx++]->meshName = filename;
-	}
-
-	///////////////////////// LIVES /////////////////////
-	// Quickly check if a new life has been earned
-	if (m_score - m_lifeScore >= 150'000)
-	{
-		m_lives++;
-		m_lifeScore += 150'000;
-	}
-
-	for (unsigned int i = 0; i < 6; i++) mLives[i]->bIsVisible = false;
-	for (unsigned int i = 0; i < m_lives; i++)
-	{
-		mLives[i]->bIsVisible = true;
-	}
-
-
+	updateOnScreenInfo();
 	m_keysPressed.assign(8, false); // Clear the input buffer
 	
 }
@@ -1034,6 +990,7 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 180 max entities ca
 			m_lives = 3;
 			m_bResetFresh = true;
 			m_bResetStage = true;
+			updateOnScreenInfo();
 			return;
 		}
 
@@ -1102,6 +1059,7 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 180 max entities ca
 	m_bResetFresh = false;
 	m_bResetStage = false;
 	m_NextHumanPoints = 1000;
+	updateOnScreenInfo();
 }
 
 
@@ -1182,5 +1140,49 @@ void cArena_Implementation::createScoreNumber(int score, glm::vec2 pos)
 	newNumberMesh->meshName = filename;
 
 	m_pGraphMain->addToDrawMesh(newNumberMesh);
+}
+
+// Updates all on-screen info: wave counter, score, lives
+void cArena_Implementation::updateOnScreenInfo()
+{
+	//////////////////////// SCOREBOARD /////////////////////////////////
+	std::string scorestr = std::to_string(m_score);
+	int scoreBoardIdx = 0;
+	for (unsigned int i = 0; i < mScoreboard.size(); i++) mScoreboard[i]->meshName = "smallfont0.ply"; // Reset scoreboard before writing the updated one
+	for (int i = scorestr.size() - 1; i > -1; i--)
+	{
+		std::string filename = "smallfont";
+		filename += scorestr[i];
+		filename += ".ply";
+
+		mScoreboard[8 - scoreBoardIdx++]->meshName = filename;
+	}
+
+
+	//////////////////////// WAVE COUNTER ////////////////////
+	std::string wavestr = std::to_string(m_wave);
+	int waveIdx = 0;
+	for (int i = wavestr.size() - 1; i > -1; i--)
+	{
+		std::string filename = "largefont";
+		filename += wavestr[i];
+		filename += ".ply";
+
+		mWaveCounter[2 - waveIdx++]->meshName = filename;
+	}
+
+	///////////////////////// LIVES /////////////////////
+	// Quickly check if a new life has been earned
+	if (m_score - m_lifeScore >= 150'000)
+	{
+		m_lives++;
+		m_lifeScore += 150'000;
+	}
+
+	for (unsigned int i = 0; i < 6; i++) mLives[i]->bIsVisible = false;
+	for (unsigned int i = 0; i < m_lives; i++)
+	{
+		mLives[i]->bIsVisible = true;
+	}
 }
 // Wowee 1186 lines, surely this is too much responsibility for one class?
