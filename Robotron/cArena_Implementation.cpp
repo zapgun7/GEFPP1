@@ -1162,6 +1162,7 @@ void cArena_Implementation::updateOnScreenInfo()
 	//////////////////////// WAVE COUNTER ////////////////////
 	std::string wavestr = std::to_string(m_wave);
 	int waveIdx = 0;
+	for (unsigned int i = 0; i < 3; i++) mWaveCounter[i]->meshName = "largefont0.ply";
 	for (int i = wavestr.size() - 1; i > -1; i--)
 	{
 		std::string filename = "largefont";
