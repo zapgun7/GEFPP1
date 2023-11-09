@@ -586,6 +586,7 @@ void cArena_Implementation::Update()
 // Just duplicate the current sprite of the thing, give it a distinguishable friendlyname and the graphics main takes care of the rest
 	for (iRobotron* robo : m_robotrons)
 	{
+		continue;// DEBUG
 		if (robo->getRoboType() == Prog)
 		{
 			cMesh* newAi = new cMesh();
@@ -599,6 +600,7 @@ void cArena_Implementation::Update()
 	}
 	for (iProjectile* proj : m_projectiles)
 	{
+		continue; // DEBUG
 		if (proj->getType() == CMissile)
 		{
 			//cMesh* newAi = findAnimInfoByID(proj->getID())->mesh;
@@ -750,6 +752,10 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 180 max entities ca
 		while (!hasGenerated)
 		{
 			int levelType = rand() % m_wave;
+			levelType = 4;// DEBUG
+			lastLevel = 0; // DEBUG
+			m_wave = 10;// DEBUG
+
 			if (levelType < m_wave * 0.2)
 			{
 				if (lastLevel == 1) continue; // Prevent same subsequent level types
