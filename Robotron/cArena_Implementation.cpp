@@ -188,6 +188,7 @@ void cArena_Implementation::Update()
 	double deltaTime = currTime - lastTime;
 	lastTime = currTime;
 
+	deltaTime = 0.001f; // DEBUG
 
 	////////// PAUSE AREA //////////////////////
 	static bool isESCPressed = false;
@@ -209,7 +210,10 @@ void cArena_Implementation::Update()
 
 	if (isPaused)
 	{
-
+		for (unsigned int i = 0; i < mPause.size(); i++) // Make the letters wiggle around for FUN
+		{
+			mPause[i]->drawPosition.y = sin(4 * glfwGetTime() + (0.5f * i));
+		}
 		m_keysPressed.assign(9, false); // Clear the input buffer
 		return;
 	}
@@ -802,7 +806,7 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 180 max entities ca
 		while (!hasGenerated)
 		{
 			int levelType = rand() % m_wave;
-			levelType = 4;// DEBUG
+			levelType = 9;// DEBUG
 			lastLevel = 0; // DEBUG
 			m_wave = 10;// DEBUG
 
