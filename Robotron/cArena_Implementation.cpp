@@ -188,7 +188,7 @@ void cArena_Implementation::Update()
 	double deltaTime = currTime - lastTime;
 	lastTime = currTime;
 
-	deltaTime = 0.001f; // DEBUG
+	//deltaTime = 0.001f; // DEBUG
 
 	////////// PAUSE AREA //////////////////////
 	static bool isESCPressed = false;
@@ -221,7 +221,7 @@ void cArena_Implementation::Update()
 
 	///////////////////////////////////////////
 
-
+	//m_TimeTillGameContinues = 0; // DEBUG
 	if (m_TimeTillGameContinues > 0) // This is what puts delay after a stage load, or after player death
 	{
 		m_TimeTillGameContinues -= deltaTime;
@@ -806,9 +806,6 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 180 max entities ca
 		while (!hasGenerated)
 		{
 			int levelType = rand() % m_wave;
-			levelType = 9;// DEBUG
-			lastLevel = 0; // DEBUG
-			m_wave = 10;// DEBUG
 
 			if (levelType < m_wave * 0.2)
 			{
@@ -884,7 +881,6 @@ void cArena_Implementation::InitializeLevel(bool isFresh) // 180 max entities ca
 				hasGenerated = true;
 			}
 		}
-
 
 		///////////////////////////////////////////////////////////////
 		////////////////////END OF LEVEL RANDO/////////////////////////
