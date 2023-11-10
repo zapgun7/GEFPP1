@@ -144,6 +144,26 @@ void cArena_Implementation::Initialize()
 		scorePos.x += 3;
 	}
 
+	// Initialize the pause screen letters (big "PAUSED" letters)
+
+	glm::vec2 pausePos = glm::vec2(-25, 0); // Try dead center for now (y-wise)
+	std::string pausestr = "PAUSED";
+	for (unsigned int i = 0; i < 6; i++)
+	{
+		cMesh* newLetter = new cMesh();
+		newLetter->meshName = "smallfont";
+		newLetter->meshName += pausestr[i];
+		newLetter->meshName += ".ply";
+		newLetter->scale = 0.2f;
+		newLetter->drawPosition = glm::vec3(pausePos, 20);
+		newLetter->bDoNotLight = true;
+		newLetter->bIsVisible = false;
+		newLetter->uniqueID = -1; // Set to -1, as nothing else should be this (default 0 gets in the way)
+		m_pGraphMain->addToDrawMesh(newLetter);
+		mPause.push_back(newLetter);
+		pausePos.x += 10;
+	}
+
 	InitializeLevel(true);
 
 	lastTime = glfwGetTime();
@@ -167,6 +187,36 @@ void cArena_Implementation::Update()
 	double currTime = glfwGetTime();
 	double deltaTime = currTime - lastTime;
 	lastTime = currTime;
+
+
+	////////// PAUSE AREA //////////////////////
+	static bool isESCPressed = false;
+	static bool isPaused;
+	if ((!isESCPressed) && (m_keysPressed[8])) // If escape button
+	{
+		isESCPressed = true;
+		if (isPaused)
+			isPaused = false;
+		else
+			isPaused = true;
+		for (unsigned int i = 0; i < mPause.size(); i++)
+		{
+			mPause[i]->bIsVisible = isPaused;
+		}
+	}
+	else if (!m_keysPressed[8])
+		isESCPressed = false;
+
+	if (isPaused)
+	{
+
+		m_keysPressed.assign(9, false); // Clear the input buffer
+		return;
+	}
+
+
+	///////////////////////////////////////////
+
 
 	if (m_TimeTillGameContinues > 0) // This is what puts delay after a stage load, or after player death
 	{
@@ -619,7 +669,7 @@ void cArena_Implementation::Update()
 	/////////////////////////////////////////////////////////////////////////
 
 	updateOnScreenInfo();
-	m_keysPressed.assign(8, false); // Clear the input buffer
+	m_keysPressed.assign(9, false); // Clear the input buffer
 	
 }
 

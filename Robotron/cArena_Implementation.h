@@ -57,6 +57,9 @@ private:
 	std::vector<cMesh*> mWaveCounter;
 	std::vector<cMesh*> mLives;
 
+	std::vector<cMesh*> mPause; // Sprites for the "Paused" letters of the pause screen
+	bool m_IsPaused = false;
+
 	int m_XBoundary = 113;
 	int m_YBoundary = 55;
 
