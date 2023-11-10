@@ -121,7 +121,7 @@ void cBrain::setRoboType(RoboType type)
 	m_type = type;
 }
 
-void cBrain::isShot(void)
+void cBrain::isShot(glm::vec2 shotDir)
 {
 	// Does nothing
 }

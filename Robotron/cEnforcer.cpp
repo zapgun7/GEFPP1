@@ -170,7 +170,7 @@ void cEnforcer::setRoboType(RoboType type)
 	m_type = type;
 }
 
-void cEnforcer::isShot(void)
+void cEnforcer::isShot(glm::vec2 shotDir)
 {
 	// Dies I guess
 }

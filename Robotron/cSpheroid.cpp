@@ -141,7 +141,7 @@ void cSphereoid::setRoboType(RoboType type)
 	return;
 }
 
-void cSphereoid::isShot(void)
+void cSphereoid::isShot(glm::vec2 shotDir)
 {
 	// aaahhh dies bleh
 }

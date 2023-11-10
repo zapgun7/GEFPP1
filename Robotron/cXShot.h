@@ -11,6 +11,7 @@ public:
 	virtual ~cXShot();
 	virtual void Update(double deltaTime);
 	virtual glm::vec2 getPosition();
+	virtual glm::vec2 getDir();
 	virtual void setID(int ID);
 	virtual int getID();
 	virtual void setType(ProjType type);

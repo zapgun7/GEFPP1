@@ -16,6 +16,7 @@ public:
 
 	virtual void Update(double deltaTime) = 0; // To increment movement
 	virtual glm::vec2 getPosition() = 0; // For mediator to check for hits
+	virtual glm::vec2 getDir() = 0;
 	virtual void setID(int ID) = 0;
 	virtual int getID() = 0;
 	virtual void setType(ProjType type) = 0;

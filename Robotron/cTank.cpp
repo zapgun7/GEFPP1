@@ -188,7 +188,7 @@ void cTank::setRoboType(RoboType type)
 	m_type = type;
 }
 
-void cTank::isShot(void)
+void cTank::isShot(glm::vec2 shotDir)
 {
 	// nothing
 }

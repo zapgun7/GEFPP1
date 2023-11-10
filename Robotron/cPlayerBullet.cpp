@@ -2,8 +2,8 @@
 
 cPlayerBullet::cPlayerBullet(glm::vec2 position, glm::vec2 direction)
 {
-	pos = position;
-	dir = direction;
+	m_pos = position;
+	m_dir = direction;
 	//speed = 1.0f;
 }
 
@@ -16,13 +16,18 @@ void cPlayerBullet::Update(double deltaTime)
 {
 	// What a simple projectile :)
 
-	pos += dir * speed * (float)deltaTime;
+	m_pos += m_dir * speed * (float)deltaTime;
 	return;
 }
 
 glm::vec2 cPlayerBullet::getPosition()
 {
-	return pos;
+	return m_pos;
+}
+
+glm::vec2 cPlayerBullet::getDir()
+{
+	return m_dir;
 }
 
 void cPlayerBullet::setID(int ID)

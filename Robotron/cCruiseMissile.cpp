@@ -81,6 +81,11 @@ glm::vec2 cCruiseMissile::getPosition()
 	return m_pos;
 }
 
+glm::vec2 cCruiseMissile::getDir()
+{
+	return m_dir;
+}
+
 void cCruiseMissile::setID(int ID)
 {
 	m_EntityID = ID;

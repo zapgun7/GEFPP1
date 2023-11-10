@@ -581,12 +581,13 @@ void cArena_Implementation::Update()
 				if (glm::distance(roboPos, projPos) < 5) 
 				{											// ROBOHIT!!!
 					AnimationInfo* roboInfo = findAnimInfoByID(m_robotrons[e]->getID());
+					glm::vec2 projDir = m_projectiles[i]->getDir();
 					deleteProjectile(m_projectiles[i]->getID(), tempInfo);
 					i--;
 					doesProjDie = true;
 					if(m_robotrons[e]->getRoboType() == Hulk)
 					{
-						m_robotrons[e]->isShot();
+						m_robotrons[e]->isShot(projDir);
 						break;
 					}
 					else
@@ -638,32 +639,47 @@ void cArena_Implementation::Update()
 
 
 // Just duplicate the current sprite of the thing, give it a distinguishable friendlyname and the graphics main takes care of the rest
-	for (iRobotron* robo : m_robotrons)
+	float aiGenInterval = 0.1f;
+	static double timeTillNextAI = aiGenInterval;
+	timeTillNextAI -= deltaTime;
+	if (timeTillNextAI <= 0)
 	{
-		continue;// DEBUG
-		if (robo->getRoboType() == Prog)
+		timeTillNextAI += aiGenInterval;
+		for (iRobotron* robo : m_robotrons)
 		{
-			cMesh* newAi = new cMesh();
-			cMesh* robomesh = findAnimInfoByID(robo->getID())->mesh;
-			memcpy(newAi, robomesh, sizeof(cMesh));
-			
-			newAi->friendlyName = "progAi";
-			newAi->wholeObjectDebugColourRGBA = glm::vec4(glm::vec3(0.5), 1);
-			addAfterimage(newAi);
+			//continue;// DEBUG
+			if (robo->getRoboType() == Prog)
+			{
+				cMesh* newAi = new cMesh();
+				cMesh* robomesh = findAnimInfoByID(robo->getID())->mesh;
+				memcpy(newAi, robomesh, sizeof(cMesh));
+
+				newAi->friendlyName = "progAi";
+				newAi->wholeObjectDebugColourRGBA = glm::vec4(glm::vec3(0.5), 1);
+				addAfterimage(newAi);
+			}
 		}
 	}
-	for (iProjectile* proj : m_projectiles)
-	{
-		continue; // DEBUG
-		if (proj->getType() == CMissile)
-		{
-			//cMesh* newAi = findAnimInfoByID(proj->getID())->mesh;
-			cMesh* newAi = new cMesh();
-			cMesh* projmesh = findAnimInfoByID(proj->getID())->mesh;
-			memcpy(newAi, projmesh, sizeof(cMesh));
+	float trailGenInterval = 0.05f;
+	static double timeTillNextTrail = trailGenInterval;
+	timeTillNextTrail -= deltaTime;
 
-			newAi->friendlyName = "missileAi";
-			addAfterimage(newAi);
+	if (timeTillNextTrail <= 0)
+	{
+		timeTillNextTrail += trailGenInterval;
+		for (iProjectile* proj : m_projectiles)
+		{
+			//continue; // DEBUG
+			if (proj->getType() == CMissile)
+			{
+				//cMesh* newAi = findAnimInfoByID(proj->getID())->mesh;
+				cMesh* newAi = new cMesh();
+				cMesh* projmesh = findAnimInfoByID(proj->getID())->mesh;
+				memcpy(newAi, projmesh, sizeof(cMesh));
+
+				newAi->friendlyName = "missileAi";
+				addAfterimage(newAi);
+			}
 		}
 	}
 
@@ -730,7 +746,7 @@ void cArena_Implementation::deleteHuman(int humanID, AnimationInfo* anim)
 	int humanIdx = 0;
 	for (unsigned int i = 0; i < m_humans.size(); i++)
 	{
-		if (m_humans[i]->getID() == humanID)
+	if (m_humans[i]->getID() == humanID)
 		{
 			humanIdx = i;
 			break;

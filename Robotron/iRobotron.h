@@ -30,7 +30,7 @@ public:
 	virtual glm::vec2 getPos() = 0;
 	virtual glm::vec2 getDir() = 0;
 	virtual RoboType getRoboType() = 0;
-	virtual void isShot() = 0;
+	virtual void isShot(glm::vec2 shotDir) = 0;
 	virtual bool isSpawning() = 0;
 	virtual bool ShouldBeDestroyed() = 0;
 };

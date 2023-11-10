@@ -90,7 +90,7 @@ void cProg::setRoboType(RoboType type)
 	m_type = type;
 }
 
-void cProg::isShot(void)
+void cProg::isShot(glm::vec2 shotDir)
 {
 	// Dies
 }

@@ -46,6 +46,11 @@ glm::vec2 cTankShell::getPosition()
 	return m_pos;
 }
 
+glm::vec2 cTankShell::getDir()
+{
+	return m_dir;
+}
+
 void cTankShell::setID(int ID)
 {
 	m_EntityID = ID;

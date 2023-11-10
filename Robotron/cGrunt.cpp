@@ -94,7 +94,7 @@ void cGrunt::setRoboType(RoboType type)
 	m_type = type;
 }
 
-void cGrunt::isShot(void)
+void cGrunt::isShot(glm::vec2 shotDir)
 {
 	// Nothing for now...
 }

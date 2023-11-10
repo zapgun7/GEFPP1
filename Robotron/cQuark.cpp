@@ -124,7 +124,7 @@ void cQuark::setRoboType(RoboType type)
 	m_type = type;
 }
 
-void cQuark::isShot(void)
+void cQuark::isShot(glm::vec2 shotDir)
 {
 	// Dies?
 }

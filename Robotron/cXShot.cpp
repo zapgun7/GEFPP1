@@ -75,6 +75,12 @@ glm::vec2 cXShot::getPosition()
 	return m_pos;
 }
 
+glm::vec2 cXShot::getDir()
+{
+	return m_dir;
+}
+
+
 void cXShot::setID(int ID)
 {
 	m_EntityID = ID;

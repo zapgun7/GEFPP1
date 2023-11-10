@@ -117,6 +117,16 @@ void cHulk::Update(double deltaTime)
 	}
 	m_pos += m_dir * m_speed * float(deltaTime);
 
+	// Make sure hulk gets stopped by the border
+	if (abs(m_pos.x) > m_XBoundary)
+	{
+		m_pos.x = m_XBoundary * (m_pos.x / abs(m_pos.x));
+	}
+	if (abs(m_pos.y) > m_YBoundary)
+	{
+		m_pos.y = m_YBoundary * (m_pos.y / abs(m_pos.y));
+	}
+
 	return;
 
 }
@@ -256,7 +266,7 @@ void cHulk::setRoboType(RoboType type)
 	return;
 }
 
-void cHulk::isShot(void)
+void cHulk::isShot(glm::vec2 shotDir)
 {
 	m_speed -= 2.0f;
 	if (m_speed < m_minSpeed)
@@ -264,6 +274,21 @@ void cHulk::isShot(void)
 
 	// Make recovery delay proportional to how much it got shot
 	m_timeToRecovery = (m_maxSpeed - m_speed)/3; // At most 3.33s delay
+
+	// Hulk gets pushed a little by the bullet
+
+	m_pos += shotDir;
+
+
+	// Make sure hulk gets stopped by the border
+	if (abs(m_pos.x) > m_XBoundary)
+	{
+		m_pos.x = m_XBoundary * (m_pos.x / abs(m_pos.x));
+	}
+	if (abs(m_pos.y) > m_YBoundary)
+	{
+		m_pos.y = m_YBoundary * (m_pos.y / abs(m_pos.y));
+	}
 }
 
 bool cHulk::isSpawning(void)

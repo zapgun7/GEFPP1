@@ -10,6 +10,7 @@ public:
 	virtual ~cPlayerBullet();
 	virtual void Update(double deltaTime);
 	virtual glm::vec2 getPosition();
+	virtual glm::vec2 getDir();
 	virtual void setID(int ID);
 	virtual int getID();
 	virtual void setType(ProjType type);
@@ -18,8 +19,8 @@ public:
 
 private:
 	ProjType m_type;
-	glm::vec2 pos;
-	glm::vec2 dir; // The step of the projectile per tick
+	glm::vec2 m_pos;
+	glm::vec2 m_dir; // The step of the projectile per tick
 	float const speed = 500.0f;
 	int entityID;
 };

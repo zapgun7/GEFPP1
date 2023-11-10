@@ -23,7 +23,7 @@ public:
 	virtual void setID(int ID);
 	virtual void setPos(glm::vec2 newPos);
 	virtual void setRoboType(RoboType type);
-	virtual void isShot(void);
+	virtual void isShot(glm::vec2 shotDir);
 	virtual bool isSpawning(void);
 	virtual bool ShouldBeDestroyed();
 	//virtual void setArena(cArena* arena);
