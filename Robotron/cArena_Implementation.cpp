@@ -17,6 +17,9 @@ cArena_Implementation::~cArena_Implementation()
 	//delete this->pTheWeaponFactory;
 }
 
+
+// INFO QUERY CALLS
+
 glm::vec2 cArena_Implementation::getClosestHuman(glm::vec2 whereIAm)
 {
 	glm::vec2 closestCoord = glm::vec2(999, 999); // If this 999 999 returns, no humans left
@@ -45,6 +48,9 @@ void cArena_Implementation::setPlayer(cPlayer* player, AnimationInfo* newInfo)
 	m_spriteIDMap[player->getID()] = newInfo;
 	m_pGraphMain->addToDrawMesh(newInfo->mesh);
 }
+
+
+// ENTITY ADDING
 
 void cArena_Implementation::addRobotron(iRobotron* newRobo, AnimationInfo* newInfo)
 {
